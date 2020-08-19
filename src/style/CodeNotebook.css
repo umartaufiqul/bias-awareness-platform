@@ -1,0 +1,9 @@
+.main-body {
+    background-color: #C4C4C4;
+    padding: 1rem 4rem;
+}
+
+textarea {
+    min-width: 100%;
+    resize: none;
+}
