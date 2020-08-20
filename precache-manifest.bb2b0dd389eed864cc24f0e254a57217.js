@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c7a59d478508ac2ac0cc45611b7531e1",
+    "revision": "24938dd15d279e9f9d1e3c32b5d2f35d",
     "url": "/bias-awareness-platform/index.html"
   },
   {
-    "revision": "da4e1675d37ba35d58ec",
+    "revision": "5f14ecd3eb77c24b3cce",
     "url": "/bias-awareness-platform/static/css/main.27afd646.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/bias-awareness-platform/static/js/2.7dc0386e.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "da4e1675d37ba35d58ec",
-    "url": "/bias-awareness-platform/static/js/main.796016c2.chunk.js"
+    "revision": "5f14ecd3eb77c24b3cce",
+    "url": "/bias-awareness-platform/static/js/main.45404b0e.chunk.js"
   },
   {
     "revision": "2cc5142573b1b2e59997",
