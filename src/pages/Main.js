@@ -40,7 +40,7 @@ class Main extends Component {
         <div>
             <StepProgress currentStep={this.state.current_step}/>
             <Switch>
-                <Route exact path='/bias-awareness-platform/code' component={CodeNotebook}></Route>
+                <Route path='/bias-awareness-platform/code' component={CodeNotebook}></Route>
                 <Route path='/bias-awareness-platform/visualization' component={Visualization}></Route>
                 <Route exact path='/bias-awareness-platform/evaluation' component={Visualization}></Route>
             </Switch>
