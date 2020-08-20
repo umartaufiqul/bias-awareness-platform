@@ -43,14 +43,14 @@ class Visualization extends Component {
                     </div>
                 </div>                
                 <ul className="choices">
-                    <li className={this.state.dataset_active} id="dataset-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> <Link to='/bias-awareness/visualization/dataset'> Dataset </Link></li>
-                    <li className={this.state.model_active} id="model-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> <Link to='/bias-awareness/visualization/model'> Model </Link></li>
+                    <li className={this.state.dataset_active} id="dataset-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> <Link to='/bias-awareness-platform/visualization/dataset'> Dataset </Link></li>
+                    <li className={this.state.model_active} id="model-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> <Link to='/bias-awareness-platform/visualization/model'> Model </Link></li>
                 </ul>
                 <div className="interact-container">
                     <Switch>
-                        <Route exact path='/bias-awareness/visualization' component={VisualDataset} />
-                        <Route path='/bias-awareness/visualization/dataset' component={VisualDataset} />
-                        <Route path='/bias-awareness/visualization/model' component={VisualModel} />
+                        <Route exact path='/bias-awareness-platform/visualization' component={VisualDataset} />
+                        <Route path='/bias-awareness-platform/visualization/dataset' component={VisualDataset} />
+                        <Route path='/bias-awareness-platform/visualization/model' component={VisualModel} />
                     </Switch>
                 </div>
             </div>

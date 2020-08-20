@@ -14,7 +14,7 @@ class CodeNotebook extends Component {
                 <textarea rows="10"/>
                 <h2> Running the Model </h2>
                 <textarea rows="5" cols="50"/>
-                <Button name='Build' link='/bias-awareness/visualization' className="text-center mt"/>
+                <Button name='Build' link='/bias-awareness-platform/visualization' className="text-center mt"/>
             </div>
         )
     }

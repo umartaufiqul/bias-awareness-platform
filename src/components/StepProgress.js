@@ -31,7 +31,7 @@ class StepProgress extends Component {
     }
 
     componentDidMount() {
-        console.log("mounted")
+        this.updateProgress()
     }
 
     updateProgress() {

@@ -7,6 +7,10 @@
     border-radius: 50%;
     background-color: white;
   }
+
+.bar-icon + p {
+  font-weight: bold;
+}
   
 .bar-icon::before, .bar-icon-completed::before {
     content: '';

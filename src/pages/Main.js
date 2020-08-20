@@ -23,12 +23,12 @@ class Main extends Component {
 
     updateCurrentStep() {
         var str = this.props.location.pathname
-        if (str.includes("/bias-awareness/visualization")) {
+        if (str.includes("visualization")) {
             this.setState({
                 current_step: 2
             })
         }
-        else if (str.includes("/bias-awareness/evaluation")){
+        else if (str.includes("evaluation")){
             this.setState({
                 current_step: 3
             })
@@ -40,9 +40,9 @@ class Main extends Component {
         <div>
             <StepProgress currentStep={this.state.current_step}/>
             <Switch>
-                <Route exact path='/bias-awareness' component={CodeNotebook}></Route>
-                <Route path='/bias-awareness/visualization' component={Visualization}></Route>
-                <Route exact path='/bias-awareness/evaluation' component={Visualization}></Route>
+                <Route exact path='/bias-awareness-platform/code' component={CodeNotebook}></Route>
+                <Route path='/bias-awareness-platform/visualization' component={Visualization}></Route>
+                <Route exact path='/bias-awareness-platform/evaluation' component={Visualization}></Route>
             </Switch>
         </div>
         )

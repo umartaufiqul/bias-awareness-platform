@@ -9,7 +9,7 @@ function App() {
     <div>
         <Switch>
           <Route exact path='/bias-awareness-platform' component={Introduction}></Route>
-          <Route path='/bias-awareness' component={Main}></Route>
+          <Route path='/bias-awareness-platform' component={Main}></Route>
         </Switch>
     </div>
   );
