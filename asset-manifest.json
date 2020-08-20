@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/bias-awareness-platform/static/css/main.27afd646.chunk.css",
-    "main.js": "/bias-awareness-platform/static/js/main.d00024b9.chunk.js",
-    "main.js.map": "/bias-awareness-platform/static/js/main.d00024b9.chunk.js.map",
+    "main.js": "/bias-awareness-platform/static/js/main.726145a6.chunk.js",
+    "main.js.map": "/bias-awareness-platform/static/js/main.726145a6.chunk.js.map",
     "runtime-main.js": "/bias-awareness-platform/static/js/runtime-main.b7e6e405.js",
     "runtime-main.js.map": "/bias-awareness-platform/static/js/runtime-main.b7e6e405.js.map",
-    "static/js/2.7dc0386e.chunk.js": "/bias-awareness-platform/static/js/2.7dc0386e.chunk.js",
-    "static/js/2.7dc0386e.chunk.js.map": "/bias-awareness-platform/static/js/2.7dc0386e.chunk.js.map",
+    "static/js/2.9dc06ebe.chunk.js": "/bias-awareness-platform/static/js/2.9dc06ebe.chunk.js",
+    "static/js/2.9dc06ebe.chunk.js.map": "/bias-awareness-platform/static/js/2.9dc06ebe.chunk.js.map",
     "index.html": "/bias-awareness-platform/index.html",
-    "precache-manifest.7825e5e183abdccca1a011426914646f.js": "/bias-awareness-platform/precache-manifest.7825e5e183abdccca1a011426914646f.js",
+    "precache-manifest.86a1a8c13b63ff9e4d82951324d65642.js": "/bias-awareness-platform/precache-manifest.86a1a8c13b63ff9e4d82951324d65642.js",
     "service-worker.js": "/bias-awareness-platform/service-worker.js",
     "static/css/main.27afd646.chunk.css.map": "/bias-awareness-platform/static/css/main.27afd646.chunk.css.map",
-    "static/js/2.7dc0386e.chunk.js.LICENSE.txt": "/bias-awareness-platform/static/js/2.7dc0386e.chunk.js.LICENSE.txt",
+    "static/js/2.9dc06ebe.chunk.js.LICENSE.txt": "/bias-awareness-platform/static/js/2.9dc06ebe.chunk.js.LICENSE.txt",
     "static/media/graph.png": "/bias-awareness-platform/static/media/graph.2a2e6249.png"
   },
   "entrypoints": [
     "static/js/runtime-main.b7e6e405.js",
-    "static/js/2.7dc0386e.chunk.js",
+    "static/js/2.9dc06ebe.chunk.js",
     "static/css/main.27afd646.chunk.css",
-    "static/js/main.d00024b9.chunk.js"
+    "static/js/main.726145a6.chunk.js"
   ]
 }
