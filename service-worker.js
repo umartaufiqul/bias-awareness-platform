@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/bias-awareness-platform/precache-manifest.7c6cdfe118fa8040f8acc0732667bb36.js"
+  "/bias-awareness-platform/precache-manifest.7825e5e183abdccca1a011426914646f.js"
 );
 
 self.addEventListener('message', (event) => {
