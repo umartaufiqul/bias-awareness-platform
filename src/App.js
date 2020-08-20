@@ -8,7 +8,7 @@ function App() {
   return (
     <div>
         <Switch>
-          <Route exact path='/' component={Introduction}></Route>
+          <Route exact path='/bias-awareness-platform' component={Introduction}></Route>
           <Route path='/bias-awareness' component={Main}></Route>
         </Switch>
     </div>
