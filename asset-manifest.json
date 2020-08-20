@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/bias-awareness-platform/static/css/main.27afd646.chunk.css",
-    "main.js": "/bias-awareness-platform/static/js/main.951f6ed8.chunk.js",
-    "main.js.map": "/bias-awareness-platform/static/js/main.951f6ed8.chunk.js.map",
+    "main.js": "/bias-awareness-platform/static/js/main.1fbfe5ad.chunk.js",
+    "main.js.map": "/bias-awareness-platform/static/js/main.1fbfe5ad.chunk.js.map",
     "runtime-main.js": "/bias-awareness-platform/static/js/runtime-main.b7e6e405.js",
     "runtime-main.js.map": "/bias-awareness-platform/static/js/runtime-main.b7e6e405.js.map",
     "static/js/2.7dc0386e.chunk.js": "/bias-awareness-platform/static/js/2.7dc0386e.chunk.js",
     "static/js/2.7dc0386e.chunk.js.map": "/bias-awareness-platform/static/js/2.7dc0386e.chunk.js.map",
     "index.html": "/bias-awareness-platform/index.html",
-    "precache-manifest.957abe3599afdc0031123828aea285f9.js": "/bias-awareness-platform/precache-manifest.957abe3599afdc0031123828aea285f9.js",
+    "precache-manifest.72fdd78ad36c840effc3150f4ba74c76.js": "/bias-awareness-platform/precache-manifest.72fdd78ad36c840effc3150f4ba74c76.js",
     "service-worker.js": "/bias-awareness-platform/service-worker.js",
     "static/css/main.27afd646.chunk.css.map": "/bias-awareness-platform/static/css/main.27afd646.chunk.css.map",
     "static/js/2.7dc0386e.chunk.js.LICENSE.txt": "/bias-awareness-platform/static/js/2.7dc0386e.chunk.js.LICENSE.txt",
@@ -18,6 +18,6 @@
     "static/js/runtime-main.b7e6e405.js",
     "static/js/2.7dc0386e.chunk.js",
     "static/css/main.27afd646.chunk.css",
-    "static/js/main.951f6ed8.chunk.js"
+    "static/js/main.1fbfe5ad.chunk.js"
   ]
 }
