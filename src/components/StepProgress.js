@@ -40,7 +40,7 @@ class StepProgress extends Component {
             if ((i + 1) < this.state.current_step) {
                 updateClass[i] = "bar-icon-completed"
             }
-            else if ((i + 1) == this.state.current_step) {
+            else if ((i + 1) === this.state.current_step) {
                 updateClass[i] = "bar-icon"
             }
         }
@@ -58,7 +58,7 @@ class StepProgress extends Component {
         var create_model = 
         <li>
             <div className={'last-cat ' + this.state.first_step} >
-                <img src={require("../icons/check.svg")} alt="" height="32" width="32" />
+                {/* <img src={require("../icons/check.svg")} alt="" height="32" width="32" /> */}
             </div>
             <p> Create model </p>
         </li>

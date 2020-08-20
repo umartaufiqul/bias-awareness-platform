@@ -60,35 +60,17 @@
   padding: 0rem 1rem;
   border-radius: 10px;
 }
+
 .container {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: auto auto;
 }
 
-.graph-box {
-  grid-column: 2 / 5;
-  height: 20em;
-}
-
 .mt {
   margin-top: 1em;
 }
 
-.result-box {
-  grid-column: 6/ 8;
-  /* width: 10em; */
-  height: 10em;
-  border: solid 5px;
-}
-
 .text-center {
   text-align: center;
-}
-
-.visual-container {
-  padding: 2em;
-  display: grid;
-  background-color: #C4C4C4;
-  grid-template-columns: repeat(8, 1fr);
 }

@@ -1,7 +1,7 @@
 
 .bar-icon {
-    height: 32px;
-    width: 32px;
+    height: 16px;
+    width: 16px;
     margin: 0em auto;
     border: solid;
     border-radius: 50%;
@@ -12,17 +12,17 @@
     content: '';
     background: #000;
     height: 2px;
-    width: 100%;
+    width: 120%;
     display: block;
     position: absolute;
-    left: -68px;
-    top: 16px;
+    left: -75%;
+    top: 9px;
     z-index: -1;
 }
 
 .bar-icon-completed {
-    height: 32px;
-    width: 32px;
+    height: 16px;
+    width: 16px;
     margin: 0em auto;
     border: solid;
     border-radius: 50%;
@@ -30,8 +30,8 @@
 }
 
 .bar-icon-uncompleted {
-    height: 32px;
-    width: 32px;
+    height: 16px;
+    width: 16px;
     margin: 0em auto;
     border: solid #989797;
     border-radius: 50%;
@@ -42,11 +42,11 @@
     content: '';
     background: #989797;
     height: 2px;
-    width: 100%;
+    width: 120%;
     display: block;
     position: absolute;
-    left: -68px;
-    top: 16px;
+    left: -75%;
+    top: 9px;
     z-index: -1;
 }
   
@@ -55,7 +55,11 @@
   }
 
   .step-progress {
-    margin: 2em auto;
+    margin: auto;
+  }
+
+  .step-progress p {
+    font-size: small;
   }
   
   ul {
@@ -66,7 +70,7 @@
   ul li {
     display: inline-block;
     width: 100px;
-    margin: 1rem;
+    margin: 0rem 1rem;
     vertical-align: top;
     position: relative;
   }
