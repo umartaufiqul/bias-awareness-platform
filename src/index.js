@@ -1,15 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { HashRouter, Route} from 'react-router-dom'
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Route path='/bias-awareness-platform' component={App} />
-    {/* <App /> */}
-  </BrowserRouter>,
+  <HashRouter>
+    <Route path='/' component={App} />
+  </HashRouter>,
   document.getElementById('root')
 );
 

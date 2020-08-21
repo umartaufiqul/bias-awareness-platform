@@ -23,7 +23,7 @@ function Introduction() {
             </div>
             <p> Your task is to create a model that can automatically detect and remove such feedback, while taking the school board concern into consideration</p>
             <div className="text-center">
-            <Button name="Start Activity" link='/bias-awareness-platform/code'/>
+            <Button name="Start Activity" link='/bias-awareness-platform/#/code'/>
             </div>
         </div>
     )

@@ -7,7 +7,7 @@ class StepProgress extends Component {
         super(props)
         this.progressRef = React.createRef()
         this.state = {
-            current_step: this.props.currentStep,
+            current_step: this.props.current_step,
             first_step: "bar-icon-uncompleted",
             second_step: "bar-icon-uncompleted",
             third_step: "bar-icon-uncompleted",
@@ -15,11 +15,12 @@ class StepProgress extends Component {
             fifth_step: "bar-icon-uncompleted",
             refresh: false,
         }
+        this.createProgress = this.createProgress.bind(this)
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.currentStep !== this.props.currentStep) {
-          this.setState({current_step: nextProps.currentStep, refresh: true});
+        if(nextProps.currentStep !== this.props.current_step) {
+          this.setState({current_step: nextProps.current_step, refresh: true});
         }
       }
 
@@ -31,7 +32,12 @@ class StepProgress extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props)
         this.updateProgress()
+    }
+
+    goToEvaluation() {
+        window.location.href='/bias-awareness-platform/#/evaluation'
     }
 
     updateProgress() {
@@ -44,6 +50,7 @@ class StepProgress extends Component {
                 updateClass[i] = "bar-icon"
             }
         }
+        console.log(updateClass)
         this.setState({
             first_step: updateClass[0],
             second_step: updateClass[1],
@@ -55,6 +62,7 @@ class StepProgress extends Component {
     }
 
     createProgress() {
+        const str = this.props.location.pathname
         var create_model = 
         <li>
             <div className={'last-cat ' + this.state.first_step} >
@@ -86,15 +94,23 @@ class StepProgress extends Component {
             <div className={this.state.fifth_step}></div>
             <p> Comparison and Evaluation </p>
         </li> 
+        var question_btn = ""
+        if (str.includes("visualization")) {
+            question_btn = 
+            <div className='question-btn' onClick={this.goToEvaluation}>
+                Question
+            </div> 
+        }
         var progress = 
         <div className="step-progress">
-            <ul>                
+            <ul className='step-ul'>                
             {create_model}
             {visualize_result}
             {evaluation}
             {bias_mitigate}
             {comparison_eval}
             </ul>
+            {question_btn}
         </div>
         
         return progress

@@ -125,6 +125,15 @@
     grid-column: span 2;
 }
 
+.vis-header {
+    padding: 0rem 5rem;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+}
+
+.vis-header h1 {
+    grid-column: 3/11;
+}
 .visual-container {
     padding: 2em;
     display: grid;
@@ -162,12 +171,8 @@
     padding: 0rem;
 }
 
-.visualization {
-    background-color: #C4C4C4;
-}
-
 .visualization h1 {
-    margin: 0px;
-    padding-top: 1rem;
+    padding: 0rem 0rem;
+    margin: 0rem;
     text-align: center;
 }

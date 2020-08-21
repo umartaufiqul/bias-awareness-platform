@@ -23,8 +23,10 @@ class Visualization extends Component {
 
     render() {
         return(
-            <div className="visualization">
-                <h1> Abusive Speech Detection Result </h1> 
+            <div className="visualization page-box">
+                <div className="vis-header">
+                    <h1> Abusive Speech Detection Result </h1> 
+                </div>
                 <div className="visual-container">
                     <img src={require("../images/graph.png")} className="graph-box" alt="graph"/>
                     <div className="explain-box">
@@ -43,14 +45,14 @@ class Visualization extends Component {
                     </div>
                 </div>                
                 <ul className="choices">
-                    <li className={this.state.dataset_active} id="dataset-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> <Link to='/bias-awareness-platform/visualization/dataset'> Dataset </Link></li>
-                    <li className={this.state.model_active} id="model-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> <Link to='/bias-awareness-platform/visualization/model'> Model </Link></li>
+                    <li className={this.state.dataset_active} id="dataset-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> <Link to='/visualization/dataset'> Dataset </Link></li>
+                    <li className={this.state.model_active} id="model-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> <Link to='/visualization/model'> Model </Link></li>
                 </ul>
                 <div className="interact-container">
                     <Switch>
-                        <Route exact path='/bias-awareness-platform/visualization' component={VisualDataset} />
-                        <Route path='/bias-awareness-platform/visualization/dataset' component={VisualDataset} />
-                        <Route path='/bias-awareness-platform/visualization/model' component={VisualModel} />
+                        <Route exact path='/visualization' component={VisualDataset} />
+                        <Route path='/visualization/dataset' component={VisualDataset} />
+                        <Route path='/visualization/model' component={VisualModel} />
                     </Switch>
                 </div>
             </div>

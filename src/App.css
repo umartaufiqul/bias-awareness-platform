@@ -67,6 +67,15 @@
   grid-template-rows: auto auto;
 }
 
+.page-box {
+  background-color: #C4C4C4;
+  padding: 1rem 5rem;
+}
+
+.page-box h1 {
+  text-align: center;
+}
+
 .mt {
   margin-top: 1em;
 }

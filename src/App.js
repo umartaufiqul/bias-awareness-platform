@@ -8,8 +8,8 @@ function App() {
   return (
     <div>
         <Switch>
-          <Route exact path='/bias-awareness-platform' component={Introduction}></Route>
-          <Route path='/bias-awareness-platform' component={Main}></Route>
+          <Route exact path='/' component={Introduction}></Route>
+          <Route path='/' component={Main}></Route>
         </Switch>
     </div>
   );

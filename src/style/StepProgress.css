@@ -53,17 +53,35 @@
     top: 9px;
     z-index: -1;
 }
-  
-.last-cat::before {
-    content: none
-  }
+ 
+.question-btn {
+  background-color: #C4C4C4;
+  margin-bottom: 50%;
+  padding: 1rem 1.5rem;
+  grid-column-start: 12;
+  border-bottom-left-radius: 10px;
+  font-weight: bold;
+}
 
-  .step-progress {
-    margin: auto;
-  }
+.question-btn:hover {
+  cursor: pointer;
+}
+
+.last-cat::before {
+  content: none
+}
+
+.step-progress {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
 
   .step-progress p {
     font-size: small;
+  }
+
+  .step-ul {
+    grid-column: 3/11;
   }
   
   ul {

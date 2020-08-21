@@ -1,0 +1,40 @@
+.algo-title td{
+    width: 200px;
+    margin: 0rem 1rem;
+    padding: 0rem 1rem;
+    border: solid
+}
+
+.algo-title {
+    margin: 0rem auto;
+    border-spacing: 3rem 0rem;
+}
+
+.dataset-algo {
+    margin: 2rem 1rem;
+    padding-top: 1rem;
+}
+
+.dataset-algo ul {
+    padding: 0rem;
+}
+.dataset-algo ul li{
+    width: 200px;
+}
+
+.phase-choice {
+    display: grid;
+    padding: 0rem 10rem;
+    grid-template-columns: repeat(6, 1fr);
+}
+
+.phase-choice img {
+    grid-column: span 2;
+    margin: auto;
+    stroke: white;
+}
+
+.phase-choice img:hover {
+    cursor: pointer;
+}
+
