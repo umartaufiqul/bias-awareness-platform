@@ -5,6 +5,7 @@ import StepProgress from "../components/StepProgress"
 import Visualization from "./Visualization"
 import Evaluation from "./Evaluation"
 import Mitigation from "./Mitigation"
+import Comparison from "./Comparison"
 
 class Main extends Component {
     constructor(props) {
@@ -39,6 +40,12 @@ class Main extends Component {
         else if (str.includes("mitigation") && this.state.current_step !== 4) {
             this.setState({current_step: 4})
         }
+        else if (str.includes("comparison") && this.state.current_step !== 5) {
+            this.setState({current_step: 5})
+        }
+        else if (str.includes("fin") && this.state.current_step !== 6) {
+            this.setState({current_step: 6})
+        }
     }
 
     render() {
@@ -49,8 +56,9 @@ class Main extends Component {
             <Switch>
                 <Route path='/code' component={CodeNotebook}></Route>
                 <Route path='/visualization' component={Visualization}></Route>
-                <Route exact path='/evaluation' component={Evaluation}></Route>
+                <Route path='/evaluation' component={Evaluation}></Route>
                 <Route path='/mitigation' component={Mitigation}></Route>
+                <Route path='/comparison' component={Comparison}></Route>
             </Switch>
         </div>
         )

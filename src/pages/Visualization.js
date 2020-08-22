@@ -1,6 +1,5 @@
 import React, {Component} from "react"
 import "../style/Visualization.css"
-import { Switch, Route, Link } from "react-router-dom"
 import VisualModel from "../components/VisualModel"
 import VisualDataset from "../components/VisualDataset"
 
@@ -18,6 +17,15 @@ class Visualization extends Component {
             this.setState({dataset_active: "active", model_active: ""})
         } else {
             this.setState({dataset_active: "", model_active: "active"})
+        }
+    }
+
+    changeContent() {
+        if (this.state.dataset_active === "active") {
+            return <VisualDataset />
+        }
+        else {
+            return <VisualModel />
         }
     }
 
@@ -45,15 +53,11 @@ class Visualization extends Component {
                     </div>
                 </div>                
                 <ul className="choices">
-                    <li className={this.state.dataset_active} id="dataset-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> <Link to='/visualization/dataset'> Dataset </Link></li>
-                    <li className={this.state.model_active} id="model-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> <Link to='/visualization/model'> Model </Link></li>
+                    <li className={this.state.dataset_active} id="dataset-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> Dataset </li>
+                    <li className={this.state.model_active} id="model-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> Model </li>
                 </ul>
                 <div className="interact-container">
-                    <Switch>
-                        <Route exact path='/visualization' component={VisualDataset} />
-                        <Route path='/visualization/dataset' component={VisualDataset} />
-                        <Route path='/visualization/model' component={VisualModel} />
-                    </Switch>
+                    {this.changeContent()}
                 </div>
             </div>
         )

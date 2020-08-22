@@ -46,6 +46,10 @@
     text-align: center;
 }
 
+.choices li:hover {
+    cursor: pointer;
+}
+
 .constraint {
     grid-column: 1/4;
 }
@@ -175,4 +179,8 @@
     padding: 0rem 0rem;
     margin: 0rem;
     text-align: center;
+}
+
+.visualization.page-box {
+    padding: 1rem 0rem;
 }

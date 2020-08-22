@@ -1,0 +1,84 @@
+.after-mitigate {
+    grid-column: 5/8;
+    text-align: center;
+}
+
+.before-mitigate {
+    grid-column: 1/4;
+    text-align: center;
+}
+
+.bias-dd {
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.bias-dd-btn {
+    border: none;
+    outline: none;
+    padding: 1rem 1rem;
+    border-radius: 15px;
+    width: 300px;
+    background-color: white;
+    margin: 0rem 5rem;
+}
+
+.bias-dd-btn:hover {
+    cursor: pointer;
+}
+
+.bias-dd-content {
+    position: absolute;
+    width: 300px;
+    margin-left: 5rem;
+    background-color: white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 10px;
+}
+
+.bias-dd-content p {
+    margin: 1rem 2rem;
+}
+
+.bias-dd-content.hide {
+    display: none;
+}
+
+.bias-dd-content.show {
+    display: block;
+}
+
+.comparison > p{
+    margin: 2rem 5rem;
+}
+
+.comparison.page-box {
+    padding: 1rem 0rem;
+}
+
+.comparison .choices {
+    text-align: center;
+}
+
+.compare {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.compare .legend-box {
+    grid-column: 4/6;
+}
+
+.compare .result-box {
+    margin: 1rem 3rem;
+}
+
+.choices {
+    padding: 0rem 1rem;
+}
+
+.evaluate textarea {
+    margin: 1rem 0rem;
+    min-height: 100px;
+}
