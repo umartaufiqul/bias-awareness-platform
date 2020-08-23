@@ -3,6 +3,10 @@
     text-align: center;
 }
 
+.algo-dropdown {
+    margin: 1rem 0rem;
+}
+
 .before-mitigate {
     grid-column: 1/4;
     text-align: center;
@@ -78,7 +82,15 @@
     padding: 0rem 1rem;
 }
 
+.choices li {
+    width: auto;
+}
+
 .evaluate textarea {
     margin: 1rem 0rem;
     min-height: 100px;
+}
+
+.evaluate h5 {
+    margin-bottom: 2rem;
 }

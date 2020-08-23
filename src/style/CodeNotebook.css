@@ -1,3 +1,7 @@
+.code-notebook h2 {
+    margin: 1rem 0rem;
+}
+
 textarea {
     min-width: 100%;
     resize: none;

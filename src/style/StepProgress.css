@@ -82,6 +82,7 @@
 
   .step-ul {
     grid-column: 3/11;
+    padding-top: 1rem;
   }
   
   ul {
