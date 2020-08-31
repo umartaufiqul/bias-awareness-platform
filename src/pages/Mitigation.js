@@ -1,6 +1,7 @@
 import React, {Component} from "react"
 import "../style/Mitigation.css"
 import MitigationAlgo from "../components/MitigationAlgo"
+import {Col, Row} from "react-bootstrap"
 
 const dataset_fill = require('../icons/dataset_fill.svg')
 const dataset = require('../icons/dataset.svg')
@@ -40,11 +41,11 @@ class Mitigation extends Component {
                 <p> Changing the dataset into a fairer dataset may help reducing the racial bias, but a fair dataset doesn't always happen in real settings. In this case, we could resort to mitigate the bias instead </p>
                 <p> There are few concrete ways to mitigate the racial bias that may occur</p> 
                 <h2 className='text-center'> Select a phase to add mitigation </h2>
-                <div className='phase-choice'>
-                    <img src={this.state.dataset_src} alt='' id="dataset" onClick={(e) => this.choosePhase(e.currentTarget.id)}/>
-                    <img src={this.state.classifier_src} alt='' id="classifier" onClick={(e) => this.choosePhase(e.currentTarget.id)}/>
-                    <img src={this.state.predict_src} alt='' id="predict" onClick={(e) => this.choosePhase(e.currentTarget.id)}/>
-                </div>
+                <Row className='text-center phase-choice'>
+                    <Col md={{span: 2, offset: 3}}> <img src={this.state.dataset_src} alt='' id="dataset" onClick={(e) => this.choosePhase(e.currentTarget.id)}/> </Col>
+                    <Col md={2}> <img src={this.state.classifier_src} alt='' id="classifier" onClick={(e) => this.choosePhase(e.currentTarget.id)}/> </Col>
+                    <Col md={2}>  <img src={this.state.predict_src} alt='' id="predict" onClick={(e) => this.choosePhase(e.currentTarget.id)}/> </Col>
+                </Row>
                 <MitigationAlgo selected={this.state.selected}/>
             </div>
         )

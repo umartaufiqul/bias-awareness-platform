@@ -1,18 +1,30 @@
 .algo-title td{
-    width: 200px;
+    width: 250px;
     margin: 0rem 1rem;
     padding: 0rem 1rem;
-    border: solid
+    border: solid;
+    max-height: 200px;
 }
 
 .algo-title {
     margin: 0rem auto;
     border-spacing: 3rem 0rem;
+    border-collapse: separate;
+}
+
+.algo-title td:hover {
+    cursor: pointer;
 }
 
 .dataset-algo {
-    margin: 2rem 1rem;
+    margin: 1rem 1rem;
     padding-top: 1rem;
+}
+
+.dataset-algo h3{
+    margin-top: 1rem;
+    font-size: large;
+    font-weight: bold;
 }
 
 .dataset-algo ul {
@@ -22,17 +34,14 @@
     width: 200px;
 }
 
-.phase-choice {
-    display: grid;
-    padding: 0rem 10rem;
-    grid-template-columns: repeat(6, 1fr);
+.mitigation h2 {
+    margin-bottom: 2rem;
 }
 
-.phase-choice img {
-    grid-column: span 2;
-    margin: auto;
-    stroke: white;
-}
+/* .phase-choice > div{
+    margin: 1rem 0rem;
+} */
+
 
 .phase-choice img:hover {
     cursor: pointer;

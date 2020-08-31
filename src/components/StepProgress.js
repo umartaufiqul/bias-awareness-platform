@@ -1,5 +1,8 @@
 import React, {Component} from "react"
 import "../style/StepProgress.css"
+import { Link } from "react-router-dom"
+import Navbar from "react-bootstrap/Navbar"
+import Nav from "react-bootstrap/Nav"
 
 
 class StepProgress extends Component {
@@ -65,34 +68,44 @@ class StepProgress extends Component {
         const str = this.props.location.pathname
         var create_model = 
         <li>
-            <div className={'last-cat ' + this.state.first_step} >
-                {/* <img src={require("../icons/check.svg")} alt="" height="32" width="32" /> */}
-            </div>
-            <p> Create model </p>
+            <Link to="/code" style={{color: 'black'}}>
+                <div className={'last-cat ' + this.state.first_step}>
+                    {/* <img src={require("../icons/check.svg")} alt="" height="32" width="32" /> */}
+                </div>
+                <p> Create model </p>
+            </Link>
         </li>
 
         var visualize_result = 
         <li>
-            <div className={this.state.second_step}></div>
-            <p> Result visualization </p> 
+            <Link to="/visualization" style={{color: 'black'}}>
+                <div className={this.state.second_step}></div>
+                <p> Result visualization </p> 
+            </Link>
         </li>
 
         var evaluation = 
         <li>
-            <div className={this.state.third_step}></div>
-            <p> Evaluation </p> 
+            <Link to="/evaluation" style={{color: 'black'}}>
+                <div className={this.state.third_step}></div>
+                <p> Evaluation </p> 
+            </Link>
         </li>
 
         var bias_mitigate = 
         <li> 
-            <div className={this.state.fourth_step}></div>
-            <p> Bias mitigation </p>
+            <Link to="/mitigation" style={{color: 'black'}}>
+                <div className={this.state.fourth_step}></div>
+                <p> Bias mitigation </p>
+            </Link>
         </li>
 
         var comparison_eval = 
         <li> 
-            <div className={this.state.fifth_step}></div>
-            <p> Comparison and Evaluation </p>
+            <Link to="/comparison" style={{color: 'black'}}>
+                <div className={this.state.fifth_step}></div>
+                <p> Comparison and Evaluation </p>
+            </Link>
         </li> 
         var question_btn = ""
         if (str.includes("visualization")) {
@@ -102,7 +115,10 @@ class StepProgress extends Component {
             </div> 
         }
         var progress = 
-        <div className="step-progress">
+        <Navbar className="step-progress" expand="lg">
+            <Navbar.Brand>{this.getCurrentStep(this.state.current_step)}</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse className='text-center'>
             <ul className='step-ul'>                
             {create_model}
             {visualize_result}
@@ -110,10 +126,37 @@ class StepProgress extends Component {
             {bias_mitigate}
             {comparison_eval}
             </ul>
+            <ol className='step-mini'>
+                <li> <Link to="/code" style={{color: 'black'}}>
+                Create Model </Link> </li>
+                <li> <Link to="/visualization" style={{color: 'black'}}> Result Visualization</Link> </li>
+                <li> <Link to="/evaluation" style={{color: 'black'}}> Evaluation</Link> </li>
+                <li> <Link to="/mitigation" style={{color: 'black'}}> Bias Mitigation </Link></li>
+                <li> <Link to="/comparison" style={{color: 'black'}}> Comparison and Evaluation </Link></li> 
+            </ol>
             {question_btn}
-        </div>
+            </Navbar.Collapse>
+        </Navbar>
         
         return progress
+    }
+
+    getCurrentStep(current_step) {
+        if (current_step === 1) {
+            return <h4 className='current-step-mini'> Create Model</h4>
+        }
+        if (current_step === 2) {
+            return <h4 className='current-step-mini'> Result Visualization</h4>
+        }
+        if (current_step === 3) {
+            return <h4 className='current-step-mini'> Evaluation</h4>
+        }
+        if (current_step === 4) {
+            return <h4 className='current-step-mini'> Bias Mitigation</h4>
+        }
+        if (current_step === 5) {
+            return <h4 className='current-step-mini'> Comparison and Evaluation</h4>
+        }
     }
 
     render() {
