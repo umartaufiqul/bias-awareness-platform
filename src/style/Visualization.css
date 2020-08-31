@@ -50,8 +50,16 @@
     cursor: pointer;
 }
 
-.constraint {
-    grid-column: 1/4;
+.constraint ul{
+    padding: 0rem;
+    text-align: left;
+}
+
+.constraint ul li {
+    width: auto;
+    display: block;
+    list-style-type: none;
+    margin: 0.5rem 0rem;
 }
 
 .explain-box {
@@ -60,8 +68,9 @@
 }
 
 .graph-box {
-    grid-column: 2 / 5;
-    height: 20em;
+    max-width: 100%;
+    height: auto;
+    margin-top: 2.5rem;
 }
 
 .interact-container {
@@ -140,8 +149,6 @@
 }
 .visual-container {
     padding: 2em;
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
 }
 
 .visual-dataset li {

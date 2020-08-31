@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import {Col, Row} from "react-bootstrap"
 
 class VisualModel extends Component {
     constructor(props) {
@@ -30,8 +31,8 @@ class VisualModel extends Component {
 
     render() {
         return (
-            <div className='visual-model'>
-                <div className='constraint'>
+            <Row>
+                <Col className='constraint' md={{span: 4}}>
                     <h3> Constraint </h3>
                     <ul>
                         <li> <input type='radio' name='constraint' value='1' defaultChecked/> Race blind </li> 
@@ -39,8 +40,8 @@ class VisualModel extends Component {
                         <li> <input type='radio' name='constraint' value='3' /> Equal Opportunity </li> 
                         <li> <input type='radio' name='constraint' value='4' /> Equalized odds </li> 
                     </ul>
-                </div>
-                <div className='toxic-thres'>
+                </Col>
+                <Col className='toxic-thres' md={{span: 4}}>
                     <h3> Toxicity Threshold </h3>
                     <div className='check-group'>
                         <div className={"check-box " + this.state.cauc_thres} id="cauc" onClick={e => this.changeThreshold(e.target.id)}> </div> <span> Caucasian </span> 
@@ -48,8 +49,8 @@ class VisualModel extends Component {
                     <div className='check-group'>
                         <div className={"check-box " + this.state.aae_thres} id="aae" onClick={e => this.changeThreshold(e.target.id)}> </div> <span> African American </span>
                     </div>
-                </div>
-            </div>
+                </Col>
+            </Row>
         )
     }
 }

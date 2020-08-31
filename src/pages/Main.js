@@ -12,6 +12,7 @@ class Main extends Component {
         super(props)
         this.state = {
             current_step: 1,
+            curr_time: '',
         }
     }
 
@@ -23,7 +24,14 @@ class Main extends Component {
     componentDidMount() {
         console.log(this.props.location)
         this.updateCurrentStep()
+        // this.getCurrTime()
     }
+
+    // getCurrTime() {
+    //     fetch('/time').then(res => res.json()).then(data => {
+    //         console.log(data.time)
+    //         this.setState({curr_time: data.time})})
+    // }
 
     updateCurrentStep() {
         var str = this.props.location.pathname
@@ -52,6 +60,7 @@ class Main extends Component {
         return(
         <div>
             <Route path='/' render={(props) => <StepProgress {...props} current_step={this.state.current_step} />} />
+            {/* <p> Current time {this.state.curr_time} </p> */}
             {/* <StepProgress currentStep={this.state.current_step}/> */}
             <Switch>
                 <Route path='/code' component={CodeNotebook}></Route>
