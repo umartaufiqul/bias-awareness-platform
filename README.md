@@ -76,4 +76,4 @@ Instead of using the one used in AIF360, we try to find one that is specifically
      1. Skewed Predicted Class Distribution Bias Detection strategy &rarr; maximum probability of word w belonging to one of the classes excluding neutral class. High value mean w is stereotyped to the class c
      2. Centroid embedding &rarr; replace a bias sensitive word with a dummy tag whose embedding is as follow: find POS tag &rarr; find similar word with similar POS tag &rarr; compute the centroid of top k (5) neighbors, including the original word
 
-However, these algorithm need to be created first, since the code is not provided, like AIF360
+However, these algorithm need to be created first, since the code is not provided, like AIF360.
