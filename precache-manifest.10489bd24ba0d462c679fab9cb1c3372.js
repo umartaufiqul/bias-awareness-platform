@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d02af9971676c162b4abce084fb18d9f",
+    "revision": "6327d3d1513449fd327a3ffd26b57953",
     "url": "/bias-awareness-platform/index.html"
   },
   {
-    "revision": "81f215309436cd5a56b5",
+    "revision": "85223ffe0d679e202acf",
     "url": "/bias-awareness-platform/static/css/2.11829350.chunk.css"
   },
   {
-    "revision": "d37d1927a3982dc16ebb",
-    "url": "/bias-awareness-platform/static/css/main.7a67edf7.chunk.css"
+    "revision": "48fdeafef9402556e362",
+    "url": "/bias-awareness-platform/static/css/main.d8d1e958.chunk.css"
   },
   {
-    "revision": "81f215309436cd5a56b5",
-    "url": "/bias-awareness-platform/static/js/2.cde04c48.chunk.js"
+    "revision": "85223ffe0d679e202acf",
+    "url": "/bias-awareness-platform/static/js/2.db085594.chunk.js"
   },
   {
     "revision": "254c01d1a3c7d8124adf4c35e46b76e3",
-    "url": "/bias-awareness-platform/static/js/2.cde04c48.chunk.js.LICENSE.txt"
+    "url": "/bias-awareness-platform/static/js/2.db085594.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "d37d1927a3982dc16ebb",
-    "url": "/bias-awareness-platform/static/js/main.c38dab9c.chunk.js"
+    "revision": "48fdeafef9402556e362",
+    "url": "/bias-awareness-platform/static/js/main.e8dd7bb8.chunk.js"
   },
   {
     "revision": "2cc5142573b1b2e59997",
