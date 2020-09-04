@@ -4,7 +4,6 @@ class VisualDataset extends Component {
     render() {
         return(
             <div className='visual-dataset'>
-                <h3> Dataset </h3>
                 <ul>
                     <li> <input type='radio' name ='dataset' value='data1' defaultChecked/> Dataset 1</li>
                     <li> <input type='radio' name ='dataset' value='data2'/> Dataset 2 </li>

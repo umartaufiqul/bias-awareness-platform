@@ -6,6 +6,7 @@ import Visualization from "./Visualization"
 import Evaluation from "./Evaluation"
 import Mitigation from "./Mitigation"
 import Comparison from "./Comparison"
+import VisualizationNew from "./VisualizationNew"
 
 class Main extends Component {
     constructor(props) {
@@ -58,8 +59,8 @@ class Main extends Component {
 
     render() {
         return(
-        <div>
-            <Route path='/' render={(props) => <StepProgress {...props} current_step={this.state.current_step} />} />
+        <div className='main-application'>
+            {/* <Route path='/' render={(props) => <StepProgress {...props} current_step={this.state.current_step} />} /> */}
             {/* <p> Current time {this.state.curr_time} </p> */}
             {/* <StepProgress currentStep={this.state.current_step}/> */}
             <Switch>
@@ -68,6 +69,7 @@ class Main extends Component {
                 <Route path='/evaluation' component={Evaluation}></Route>
                 <Route path='/mitigation' component={Mitigation}></Route>
                 <Route path='/comparison' component={Comparison}></Route>
+                <Route path='/test' component={VisualizationNew}></Route>
             </Switch>
         </div>
         )

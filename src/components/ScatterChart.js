@@ -60,13 +60,18 @@ const option = {
                 suggestedMax: 1
             }  
         }]
-    }
+    },
 }
 class ScatterChart extends Component {
 
     componentDidMount() {
         this.getResult()
     }
+
+    componentDidUpdate() {
+        this.getResult()
+    }
+
     getResult() {
         fetch('/classifier').then(res => res.json()).then(data => {
             var toxic = []
@@ -86,7 +91,7 @@ class ScatterChart extends Component {
     render() {
         return (
             <div className='text-center'>
-                <Scatter data={scatter_data} options={option} height={250}/>
+                <Scatter data={scatter_data} options={option}/>
             </div>
         )
     }

@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import "../style/Visualization.css"
-import VisualModel from "../components/VisualModel"
 import VisualDataset from "../components/VisualDataset"
+import VisualModelNew from "../components/VisualModelNew"
 import ScatterChart from "../components/ScatterChart"
 import Tour from "reactour"
 import {disableBodyScroll, enableBodyScroll} from "body-scroll-lock"
@@ -31,7 +31,7 @@ class Visualization extends Component {
             return <VisualDataset />
         }
         else {
-            return <VisualModel />
+            return <VisualModelNew />
         }
     }
 
@@ -58,7 +58,7 @@ class Visualization extends Component {
             )
         },
         {
-            selector: '.graph-box',
+            selector: '.scatter-chart',
             content: () => (
                 <div>
                     <h3 style={{textAlign: 'center'}}> Graph </h3> 
@@ -77,22 +77,32 @@ class Visualization extends Component {
                 </div>
             )
         },
+        // {
+        //     selector: '.toxic-thres',
+        //     content: () => (
+        //         <div onLoad={this.changeActiveState("model-tab")}>
+        //             <h3 className='text-center'> Toxicity Threshold </h3>
+        //             <p> Toxicity threshold is the decision threshold for toxic feedback. Any feedback that has toxic probability above toxic threshold is considered as toxic. </p>
+        //             <p> The toxicity threshold may differ between groups, depending on the constraint</p>
+        //         </div>
+        //     ),
+        // },
+        // {
+        //     selector: '.constraint',
+        //     content: () => (
+        //         <div>
+        //             <h3 className='text-center'> Constraints </h3>
+        //             <p> Constraint affect the toxicity decision, since different constraints result in different toxicity threshold. This further lead to different level of accuracy and fairness. </p> 
+        //         </div>
+        //     )
+        // },
         {
-            selector: '.toxic-thres',
-            content: () => (
-                <div onLoad={this.changeActiveState("model-tab")}>
-                    <h3 className='text-center'> Toxicity Threshold </h3>
-                    <p> Toxicity threshold is the decision threshold for toxic feedback. Any feedback that has toxic probability above toxic threshold is considered as toxic. </p>
-                    <p> The toxicity threshold may differ between groups, depending on the constraint</p>
-                </div>
-            ),
-        },
-        {
-            selector: '.constraint',
+            selector: '.interact-component',
             content: () => (
                 <div>
-                    <h3 className='text-center'> Constraints </h3>
-                    <p> Constraint affect the toxicity decision, since different constraints result in different toxicity threshold. This further lead to different level of accuracy and fairness. </p> 
+                    <h3 className='text-center'> Dataset and Model </h3>
+                    <p> In this section, you can change the model and dataset used for classification. </p>
+                    <p> Try several combinations to see how they interact with each toher.</p>
                 </div>
             )
         },
@@ -132,15 +142,26 @@ class Visualization extends Component {
                     </div>
                 </div>                 */}
                 <Row className='visual-container'>
-                    <Col md={{span:4, offset: 2}}> 
+                    <Col md={{span:4, offset: 1}}> 
                     {/* <img src={require("../images/graph.png")} className="graph-box" alt="graph"/>  */}
-                    <ScatterChart />
+                    <div className='scatter-chart'>
+                        <ScatterChart />
+                    </div>
                     </Col>
-                    <Col md={{span:3, offset:1}}>
-                        <ul className="legend-box">
+                    <Col md={{span:4, offset:2}}>
+                        {/* <ul className="legend-box">
                             <li id="legend-toxic"> Toxic text </li>
                             <li id="legend-nontoxic"> Non-toxic text </li>
-                        </ul>
+                        </ul> */}
+                        <div className='interact-component'>
+                            <ul className="choices">
+                                <li className={this.state.dataset_active} id="dataset-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> Dataset </li>
+                                <li className={this.state.model_active} id="model-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> Model </li>
+                            </ul>
+                            <div className="interact-container shadow-lg">
+                                {this.changeContent()}
+                            </div>
+                        </div>
                         <div className="result-box">
                             <h2> Result </h2>
                             <ul>
@@ -151,13 +172,13 @@ class Visualization extends Component {
                         </div> 
                     </Col>
                 </Row>
-                <ul className="choices">
+                {/* <ul className="choices">
                     <li className={this.state.dataset_active} id="dataset-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> Dataset </li>
                     <li className={this.state.model_active} id="model-tab" onClick={(e) => this.changeActiveState(e.currentTarget.id)}> Model </li>
                 </ul>
                 <div className="interact-container">
                     {this.changeContent()}
-                </div>
+                </div> */}
                 <Tour 
                     steps={steps}
                     isOpen={this.state.isTourOpen}

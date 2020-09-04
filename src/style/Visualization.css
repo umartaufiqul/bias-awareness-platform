@@ -26,7 +26,8 @@
 .choices {
     text-align: left;
     margin-bottom: 0;
-    padding-left: 1rem;
+    padding-left: 0rem;
+    /* padding-left: 1rem; */
 }
 
 .choices a {
@@ -41,8 +42,8 @@
 .choices li {
     background-color: #BAB9B9;
     padding: 0.5rem 1rem;
-    margin: 0rem 1rem;
-    border-radius: 10px 10px 0 0;
+    /* margin: 0rem 1rem; */
+    /* border-radius: 10px 10px 0 0; */
     text-align: center;
 }
 
@@ -62,6 +63,10 @@
     margin: 0.5rem 0rem;
 }
 
+#dataset-tab,#model-tab {
+    margin-left: 0rem;
+}
+
 .explain-box {
     grid-column: 6/ 8;
     /* width: 10em; */
@@ -71,6 +76,10 @@
     max-width: 100%;
     height: auto;
     margin-top: 2.5rem;
+}
+
+.interact-component {
+    margin-bottom: 2rem;
 }
 
 .interact-container {
@@ -149,6 +158,8 @@
 }
 .visual-container {
     padding: 2em;
+    margin-left: 0rem;
+    margin-right: 0rem;
 }
 
 .visual-dataset li {
@@ -190,4 +201,96 @@
 
 .visualization.page-box {
     padding: 1rem 0rem;
+}
+
+.visualization-new {
+    text-align: center;
+}
+
+.visualization-new-container {
+    border-top: 1px solid black;
+    display: flex;
+}
+.visualization-new h1 {
+    font-size: 2rem;
+}
+
+.graph-left {
+    min-height: 85vh;
+    flex: 8;
+    border-right: 1px solid rgba(0, 0, 0, .5);
+    padding-top: 1rem;
+}
+
+.graph-left .scatter-chart {
+    margin: 1rem 3rem;
+}
+
+.scatter-chart {
+    height: 500px;
+}
+.interactive-right {
+    flex: 5;
+    background-color: #E0DEDE;
+}
+
+.interactive-choice {
+    flex: 1;
+    padding: 0.5rem 0rem;
+    cursor: pointer;
+}
+
+.interactive-choice.active {
+    font-weight: bold;
+    border-bottom: 2px solid;
+}
+
+#interactive-controller {
+    height: 50%;
+}
+
+.interact-tab {
+    border-bottom: 1px solid;
+}
+
+#visual-result {
+    border-top: 1px solid;
+    padding-top: 1rem;
+}
+
+.associated-words {
+    border-top: 1px solid;
+    padding: 1rem 3rem;
+    text-align: left;
+    height: 150px;
+    overflow: auto;
+}
+.associated-words h4 {
+    font-size: 1.25rem;
+}
+
+.load-btn {
+    margin-top: 1rem;
+}
+
+.word-container {
+    margin: 1rem 0rem;
+    text-align: left;
+    padding: 0rem;
+}
+
+.word-tag {
+    background-color: #BAB9B9;
+    margin: 0rem;
+    text-align: center;
+    padding: 4px 1rem;
+    width: auto;
+    margin: 0.25rem 0.5rem;
+}
+
+.word-tag img {
+    margin-left: 1rem;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    cursor: pointer;
 }
