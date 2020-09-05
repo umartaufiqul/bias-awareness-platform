@@ -1,17 +1,44 @@
-import React, { Component } from "react"
+import React from "react"
+import {useSelector, useDispatch} from "react-redux"
+import {changeModel} from "../actions"
 
-class VisualModelNew extends Component {
-    render() {
-        return(
-            <div className='visual-dataset visual-model-new'>
-                <ul>
-                    <li> <input type='radio' name ='model' value='model1' defaultChecked/> Model 1</li>
-                    <li> <input type='radio' name ='model' value='model2'/> Model 2 </li>
-                    <li> <input type='radio' name ='model' value='model3'/> Model 3 </li>
-                </ul>
-            </div>
-        )
-    }
+
+const model_values = ['model1', 'model2', 'model3']
+
+const VisualModelNew = () => {
+    const model = useSelector(state => state.model)
+    const dispatch = useDispatch()
+
+    return(
+        <div className='visual-dataset visual-model-new'>
+            <ul>
+                {model_values.map((values, i) => 
+                    <li key={i+1}> <input type='radio' name ='model' value={values} onClick={() => dispatch(changeModel(i))} checked={ model === i}/> Model {i+1} </li>
+                )}
+            </ul>
+        </div>
+    )
 }
+
+// class VisualModelNew extends Component {
+
+//     changeModel = (index) => {
+//         this.setState({
+//             model_selected: index
+//         })
+//     }
+
+//     render() {
+//         return(
+//             <div className='visual-dataset visual-model-new'>
+//                 <ul>
+//                     {this.state.model_values.map((values, i) => 
+//                         <li key={i+1}> <input type='radio' name ='model' value={values} onClick={() => this.changeModel(i)} checked={ model === i}/> Model {i+1} </li>
+//                     )}
+//                 </ul>
+//             </div>
+//         )
+//     }
+// }
 
 export default VisualModelNew

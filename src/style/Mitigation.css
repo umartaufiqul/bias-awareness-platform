@@ -47,3 +47,13 @@
     cursor: pointer;
 }
 
+.submit-mitigation {
+    width: 500px;
+    margin: auto;
+    margin-top: 1rem;
+}
+
+.submit-mitigation button {
+    margin: 1rem;
+}
+

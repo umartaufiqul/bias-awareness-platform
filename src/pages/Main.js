@@ -1,12 +1,12 @@
 import React, {Component} from "react"
 import { Switch, Route } from "react-router-dom"
 import CodeNotebook from "./CodeNotebook"
-import StepProgress from "../components/StepProgress"
+import MyNavbar from "../components/MyNavbar"
 import Visualization from "./Visualization"
 import Evaluation from "./Evaluation"
 import Mitigation from "./Mitigation"
 import Comparison from "./Comparison"
-import VisualizationNew from "./VisualizationNew"
+import MitigationNew from "./MitigationNew"
 
 class Main extends Component {
     constructor(props) {
@@ -61,6 +61,7 @@ class Main extends Component {
         return(
         <div className='main-application'>
             {/* <Route path='/' render={(props) => <StepProgress {...props} current_step={this.state.current_step} />} /> */}
+            <MyNavbar />
             {/* <p> Current time {this.state.curr_time} </p> */}
             {/* <StepProgress currentStep={this.state.current_step}/> */}
             <Switch>
@@ -69,7 +70,7 @@ class Main extends Component {
                 <Route path='/evaluation' component={Evaluation}></Route>
                 <Route path='/mitigation' component={Mitigation}></Route>
                 <Route path='/comparison' component={Comparison}></Route>
-                <Route path='/test' component={VisualizationNew}></Route>
+                <Route path='/test' component={MitigationNew}></Route>
             </Switch>
         </div>
         )

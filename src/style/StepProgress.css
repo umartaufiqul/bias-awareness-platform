@@ -125,3 +125,16 @@
     vertical-align: top;
     position: relative;
   }
+
+  #navbar {
+    background-color: #364B44;
+  }
+
+  #navbar-brand {
+    font-size: 1rem;
+    color: white;
+  }
+
+  #navbar-dropdown {
+    color: white;
+  }

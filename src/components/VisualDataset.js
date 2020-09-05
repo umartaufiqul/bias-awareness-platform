@@ -1,17 +1,22 @@
-import React, { Component } from "react"
+import React from "react"
+import {useSelector, useDispatch} from "react-redux"
+import {changeDataset} from "../actions"
 
-class VisualDataset extends Component {
-    render() {
-        return(
-            <div className='visual-dataset'>
-                <ul>
-                    <li> <input type='radio' name ='dataset' value='data1' defaultChecked/> Dataset 1</li>
-                    <li> <input type='radio' name ='dataset' value='data2'/> Dataset 2 </li>
-                    <li> <input type='radio' name ='dataset' value='data3'/> Dataset 3 </li>
-                </ul>
-            </div>
-        )
-    }
+const data_values = ['data1', 'data2', 'data3']
+
+const VisualDataset = () => {
+    const data = useSelector(state => state.data)
+    const dispatch = useDispatch()
+
+    return(
+        <div className='visual-dataset'>
+            <ul>
+                {data_values.map((values, i) => 
+                        <li key={i+1}> <input type='radio' name ='dataset' value={values} onClick={() => dispatch(changeDataset(i))} checked={ data === i}/> Data {i+1} </li>
+                    )}
+            </ul>
+        </div>
+    )
 }
 
 export default VisualDataset

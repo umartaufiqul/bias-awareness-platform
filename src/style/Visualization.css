@@ -83,7 +83,7 @@
 }
 
 .interact-container {
-    background-color: #E0DEDE;
+    background-color: #fafafa;
     padding: 1rem 5rem;
 }
 
@@ -208,7 +208,7 @@
 }
 
 .visualization-new-container {
-    border-top: 1px solid black;
+    border-top: 1px solid #e1e4e8;
     display: flex;
 }
 .visualization-new h1 {
@@ -216,9 +216,8 @@
 }
 
 .graph-left {
-    min-height: 85vh;
     flex: 8;
-    border-right: 1px solid rgba(0, 0, 0, .5);
+    border-right: 1px solid #e1e4e8;
     padding-top: 1rem;
 }
 
@@ -227,11 +226,11 @@
 }
 
 .scatter-chart {
-    height: 500px;
+    height: 400px;
 }
 .interactive-right {
     flex: 5;
-    background-color: #E0DEDE;
+    background-color: #fafafa;
 }
 
 .interactive-choice {
@@ -250,20 +249,21 @@
 }
 
 .interact-tab {
-    border-bottom: 1px solid;
+    border-bottom: 1px solid #e1e4e8;
 }
 
 #visual-result {
-    border-top: 1px solid;
+    border-top: 1.5px solid #d2d5da;
     padding-top: 1rem;
 }
 
 .associated-words {
-    border-top: 1px solid;
+    border-top: 1px solid #e1e4e8;
     padding: 1rem 3rem;
     text-align: left;
     height: 150px;
     overflow: auto;
+    background-color: #fafafa;
 }
 .associated-words h4 {
     font-size: 1.25rem;
@@ -280,17 +280,41 @@
 }
 
 .word-tag {
-    background-color: #BAB9B9;
+    background-color: #6C9688;
     margin: 0rem;
     text-align: center;
     padding: 4px 1rem;
     width: auto;
     margin: 0.25rem 0.5rem;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
 }
 
 .word-tag img {
     margin-left: 1rem;
-    margin-top: 4px;
-    margin-bottom: 4px;
     cursor: pointer;
+}
+
+.word-tag span {
+  display: inline-flex;
+  align-items: center;
+}
+
+#result-table {
+    padding: 1rem;
+}
+
+.btn-green {
+    background-color: #364B44;
+    color: white;
+}
+
+.btn-green:hover {
+    color: white;
+    background-color: #2e413a;
+}
+
+#help-tag {
+    margin-left: 1rem;
 }
