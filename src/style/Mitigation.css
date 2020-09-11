@@ -47,13 +47,37 @@
     cursor: pointer;
 }
 
-.submit-mitigation {
-    width: 500px;
-    margin: auto;
-    margin-top: 1rem;
+.signin-popup {
+
 }
 
-.submit-mitigation button {
+.submit-mitigation {
+    width: 700px;
+    margin: 1rem auto;
+    margin-top: 0rem;
+    padding: 1rem 0rem;
+    border-bottom: 1px solid black;
+}
+
+.form-part {
     margin: 1rem;
 }
 
+.submit-history {
+    width: 700px;
+    margin: auto
+}
+
+.submit-history th {
+    /* width: 25%; */
+}
+
+.submit-history table {
+    border-collapse: separate;
+    border-spacing: 1rem 0.5rem;
+    width: 100%;
+}
+
+.id-col {
+    width: 10%;
+}

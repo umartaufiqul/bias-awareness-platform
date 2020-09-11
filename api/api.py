@@ -37,5 +37,22 @@ def perspective_api():
             'TOXICITY': {}
         }
     }
-    res = requests.post("https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyD31v8RcAgQGLk2m6qmJtR1DP72wElij2c", json=dictToSend)
-    return res.json()
+    with open('data1.json') as data_json:
+        data = json.load(data_json)
+        result = []
+        for i in range(20):
+            entry = data['tweet'][i]
+            curr_entry = {
+                "comment" : { "text": entry},
+                "requestedAttributes": {'TOXICITY': {}}
+            }
+            res = requests.post("https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyD31v8RcAgQGLk2m6qmJtR1DP72wElij2c", json=curr_entry)
+            test = json.loads(res.text)
+            try:
+                result.append(test["attributeScores"]["TOXICITY"]["summaryScore"]["value"])
+            except:
+                continue
+        result_json = {"result": result}
+        return jsonify(result_json)
+    # res = requests.post("https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyD31v8RcAgQGLk2m6qmJtR1DP72wElij2c", json=dictToSend)
+    # return res.json()

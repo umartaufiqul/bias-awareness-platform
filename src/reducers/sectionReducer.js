@@ -4,6 +4,8 @@ const sectionReducer = (state = 1, action) => {
             return state + 1
         case 'PREV_SECTION':
             return state - 1
+        case 'SET_SECTION':
+            return action.section
         default:
             return state
     }

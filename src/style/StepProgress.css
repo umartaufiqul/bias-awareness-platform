@@ -133,8 +133,15 @@
   #navbar-brand {
     font-size: 1rem;
     color: white;
+    position: absolute;
+    left: 1rem;
   }
 
   #navbar-dropdown {
     color: white;
+  }
+
+  .tutorial-button {
+    position: absolute;
+    right: 1rem;
   }

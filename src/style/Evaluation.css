@@ -1,4 +1,42 @@
-.evaluation textarea {
+.evaluation {
+    /* padding: 1rem 5rem; */
+    background-color: #bdc1c6;
+    padding: 1rem 0rem;
+}
+
+.evaluation-inner {
+    background-color: white;
+    width: 800px;
+    margin: auto;
+    padding: 0rem 2rem;
+    padding-bottom: 1rem;
+    border-radius: 5px;
+}
+
+.evaluation-title {
+    padding: 2rem 0rem;
+}
+.evaluation .submit-btn {
     margin: 1rem 0rem;
-    min-height: 100px;
+}
+
+.evaluation textarea {
+    resize: none;
+    width: 100%;
+    height: 100px;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    font-size: 14px;
+    border-radius: 3px;
+    padding: 0.5rem 1rem;
+}
+
+.question-group {
+    border-bottom: 1px solid #e1e4e8;
+    padding: 1rem 0.5rem;
+    /* margin: 1rem 0rem; */
+}
+
+.question-group:focus-within {
+    background-color: #fafafa;
 }

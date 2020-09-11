@@ -1,13 +1,13 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import "../style/Visualization.css"
 import ScatterChart from "../components/ScatterChart"
 import VisualDataset from "../components/VisualDataset"
 import VisualModelNew from "../components/VisualModelNew"
-
-
-
+import Dropdown from "react-bootstrap/Dropdown"
+import DropdownButton from "react-bootstrap/DropdownButton"
+import {disableBodyScroll, enableBodyScroll} from "body-scroll-lock"
 
 const Visualization = () => {
 
@@ -15,6 +15,27 @@ const Visualization = () => {
     const [modelActive, setModelActive] = useState("")
     const [wordInput, setWordInput] = useState("")
     const [wordList, setWordList] = useState([])
+    const [categoryList, setCategoryList] = useState(["Hateful", "Abusive"])
+    const [category, setCategory] = useState(categoryList[0])
+    const [loaderActive, setLoaderActive] = useState("d-none")
+
+    useEffect((e) => {
+        if (loaderActive === "") {
+            disableBody(document)
+        }
+    })
+    
+    const resultStat = [{
+        class: "Racism",
+        pblack: 0.001,
+        pwhite: 0.003,
+        pblack_white: 0.005
+    }, {
+        class: "Sexism",
+        pblack: 0.083,
+        pwhite: 0.048,
+        pblack_white: 1.724
+    }]
 
 
     function changeActiveState(id) {
@@ -56,18 +77,45 @@ const Visualization = () => {
         }
     };
 
+    function changeCategory(index) {
+        return () => {
+            setCategory(categoryList[index])
+        }
+    }
+
+    function disableBody(target) {disableBodyScroll(target)};
+    function enableBody(target) {enableBodyScroll(target)}; 
+
     return(
         <div className='visualization-new'>
+            <div className={'loader-bg '+loaderActive}>
+
+            </div>
+            <div className={'loader '+loaderActive}>
+                <h3> Please wait a moment </h3>
+                <p style={{marginTop: "1rem"}}> Your model is current being built.</p>
+                <div className='spinner'></div>
+            </div>
             <div className='visualization-new-container'>
                 <div className='graph-left'>
                     <h1> Abusive Speech Detection Result </h1>
                     <div className='scatter-chart'>
-                        <ScatterChart width={10} height={10}/>
+                        <ScatterChart width={10} height={10} catName={category}/>
+                        <form className='form-inline justify-content-center align-item-center' style={{marginTop: "1rem"}}>
+                            <label style={{marginRight: "1rem"}}> <h6> Class: </h6></label>
+                            <DropdownButton id="dropdown-basic-button" title={category}>
+                                {categoryList.map((item, i) => 
+                                        <Dropdown.Item key={i} onClick={changeCategory(i)}>
+                                            {item}
+                                        </Dropdown.Item>
+                                )}
+                            </DropdownButton>
+                        </form>
                     </div>
                     <div className='associated-words'>
                         <form className='form-inline'>
                         <label> Associated words: </label>
-                        <input className="form-control ml-4" type="text" value={wordInput}onChange={handleInputChange} onKeyDown={handleInputDown}></input>
+                        <input className="form-control ml-4" type="text" value={wordInput} onChange={handleInputChange} onKeyDown={handleInputDown}></input>
                         <OverlayTrigger
                             key={'top'}
                             placement={'top'}
@@ -117,18 +165,14 @@ const Visualization = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">Racism</th>
-                                        <td> 0.001 </td>
-                                        <td> 0.003 </td>
-                                        <td> 0.505 </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Sexism</th>
-                                        <td> 0.083 </td>
-                                        <td> 0.048 </td>
-                                        <td> 1.724 </td>
-                                    </tr>
+                                    {resultStat.map((item, i) => 
+                                        <tr key={i}>
+                                            <th scope="row"> {item.class}</th>
+                                            <td> {item.pblack} </td>
+                                            <td> {item.pwhite} </td>
+                                            <td> {item.pblack_white} </td>
+                                        </tr>
+                                    )}
                                 </tbody>
                             </table>
                         </div>

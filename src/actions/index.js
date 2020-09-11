@@ -23,3 +23,10 @@ export const prevSection = () => {
         type: "PREV_SECTION"
     }
 }
+
+export const setSection = (id) => {
+    return {
+        type: "SET_SECTION",
+        section: id
+    }
+}
