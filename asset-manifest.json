@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/bias-awareness-platform/static/css/main.8bb47570.chunk.css",
-    "main.js": "/bias-awareness-platform/static/js/main.5d6e1389.chunk.js",
-    "main.js.map": "/bias-awareness-platform/static/js/main.5d6e1389.chunk.js.map",
+    "main.css": "/bias-awareness-platform/static/css/main.72afe788.chunk.css",
+    "main.js": "/bias-awareness-platform/static/js/main.df6ea243.chunk.js",
+    "main.js.map": "/bias-awareness-platform/static/js/main.df6ea243.chunk.js.map",
     "runtime-main.js": "/bias-awareness-platform/static/js/runtime-main.b7e6e405.js",
     "runtime-main.js.map": "/bias-awareness-platform/static/js/runtime-main.b7e6e405.js.map",
     "static/css/2.11829350.chunk.css": "/bias-awareness-platform/static/css/2.11829350.chunk.css",
     "static/js/2.ca60c40f.chunk.js": "/bias-awareness-platform/static/js/2.ca60c40f.chunk.js",
     "static/js/2.ca60c40f.chunk.js.map": "/bias-awareness-platform/static/js/2.ca60c40f.chunk.js.map",
     "index.html": "/bias-awareness-platform/index.html",
-    "precache-manifest.2df61dbb137c382c62b21332e7fc5c93.js": "/bias-awareness-platform/precache-manifest.2df61dbb137c382c62b21332e7fc5c93.js",
+    "precache-manifest.225385df5e95e4205b29c2800b5648a6.js": "/bias-awareness-platform/precache-manifest.225385df5e95e4205b29c2800b5648a6.js",
     "service-worker.js": "/bias-awareness-platform/service-worker.js",
     "static/css/2.11829350.chunk.css.map": "/bias-awareness-platform/static/css/2.11829350.chunk.css.map",
-    "static/css/main.8bb47570.chunk.css.map": "/bias-awareness-platform/static/css/main.8bb47570.chunk.css.map",
+    "static/css/main.72afe788.chunk.css.map": "/bias-awareness-platform/static/css/main.72afe788.chunk.css.map",
     "static/js/2.ca60c40f.chunk.js.LICENSE.txt": "/bias-awareness-platform/static/js/2.ca60c40f.chunk.js.LICENSE.txt",
     "static/media/help.svg": "/bias-awareness-platform/static/media/help.8a36d3fb.svg",
     "static/media/info.svg": "/bias-awareness-platform/static/media/info.cffe9e14.svg",
@@ -24,7 +24,7 @@
     "static/js/runtime-main.b7e6e405.js",
     "static/css/2.11829350.chunk.css",
     "static/js/2.ca60c40f.chunk.js",
-    "static/css/main.8bb47570.chunk.css",
-    "static/js/main.5d6e1389.chunk.js"
+    "static/css/main.72afe788.chunk.css",
+    "static/js/main.df6ea243.chunk.js"
   ]
 }
