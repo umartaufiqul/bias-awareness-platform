@@ -2,12 +2,15 @@ import React, {useState, useEffect} from "react"
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import "../style/Visualization.css"
+import {useDispatch, useSelector} from "react-redux"
 import ScatterChart from "../components/ScatterChart"
 import VisualDataset from "../components/VisualDataset"
 import VisualModelNew from "../components/VisualModelNew"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropdownButton from "react-bootstrap/DropdownButton"
-import {disableBodyScroll, enableBodyScroll} from "body-scroll-lock"
+import { activateLoader, deactivateLoader } from "../actions"
+import Form from "react-bootstrap/Form"
+import Result from "../components/Result"
 
 const Visualization = () => {
 
@@ -15,26 +18,67 @@ const Visualization = () => {
     const [modelActive, setModelActive] = useState("")
     const [wordInput, setWordInput] = useState("")
     const [wordList, setWordList] = useState([])
-    const [categoryList, setCategoryList] = useState(["Hateful", "Abusive"])
+    const [categoryList, setCategoryList] = useState(["Hateful", "Abusive", "neither"])
     const [category, setCategory] = useState(categoryList[0])
-    const [loaderActive, setLoaderActive] = useState("d-none")
+    const [exploreActive, setExploreActive] = useState("data")
+    const [labelActive, setLabelActive] = useState([])
 
-    useEffect((e) => {
-        if (loaderActive === "") {
-            disableBody(document)
-        }
-    })
+    const loaderActive = useSelector(state => state.loaderActive)
+    const resultModel = useSelector(state => state.model)
+    const resultData = useSelector(state => state.data)
+    const dispatch = useDispatch()
     
+    useEffect(() => {
+        var label = []
+        for (var i = 0; i < categoryList.length; i++) {
+            label.push(true)
+        }
+        setLabelActive(label)
+    }, [categoryList.length])
+
+    const tweetListSample = [{
+      tweet: "Tweet sample but I nned to make it long so forgive me for the length okay",
+      label: "neither"
+    }, {
+        tweet: "Tweet sample but I need to make it long so forgive me for the length okay",
+        label: "Hateful"
+      }, {
+        tweet: "Tweet sample but I nned to make it long so forgive me for the length okay",
+        label: "Abusive"
+      }, {
+        tweet: "Tweet sample but I nned to make it long so forgive me for the length okay",
+        label: "neither"
+      }, {
+          tweet: "Tweet sample but I need to make it long so forgive me for the length okay",
+          label: "Hateful"
+        }, {
+          tweet: "Tweet sample but I nned to make it long so forgive me for the length okay",
+          label: "Abusive"
+        }]
     const resultStat = [{
         class: "Racism",
         pblack: 0.001,
         pwhite: 0.003,
-        pblack_white: 0.005
+        pblack_white: 0.005,
     }, {
         class: "Sexism",
         pblack: 0.083,
         pwhite: 0.048,
         pblack_white: 1.724
+    }]
+
+    const accStat = [{
+        class: "Racism",
+        precision: 0.77,
+        recall: 0.86,
+        f1_score: 0.81,
+        support: 3756
+    }, {
+        class: "Sexism",
+        precision: 0.84,
+        recall: 0.75,
+        f1_score: 0.79,
+        support: 1344
     }]
 
 
@@ -58,9 +102,21 @@ const Visualization = () => {
         }
     };
 
+    function handleExploreChange(tab) {
+        setExploreActive(tab)
+    }
+
     function handleInputChange(e) {
         setWordInput(e.target.value)
     };
+
+    function handleFilter(index) {
+        var new_label = [...labelActive]
+        new_label[index] = !labelActive[index]
+        console.log(index)
+        console.log(new_label)
+        setLabelActive(new_label)
+    }
 
     function handleInputDown(e) {
         if (e.keyCode === 13) {
@@ -77,20 +133,96 @@ const Visualization = () => {
         }
     };
 
+    function handleModelChange() {
+        dispatch(activateLoader())
+        setTimeout(function(){
+            dispatch(deactivateLoader())
+            alert("The model has been reloaded")
+        }, 5000)
+    }
+
     function changeCategory(index) {
         return () => {
             setCategory(categoryList[index])
         }
     }
 
-    function disableBody(target) {disableBodyScroll(target)};
-    function enableBody(target) {enableBodyScroll(target)}; 
+    function returnBadCategory() {
+        //The only good category should be on the last
+        var categories = [...categoryList]
+        categories.pop()
+        return (
+            categories.map((item, i) => 
+                <Dropdown.Item key={i} onClick={changeCategory(i)}>
+                    {item}
+                </Dropdown.Item>
+            )
+        )
+    }
+
+    function returnFilteredTweet(tweet_list) {
+        let filtered_tweet = [...tweet_list]
+        filtered_tweet = filtered_tweet.filter((item) => labelActive[categoryList.findIndex((cat_item) => cat_item === item.label)])
+        return filtered_tweet.map((item, i) => 
+                            <tr> 
+                                <th style={{width: "50px"}}> {i} </th>
+                                <td> {item.tweet} </td>
+                                <td style={{width: "150px"}}> {item.label} </td>
+                            </tr>
+                        )
+    }
+
+    function selectExplore() {
+        if (exploreActive === "result") {
+            return (
+            <div className="explore-container" style={{marginTop: "1rem"}}>
+            <h1> Abusive Speech Detection Result </h1>
+            <div className='scatter-chart'>
+                <ScatterChart width={10} height={10} catName={category}/>
+                <form className='form-inline justify-content-center align-item-center' style={{marginTop: "1rem"}}>
+                    <label style={{marginRight: "1rem"}}> <h6> Class: </h6></label>
+                    <DropdownButton id="dropdown-basic-button" title={category}>
+                        {returnBadCategory()}
+                    </DropdownButton>
+                </form>
+            </div>
+        </div>)
+        }
+        else {
+            return (<div className="explore-container" style={{marginTop: "1rem", padding: "0rem 2rem", overflowY: "scroll"}}>
+                <h1 > Exploring Dataset </h1>
+                <table className='table'style={{margin: "2rem 1rem", tableLayout: "fixed"}}>
+                    <thead>
+                        <tr>
+                            <th style={{width: "50px"}}>No</th>
+                            <th >Tweet</th>
+                            <th style={{width: "150px"}}>
+                            <DropdownButton id="dropdown-basic-button" title='Label'>
+                            <Form className='text-center'>
+                                {categoryList.map((item, i) => (
+                                    <Form.Check key={i}
+                                        type={'checkbox'}
+                                        label={item}
+                                        defaultChecked={labelActive[i]}
+                                        onClick={() => handleFilter(i)}
+                                    />
+                                ))}
+                                </Form>
+                            </DropdownButton>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        { returnFilteredTweet(tweetListSample)}
+                    </tbody>
+                </table>
+
+            </div>)
+        }
+    }
 
     return(
         <div className='visualization-new'>
-            <div className={'loader-bg '+loaderActive}>
-
-            </div>
             <div className={'loader '+loaderActive}>
                 <h3> Please wait a moment </h3>
                 <p style={{marginTop: "1rem"}}> Your model is current being built.</p>
@@ -98,20 +230,11 @@ const Visualization = () => {
             </div>
             <div className='visualization-new-container'>
                 <div className='graph-left'>
-                    <h1> Abusive Speech Detection Result </h1>
-                    <div className='scatter-chart'>
-                        <ScatterChart width={10} height={10} catName={category}/>
-                        <form className='form-inline justify-content-center align-item-center' style={{marginTop: "1rem"}}>
-                            <label style={{marginRight: "1rem"}}> <h6> Class: </h6></label>
-                            <DropdownButton id="dropdown-basic-button" title={category}>
-                                {categoryList.map((item, i) => 
-                                        <Dropdown.Item key={i} onClick={changeCategory(i)}>
-                                            {item}
-                                        </Dropdown.Item>
-                                )}
-                            </DropdownButton>
-                        </form>
+                    <div className='d-flex justify-content-center'>
+                        <div className={exploreActive === "data" ? 'explore-choice active' : 'explore-choice'} onClick={() => handleExploreChange("data")}> Data </div>
+                        <div className={exploreActive === "result" ? 'explore-choice active' : 'explore-choice'} onClick={() => handleExploreChange("result")}> Result </div>
                     </div>
+                    {selectExplore()}
                     <div className='associated-words'>
                         <form className='form-inline'>
                         <label> Associated words: </label>
@@ -127,7 +250,10 @@ const Visualization = () => {
                             >
                             <img src={require('../icons/help.svg')} alt='' id='help-tag'/>
                         </OverlayTrigger>
-                        <button className='btn btn-green ml-4' onClick={(e) => {e.preventDefault()}}> Reload </button>
+                        <button className='btn btn-green ml-4' onClick={(e) => {
+                            e.preventDefault()
+                            handleModelChange()
+                            }}> Reload </button>
                         </form>
                         <ul className='word-container'>
                             {wordList.map((item, i) => 
@@ -138,6 +264,7 @@ const Visualization = () => {
                             )}
                         </ul>
                     </div>
+                    
                 </div>
                 <div className='interactive-right'>
                     <div id='interactive-controller'>
@@ -149,33 +276,19 @@ const Visualization = () => {
                             {changeContent()}
                         </div>
                         <div className='load-btn'>
-                            <button type='button' className="btn btn-green"> Build Model </button>
+                            <button type='button' className="btn btn-green" onClick={(e) => {
+                            e.preventDefault()
+                            handleModelChange()
+                            }}> Build Model </button>
                         </div>
                     </div>
                     <div id='visual-result'>
                         <h3> Result </h3>
-                        <div id='result-table'>
-                            <table className='table'>
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Class</th>
-                                        <th scope="col">Pblack</th>
-                                        <th scope="col">Pwhite</th>
-                                        <th scope="col">Pblack/Pwhite</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {resultStat.map((item, i) => 
-                                        <tr key={i}>
-                                            <th scope="row"> {item.class}</th>
-                                            <td> {item.pblack} </td>
-                                            <td> {item.pwhite} </td>
-                                            <td> {item.pblack_white} </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
+                        {/* <div>
+                            <span> Model: Model {resultModel+1} </span>
+                            <span style={{marginLeft: "1rem"}}> Dataset: Dataset {resultData+1} </span> 
+                        </div> */}
+                        <Result resultStat={resultStat} accStat={accStat}/>
                     </div>
                 </div>
             </div>

@@ -1,11 +1,13 @@
 import React, {useRef, useState} from "react"
 import "../style/Mitigation.css"
+import {useDispatch, useSelector} from "react-redux"
 import Modal from "react-bootstrap/Modal"
 import Col from "react-bootstrap/Col"
 import Row from "react-bootstrap/Row"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropdownButton from "react-bootstrap/DropdownButton"
 import Form from "react-bootstrap/Form"
+import { activateLoader, deactivateLoader } from "../actions"
 
 const MitigationNew = () => {
 
@@ -18,7 +20,11 @@ const MitigationNew = () => {
     const [buttonTitle, setButtonTitle] = useState("Compare")
     const [studentId, setStudentId] = useState("")
     const [studentEmail, setStudentEmail] = useState("")
-    const [loaderActive, setLoaderActive] = useState("d-none")
+    // const [loaderActive, setLoaderActive] = useState("d-none")
+
+    const loaderActive = useSelector(state => state.loaderActive)
+
+    const dispatch = useDispatch()
 
     const resultStat = [{
         class: "Racism",
@@ -100,7 +106,7 @@ const MitigationNew = () => {
         if (chosenModel === "Choose a model...") {
             return value === "Model 1"
         }
-        return value === chosenModel
+        return value === chosenModel 
     }
 
     function handleInputChange(e, id) {
@@ -113,7 +119,7 @@ const MitigationNew = () => {
     }
 
     function handleSubmit() {
-        setLoaderActive("")
+        dispatch(activateLoader())
         const return_data = {
             email: studentEmail,
             id: studentId,
@@ -121,7 +127,7 @@ const MitigationNew = () => {
         }
         console.log(return_data)
         setTimeout(function(){
-            setLoaderActive("d-none")
+            dispatch(deactivateLoader())
             alert("Your model has been submitted")
         }, 5000)
         setStudentId("")

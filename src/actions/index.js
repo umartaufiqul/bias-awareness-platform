@@ -30,3 +30,15 @@ export const setSection = (id) => {
         section: id
     }
 }
+
+export const activateLoader = () => {
+    return {
+        type: "LOADER_ACTIVE"
+    }
+}
+
+export const deactivateLoader = () => {
+    return {
+        type: "LOADER_DEACTIVE"
+    }
+}

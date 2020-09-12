@@ -215,6 +215,19 @@
     font-size: 2rem;
 }
 
+.explore-choice {
+    padding: 0.25rem 2rem;
+    background-color: #d9dbd7;
+    cursor: pointer;
+}
+
+.explore-choice.active {
+    background-color: #E7EAE5;
+    -moz-box-shadow:    inset 0 0 2px #000000;
+   -webkit-box-shadow: inset 0 0 2px #000000;
+   box-shadow:         inset 0 0 2px #000000;
+}
+
 .graph-left {
     flex: 8;
     border-right: 1px solid #e1e4e8;
@@ -226,7 +239,7 @@
 }
 
 .scatter-chart {
-    height: 400px;
+    min-height: 400px;
 }
 .interactive-right {
     flex: 5;
@@ -356,4 +369,18 @@
 @keyframes spin {
 0% { transform: rotate(0deg); }
 100% { transform: rotate(360deg); }
+}
+
+.explore-container {
+    height: 500px;
+}
+
+@media only screen and (min-height: 900) {
+    .visualization-new {
+        min-height: 90vh;
+    }
+
+    .explore-container {
+        height: 70vh;
+    }
 }

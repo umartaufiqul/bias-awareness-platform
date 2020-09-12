@@ -64,13 +64,13 @@ const MyNavbar = () => {
         }
     ]
 
-    const sectionList = ["1. Visualization", "2. Debiasing", "3. Discussion"]
+    const sectionList = ["1. Visualization", "2. Debiasing"]
     const section = useSelector(state => state.section)
     const dispatch = useDispatch()
     const [isTourOpen, setIsTourOpen] = useState(false)
 
     useEffect(() => {
-        if (window.location.href.includes("test")) {
+        if (window.location.href.includes("mitigation")) {
             dispatch(setSection(2))
         }
         else if (window.location.href.includes("visualization")) {
@@ -101,7 +101,7 @@ const MyNavbar = () => {
                 break;
                 // window.location.reload()
             case 2:
-                window.location.href = "/bias-awareness-platform/#/test"
+                window.location.href = "/bias-awareness-platform/#/mitigation"
                 dispatch(setSection(2))
                 break;
                 // window.location.reload()
@@ -145,10 +145,14 @@ const MyNavbar = () => {
     }
 
     const usePrev = () => {
-        return section > 1 && section < 4
+        return section > 1 && section < 3
     }
 
     const useNext = () => {
+        return section > 0 && section < 2
+    }
+
+    const useDropdown = () => {
         return section > 0 && section < 3
     }
 
@@ -160,14 +164,16 @@ const MyNavbar = () => {
                     {usePrev() ? <img src={require('../icons/left-arrow.svg')} alt='' onClick={() => goToPage(section-1)}/> : <span style={{height: "16px", width: "16px"}}></span>}
                 </Col>
                 <Col>
-                <NavDropdown title={sectionList[section-1]} className='text-left' id='navbar-dropdown'>
+                    {useDropdown() ? <NavDropdown title={sectionList[section-1]} className='text-left' id='navbar-dropdown'>
                     <NavDropdown.Item href="/bias-awareness-platform/#/visualization">1. Visualization</NavDropdown.Item>
-                    <NavDropdown.Item href="/bias-awareness-platform/#/test"> 2. Debiasing </NavDropdown.Item>
-                    <NavDropdown.Item onClick={giveWarning}>3. Discussion </NavDropdown.Item>
-                </NavDropdown>
+                        <NavDropdown.Item href="/bias-awareness-platform/#/mitigation"> 2. Debiasing </NavDropdown.Item>
+                    </NavDropdown>
+                    : <div style={{height: "2.5rem"}}></div>
+                    }
+                
                 </Col>
                 <Col className='d-flex align-middle'>
-                    {useNext() ? <img src={require('../icons/right-arrow.svg')} alt=''onClick={() => goToPage(section+1)}/> : <span style={{height: "16px", width: "16px"}}></span>}
+                    {useNext() ? <img src={require('../icons/right-arrow.svg')} alt=''onClick={() => goToPage(section+1)}/> : <span style={{height: "16px", width: "16px"}}> </span>}
                 </Col>
                 
             </Row>

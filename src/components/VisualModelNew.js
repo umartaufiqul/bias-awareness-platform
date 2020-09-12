@@ -22,25 +22,4 @@ const VisualModelNew = () => {
     )
 }
 
-// class VisualModelNew extends Component {
-
-//     changeModel = (index) => {
-//         this.setState({
-//             model_selected: index
-//         })
-//     }
-
-//     render() {
-//         return(
-//             <div className='visual-dataset visual-model-new'>
-//                 <ul>
-//                     {this.state.model_values.map((values, i) => 
-//                         <li key={i+1}> <input type='radio' name ='model' value={values} onClick={() => this.changeModel(i)} checked={ model === i}/> Model {i+1} </li>
-//                     )}
-//                 </ul>
-//             </div>
-//         )
-//     }
-// }
-
 export default VisualModelNew
