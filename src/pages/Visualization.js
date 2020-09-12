@@ -11,6 +11,7 @@ import DropdownButton from "react-bootstrap/DropdownButton"
 import { activateLoader, deactivateLoader } from "../actions"
 import Form from "react-bootstrap/Form"
 import Result from "../components/Result"
+import DataTable from "../components/DataTable"
 
 const Visualization = () => {
 
@@ -28,13 +29,6 @@ const Visualization = () => {
     const resultData = useSelector(state => state.data)
     const dispatch = useDispatch()
     
-    useEffect(() => {
-        var label = []
-        for (var i = 0; i < categoryList.length; i++) {
-            label.push(true)
-        }
-        setLabelActive(label)
-    }, [categoryList.length])
 
     const tweetListSample = [{
       tweet: "Tweet sample but I nned to make it long so forgive me for the length okay",
@@ -110,13 +104,6 @@ const Visualization = () => {
         setWordInput(e.target.value)
     };
 
-    function handleFilter(index) {
-        var new_label = [...labelActive]
-        new_label[index] = !labelActive[index]
-        console.log(index)
-        console.log(new_label)
-        setLabelActive(new_label)
-    }
 
     function handleInputDown(e) {
         if (e.keyCode === 13) {
@@ -160,17 +147,6 @@ const Visualization = () => {
         )
     }
 
-    function returnFilteredTweet(tweet_list) {
-        let filtered_tweet = [...tweet_list]
-        filtered_tweet = filtered_tweet.filter((item) => labelActive[categoryList.findIndex((cat_item) => cat_item === item.label)])
-        return filtered_tweet.map((item, i) => 
-                            <tr> 
-                                <th style={{width: "50px"}}> {i} </th>
-                                <td> {item.tweet} </td>
-                                <td style={{width: "150px"}}> {item.label} </td>
-                            </tr>
-                        )
-    }
 
     function selectExplore() {
         if (exploreActive === "result") {
@@ -189,35 +165,7 @@ const Visualization = () => {
         </div>)
         }
         else {
-            return (<div className="explore-container" style={{marginTop: "1rem", padding: "0rem 2rem", overflowY: "scroll"}}>
-                <h1 > Exploring Dataset </h1>
-                <table className='table'style={{margin: "2rem 1rem", tableLayout: "fixed"}}>
-                    <thead>
-                        <tr>
-                            <th style={{width: "50px"}}>No</th>
-                            <th >Tweet</th>
-                            <th style={{width: "150px"}}>
-                            <DropdownButton id="dropdown-basic-button" title='Label'>
-                            <Form className='text-center'>
-                                {categoryList.map((item, i) => (
-                                    <Form.Check key={i}
-                                        type={'checkbox'}
-                                        label={item}
-                                        defaultChecked={labelActive[i]}
-                                        onClick={() => handleFilter(i)}
-                                    />
-                                ))}
-                                </Form>
-                            </DropdownButton>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        { returnFilteredTweet(tweetListSample)}
-                    </tbody>
-                </table>
-
-            </div>)
+            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample}/>)
         }
     }
 

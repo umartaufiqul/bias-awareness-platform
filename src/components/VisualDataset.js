@@ -23,7 +23,7 @@ const VisualDataset = () => {
         <div className='visual-dataset'>
             <ul>
                 {data_values.map((values, i) => 
-                        <li key={i+1}> <input type='radio' name ='dataset' value={values} onClick={() => dispatch(changeDataset(i))} checked={ data === i}/> 
+                        <li key={i+1} style={{width: "auto"}}> <input type='radio' name ='dataset' value={values} onClick={() => dispatch(changeDataset(i))} checked={ data === i}/> 
                             <label htmlFor={values} style={{marginLeft: '8px', marginBottom: '0px'}}> Data {i+1} </label>
                             <OverlayTrigger
                             key={'right'}
