@@ -26,7 +26,8 @@
 .choices {
     text-align: left;
     margin-bottom: 0;
-    padding-left: 1rem;
+    padding-left: 0rem;
+    /* padding-left: 1rem; */
 }
 
 .choices a {
@@ -41,8 +42,8 @@
 .choices li {
     background-color: #BAB9B9;
     padding: 0.5rem 1rem;
-    margin: 0rem 1rem;
-    border-radius: 10px 10px 0 0;
+    /* margin: 0rem 1rem; */
+    /* border-radius: 10px 10px 0 0; */
     text-align: center;
 }
 
@@ -62,6 +63,10 @@
     margin: 0.5rem 0rem;
 }
 
+#dataset-tab,#model-tab {
+    margin-left: 0rem;
+}
+
 .explain-box {
     grid-column: 6/ 8;
     /* width: 10em; */
@@ -73,8 +78,12 @@
     margin-top: 2.5rem;
 }
 
+.interact-component {
+    margin-bottom: 2rem;
+}
+
 .interact-container {
-    background-color: #E0DEDE;
+    background-color: #fafafa;
     padding: 1rem 5rem;
 }
 
@@ -149,6 +158,8 @@
 }
 .visual-container {
     padding: 2em;
+    margin-left: 0rem;
+    margin-right: 0rem;
 }
 
 .visual-dataset li {
@@ -190,4 +201,186 @@
 
 .visualization.page-box {
     padding: 1rem 0rem;
+}
+
+.visualization-new {
+    text-align: center;
+}
+
+.visualization-new-container {
+    border-top: 1px solid #e1e4e8;
+    display: flex;
+}
+.visualization-new h1 {
+    font-size: 2rem;
+}
+
+.explore-choice {
+    padding: 0.25rem 2rem;
+    background-color: #d9dbd7;
+    cursor: pointer;
+}
+
+.explore-choice.active {
+    background-color: #E7EAE5;
+    -moz-box-shadow:    inset 0 0 2px #000000;
+   -webkit-box-shadow: inset 0 0 2px #000000;
+   box-shadow:         inset 0 0 2px #000000;
+}
+
+.graph-left {
+    flex: 8;
+    border-right: 1px solid #e1e4e8;
+    padding-top: 1rem;
+}
+
+.graph-left .scatter-chart {
+    margin: 1rem 3rem;
+}
+
+.scatter-chart {
+    min-height: 400px;
+}
+.interactive-right {
+    flex: 5;
+    background-color: #fafafa;
+}
+
+.interactive-choice {
+    flex: 1;
+    padding: 0.5rem 0rem;
+    cursor: pointer;
+}
+
+.interactive-choice.active {
+    font-weight: bold;
+    border-bottom: 2px solid;
+}
+
+#interactive-controller {
+    height: 50%;
+}
+
+.interact-tab {
+    border-bottom: 1px solid #e1e4e8;
+}
+
+#visual-result {
+    border-top: 1.5px solid #d2d5da;
+    padding-top: 1rem;
+}
+
+.associated-words {
+    border-top: 1px solid #e1e4e8;
+    padding: 1rem 3rem;
+    text-align: left;
+    height: 150px;
+    overflow: auto;
+    background-color: #fafafa;
+}
+.associated-words h4 {
+    font-size: 1.25rem;
+}
+
+.load-btn {
+    margin-top: 1rem;
+}
+
+.word-container {
+    margin: 1rem 0rem;
+    text-align: left;
+    padding: 0rem;
+}
+
+.word-tag {
+    background-color: #6C9688;
+    margin: 0rem;
+    text-align: center;
+    padding: 4px 1rem;
+    width: auto;
+    margin: 0.25rem 0.5rem;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.word-tag img {
+    margin-left: 1rem;
+    cursor: pointer;
+}
+
+.word-tag span {
+  display: inline-flex;
+  align-items: center;
+}
+
+#result-table {
+    padding: 1rem;
+}
+
+.btn-green {
+    background-color: #364B44;
+    color: white;
+}
+
+.btn-green:hover {
+    color: white;
+    background-color: #2e413a;
+}
+
+#help-tag {
+    margin-left: 1rem;
+}
+
+.info-icon {
+    margin-left: 1rem;
+}
+
+.loader {
+    position: fixed;
+    background-color: white;
+    left: calc(50% - 25%);
+    top: 30%;
+    width: 50%;
+    min-height: 40%;
+    z-index: 100;
+    border-radius: 5px;
+    padding-top: 2rem;
+}
+
+.loader-bg {
+    position: fixed;
+    background-color: rgba(128, 128, 128, 0.295);
+    height: 100vh;
+    width: 100vw;
+    z-index: 99;
+}
+
+.spinner {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #2e413a; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    margin: 2rem auto;
+  }
+  
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+.explore-container {
+    height: 500px;
+}
+
+@media only screen and (min-height: 900) {
+    .visualization-new {
+        min-height: 90vh;
+    }
+
+    .explore-container {
+        height: 70vh;
+    }
 }

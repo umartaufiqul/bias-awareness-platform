@@ -2,6 +2,7 @@ import time
 from flask import Flask 
 from flask import jsonify
 import json
+import requests
 from ClassifierModule import Classifier
 from ClassifierModule.ClassifierFunction import tokenize
 
@@ -25,3 +26,33 @@ def classify_tweet():
     with open('bogus_data.json') as json_file:
         data = json.load(json_file)
         return data
+
+@app.route('/perspective')
+def perspective_api():
+    dictToSend = {
+        "comment" : {
+            "text": "I'm forever thankful for the people that make stupid ass threads of stuff that makes me crack up"
+        },
+        "requestedAttributes": {
+            'TOXICITY': {}
+        }
+    }
+    with open('data1.json') as data_json:
+        data = json.load(data_json)
+        result = []
+        for i in range(20):
+            entry = data['tweet'][i]
+            curr_entry = {
+                "comment" : { "text": entry},
+                "requestedAttributes": {'TOXICITY': {}}
+            }
+            res = requests.post("https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyD31v8RcAgQGLk2m6qmJtR1DP72wElij2c", json=curr_entry)
+            test = json.loads(res.text)
+            try:
+                result.append(test["attributeScores"]["TOXICITY"]["summaryScore"]["value"])
+            except:
+                continue
+        result_json = {"result": result}
+        return jsonify(result_json)
+    # res = requests.post("https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyD31v8RcAgQGLk2m6qmJtR1DP72wElij2c", json=dictToSend)
+    # return res.json()
