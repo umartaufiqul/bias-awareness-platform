@@ -1,0 +1,11 @@
+.jupyter-notebook-div {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.jupyter-iframe {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}

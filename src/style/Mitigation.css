@@ -81,3 +81,9 @@
 .id-col {
     width: 10%;
 }
+
+.mitigation-new {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
