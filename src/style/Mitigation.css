@@ -81,3 +81,13 @@
 .id-col {
     width: 10%;
 }
+
+/* @media screen and (min-height: 1680px){
+	* {
+	background-color: white;
+	}
+} */
+
+body {
+    background-color: white;
+}

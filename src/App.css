@@ -105,6 +105,10 @@
 @media screen and (min-height: 911px) {
   .main-application {
     height: 100vh;
-    background-color: black;
+    /* background-color: black; */
   }
+}
+
+.chartjs-size-monitor {
+  overflow-y: none !important;
 }

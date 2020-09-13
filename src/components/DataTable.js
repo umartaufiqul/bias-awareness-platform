@@ -12,7 +12,7 @@ const DataTable = (props) => {
     const [currPage, setCurrPage] = useState(1)
     const [filterTweet, setFilterTweet] = useState(tweetListSample.length)
     const [update, setUpdate] = useState(false)
-    const [numTweet, setNumTweet] = useState(1)
+    const [numTweet, setNumTweet] = useState(10)
     
     useEffect(() => {
         var label = []
