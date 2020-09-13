@@ -82,6 +82,16 @@
     width: 10%;
 }
 
+/* @media screen and (min-height: 1680px){
+	* {
+	background-color: white;
+	}
+} */
+
+body {
+    background-color: white;
+}
+
 .mitigation-new {
     height: 100%;
     width: 100%;
