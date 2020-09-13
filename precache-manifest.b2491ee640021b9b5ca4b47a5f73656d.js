@@ -1,35 +1,31 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "dc237efc15000ce9afaca36e64c3578d",
+    "revision": "162c50000bd0e62749a2800246c36ee2",
     "url": "/bias-awareness-platform/index.html"
   },
   {
-    "revision": "777f48e9c0c34212972b",
+    "revision": "86b93f1bad77ff7c3887",
     "url": "/bias-awareness-platform/static/css/2.11829350.chunk.css"
   },
   {
-    "revision": "2a7ddcf303e5e0eceb9f",
-    "url": "/bias-awareness-platform/static/css/main.d8d2622f.chunk.css"
+    "revision": "4a216af590bdfb247b6c",
+    "url": "/bias-awareness-platform/static/css/main.252c4bd9.chunk.css"
   },
   {
-    "revision": "777f48e9c0c34212972b",
-    "url": "/bias-awareness-platform/static/js/2.54abb4a0.chunk.js"
+    "revision": "86b93f1bad77ff7c3887",
+    "url": "/bias-awareness-platform/static/js/2.bd6c16e9.chunk.js"
   },
   {
     "revision": "254c01d1a3c7d8124adf4c35e46b76e3",
-    "url": "/bias-awareness-platform/static/js/2.54abb4a0.chunk.js.LICENSE.txt"
+    "url": "/bias-awareness-platform/static/js/2.bd6c16e9.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "2a7ddcf303e5e0eceb9f",
-    "url": "/bias-awareness-platform/static/js/main.0d2112c4.chunk.js"
+    "revision": "4a216af590bdfb247b6c",
+    "url": "/bias-awareness-platform/static/js/main.ce4dd8b8.chunk.js"
   },
   {
     "revision": "2cc5142573b1b2e59997",
     "url": "/bias-awareness-platform/static/js/runtime-main.b7e6e405.js"
-  },
-  {
-    "revision": "8a36d3fb99497f6b03c1c4b814357056",
-    "url": "/bias-awareness-platform/static/media/help.8a36d3fb.svg"
   },
   {
     "revision": "cffe9e14c7b9b188ce6b8450ac8a122f",
@@ -42,9 +38,5 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "913fa54f7121318f4701490ba6562cd2",
     "url": "/bias-awareness-platform/static/media/right-arrow.913fa54f.svg"
-  },
-  {
-    "revision": "898b1b0e0861958b900ec5dcfd13d85d",
-    "url": "/bias-awareness-platform/static/media/x-mark.898b1b0e.svg"
   }
 ]);
