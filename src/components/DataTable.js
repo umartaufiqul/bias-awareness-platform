@@ -12,6 +12,7 @@ const DataTable = (props) => {
     const [currPage, setCurrPage] = useState(1)
     const [filterTweet, setFilterTweet] = useState(tweetListSample.length)
     const [update, setUpdate] = useState(false)
+    const [numTweet, setNumTweet] = useState(10)
     
     useEffect(() => {
         var label = []
@@ -59,10 +60,38 @@ const DataTable = (props) => {
         //Calculate the number of pagination
         const pageNum = Math.ceil(filterTweet/size)
         console.log(pageNum)
-        let pageItem = []
-        for (let i = 0; i < pageNum; i++) {
-            pageItem.push(<Pagination.Item key={i+1} style={{width: "auto", margin: "0rem"}} className={i+1 === currPage ? 'page-item active' : 'page-item'} onClick={() => changePage(i+1)}> {i+1} </Pagination.Item>)
+        let pageItem = [<Pagination.First style={{width: "auto", margin: "0rem"}} onClick={() => setCurrPage(1)}/>,
+            <Pagination.Prev style={{width: "auto", margin: "0rem"}} disabled={currPage === 1} onClick={() => setCurrPage(currPage-1)}/>]
+        if (pageNum > 3) {
+            if (currPage > 3) {
+                pageItem.push(<Pagination.Ellipsis style={{width: "auto", margin: "0rem"}} disabled/>)
+            }
+            if (currPage >= pageNum-2 && currPage <= pageNum) {
+                for (let i = pageNum-2; i < pageNum + 1; i++) {
+                    pageItem.push(<Pagination.Item key={i} style={{width: "auto", margin: "0rem"}} className={i === currPage ? 'page-item active' : 'page-item'} onClick={() => changePage(i)}> {i} </Pagination.Item>)
+                }
+            }
+            else if (currPage >= 1 && currPage <= 3) {
+                for (let i = 1; i < 4; i++) {
+                    pageItem.push(<Pagination.Item key={i} style={{width: "auto", margin: "0rem"}} className={i === currPage ? 'page-item active' : 'page-item'} onClick={() => changePage(i)}> {i} </Pagination.Item>)
+                }
+            }
+            else {
+                for (let i = currPage-1; i < 2+currPage && i < pageNum+1; i++) {
+                    pageItem.push(<Pagination.Item key={i} style={{width: "auto", margin: "0rem"}} className={i === currPage ? 'page-item active' : 'page-item'} onClick={() => changePage(i)}> {i} </Pagination.Item>)
+                }
+            }
+            if (currPage < pageNum-2) {
+                pageItem.push(<Pagination.Ellipsis style={{width: "auto", margin: "0rem"}} disabled/>)
+            }
         }
+        else {
+            for (let i = 0; i < pageNum && i < pageNum+1; i++) {
+                pageItem.push(<Pagination.Item key={i+1} style={{width: "auto", margin: "0rem"}} className={i+1 === currPage ? 'page-item active' : 'page-item'} onClick={() => changePage(i+1)}> {i+1} </Pagination.Item>)
+            }
+        }
+        pageItem.push(<Pagination.Next style={{width: "auto", margin: "0rem"}} disabled={currPage === pageNum} onClick={() => setCurrPage(currPage+1)}/>)
+        pageItem.push(<Pagination.Last style={{width: "auto", margin: "0rem"}} onClick={() => setCurrPage(pageNum)}/>)
         return (
         <Pagination className='justify-content-center' style={{padding: "0rem"}}>
             {pageItem}
@@ -95,7 +124,7 @@ const DataTable = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    { returnFilteredTweet(tweetListSample, 4)}
+                    { returnFilteredTweet(tweetListSample, numTweet)}
                 </tbody>
             </table>
             {/* <Pagination className='justify-content-center' style={{padding: "0rem"}}>
@@ -103,7 +132,7 @@ const DataTable = (props) => {
                 <Pagination.Item style={{width: "auto", margin: "0rem"}}> 2 </Pagination.Item>
                 <Pagination.Item style={{width: "auto", margin: "0rem"}}> 3 </Pagination.Item>
             </Pagination> */}
-            {createPagination(4)}
+            {createPagination(numTweet)}
 
         </div>
     )

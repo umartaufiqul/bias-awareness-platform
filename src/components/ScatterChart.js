@@ -32,6 +32,9 @@ const ScatterChart = (props) => {
     }
     
     const option = {
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 1,
         scales: {
             xAxes: [{
                 gridLines: {
@@ -89,7 +92,10 @@ const ScatterChart = (props) => {
 
     return (
         <div className='text-center'>
+            <div style={{position: "relative", overflowY: "auto"}}>
+                
             <Scatter data={scatter_data} options={option}/>
+            </div>
         </div>
     )
 }

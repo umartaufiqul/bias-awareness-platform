@@ -153,7 +153,7 @@ const Visualization = () => {
             return (
             <div className="explore-container" style={{marginTop: "1rem"}}>
             <h1> Abusive Speech Detection Result </h1>
-            <div className='scatter-chart'>
+            <div className='scatter-chart' style={{position: "relative", overflowY: "auto"}}>
                 <ScatterChart width={10} height={10} catName={category}/>
                 <form className='form-inline justify-content-center align-item-center' style={{marginTop: "1rem"}}>
                     <label style={{marginRight: "1rem"}}> <h6> Class: </h6></label>
@@ -183,7 +183,7 @@ const Visualization = () => {
                         <div className={exploreActive === "result" ? 'explore-choice active' : 'explore-choice'} onClick={() => handleExploreChange("result")}> Result </div>
                     </div>
                     {selectExplore()}
-                    <div className='associated-words'>
+                    {/* <div className='associated-words'>
                         <form className='form-inline'>
                         <label> Associated words: </label>
                         <input className="form-control ml-4" type="text" value={wordInput} onChange={handleInputChange} onKeyDown={handleInputDown}></input>
@@ -211,7 +211,7 @@ const Visualization = () => {
                                 </li>
                             )}
                         </ul>
-                    </div>
+                    </div> */}
                     
                 </div>
                 <div className='interactive-right'>
