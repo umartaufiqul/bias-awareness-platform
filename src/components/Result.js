@@ -1,10 +1,15 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 
 const Result = (props) => {
 
     const accStat = props.accStat
     const resultStat = props.resultStat
+    const resultAvailable = props.resultAvailable
     const [activeResult, setActiveResult] = useState("report")
+
+    useEffect(() => {
+        console.log("test for change in props" + resultAvailable)
+    })
 
     const reportTable = <table className='table' >
         <thead>
@@ -54,17 +59,27 @@ const Result = (props) => {
         setActiveResult(tab)
     }
 
-    return(
-        <div style={{marginTop: "1rem"}}>
-            <div className='d-flex justify-content-center'>
-                <div className={activeResult === "report" ? 'explore-choice active' : 'explore-choice'} style={{fontSize: "12px"}} onClick={() => handleResultChange("report")}> Report </div>
-                <div className={activeResult === "dist" ? 'explore-choice active' : 'explore-choice'} style={{fontSize: "12px"}} onClick={() => handleResultChange("dist")}> Distribution </div>
+    if (resultAvailable) {
+        return(
+            <div style={{marginTop: "1rem"}}>
+                <div className='d-flex justify-content-center'>
+                    <div className={activeResult === "report" ? 'explore-choice active' : 'explore-choice'} style={{fontSize: "12px"}} onClick={() => handleResultChange("report")}> Report </div>
+                    <div className={activeResult === "dist" ? 'explore-choice active' : 'explore-choice'} style={{fontSize: "12px"}} onClick={() => handleResultChange("dist")}> Distribution </div>
+                </div>
+                <div id='result-table' style={{overflow: "auto", height: "inherit"}}>
+                    {activeResult === "report" ? reportTable : distrTable}
+                </div>
             </div>
-            <div id='result-table' style={{overflow: "auto", height: "inherit"}}>
-                {activeResult === "report" ? reportTable : distrTable}
+        )
+    }
+    else {
+        return(
+            <div style={{marginTop: "1rem", padding: "0rem 5rem"}}>
+                <h3 style={{marginTop: "5rem", color: "#676767"}}> No result to display </h3>
+                <p> There is no model that has been built yet. You can build a model using the model builder panel on the right side of the page. </p>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default Result
