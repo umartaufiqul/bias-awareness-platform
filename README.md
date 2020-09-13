@@ -53,27 +53,23 @@ Due to various method of annotating the text, need to agree on the final categor
    - Data: ~25k, with 0.8 abuse rate
    - Categories: Hate, offensive, and neither
 
-### Bias Mitigation Algorithm to use
+## Connecting with Backend
 
-We're supposed to  use the algorithm provided by AIF360.
+There will be several input that the front end need to receive from the back end.
 
-Problem: they use algorithm that requires protected attributes, which doesn't appear in this 
+#### Data Exploration
 
-#### Solution 1: Change the topics (e.g income or recidivism)
+- Frontend &rarr; Backend: dataset name
+- Backend &rarr; Frontend: tweet dataset with format [{tweet, label}, ..., {tweet, label}]
 
-In case of topic changes, here are some dataset for income:
+#### Classification Result
 
-1. Annual Social and Economic Supplements 2019: [Link](https://www.census.gov/data/datasets/time-series/demo/cps/cps-asec.html)
-
-#### Solution 2: Use text classification specific mitigation algorithm
-
-Instead of using the one used in AIF360, we try to find one that is specifically used in text-classification
-
-1. Adversarial Learning Techniques: [Source](https://dspace.mit.edu/bitstream/handle/1721.1/123131/1128813860-MIT.pdf?sequence=1&isAllowed=y)
-   - Adversarial Learning is used to decorrelate protected attribute word vectors with sentiment
-2. Stereotypical Bias Removal for Hate Speech Detection Task using Knowledge-based Generalizations: [Source](https://dl.acm.org/doi/pdf/10.1145/3308558.3313504)
-   - Use two-stage framework to address stereotypical bias:
-     1. Skewed Predicted Class Distribution Bias Detection strategy &rarr; maximum probability of word w belonging to one of the classes excluding neutral class. High value mean w is stereotyped to the class c
-     2. Centroid embedding &rarr; replace a bias sensitive word with a dummy tag whose embedding is as follow: find POS tag &rarr; find similar word with similar POS tag &rarr; compute the centroid of top k (5) neighbors, including the original word
-
-However, these algorithm need to be created first, since the code is not provided, like AIF360.
+- Frontend &rarr; Backend: dataset name, model name
+- Backend &rarr; Frontend: two array
+  - Accuracy report: the accuracy in form of [{class, precision, recall, f1score, support}]
+  - Distribution report: the classification result in form of [{class, pblack, pwhite, pblack/pwhite}]
+- Pipeline: 
+  1. Take the model and dataset name
+  2. Run the model using the dataset
+  3. Send the output out for the graph as {cat1: {prob: [], aaeprob: [], tweetlist: []}, cat2:...}
+  4. Calculate the portion of pblack and pwhite for each category
