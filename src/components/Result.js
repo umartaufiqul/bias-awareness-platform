@@ -7,10 +7,6 @@ const Result = (props) => {
     const resultAvailable = props.resultAvailable
     const [activeResult, setActiveResult] = useState("report")
 
-    useEffect(() => {
-        console.log("test for change in props" + resultAvailable)
-    })
-
     const reportTable = <table className='table' >
         <thead>
             <tr>
