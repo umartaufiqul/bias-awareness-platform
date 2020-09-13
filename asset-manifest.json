@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/bias-awareness-platform/static/css/main.72afe788.chunk.css",
-    "main.js": "/bias-awareness-platform/static/js/main.06b3f6a2.chunk.js",
-    "main.js.map": "/bias-awareness-platform/static/js/main.06b3f6a2.chunk.js.map",
+    "main.css": "/bias-awareness-platform/static/css/main.7e74399d.chunk.css",
+    "main.js": "/bias-awareness-platform/static/js/main.81528c2d.chunk.js",
+    "main.js.map": "/bias-awareness-platform/static/js/main.81528c2d.chunk.js.map",
     "runtime-main.js": "/bias-awareness-platform/static/js/runtime-main.b7e6e405.js",
     "runtime-main.js.map": "/bias-awareness-platform/static/js/runtime-main.b7e6e405.js.map",
     "static/css/2.11829350.chunk.css": "/bias-awareness-platform/static/css/2.11829350.chunk.css",
-    "static/js/2.f8a503b3.chunk.js": "/bias-awareness-platform/static/js/2.f8a503b3.chunk.js",
-    "static/js/2.f8a503b3.chunk.js.map": "/bias-awareness-platform/static/js/2.f8a503b3.chunk.js.map",
+    "static/js/2.54abb4a0.chunk.js": "/bias-awareness-platform/static/js/2.54abb4a0.chunk.js",
+    "static/js/2.54abb4a0.chunk.js.map": "/bias-awareness-platform/static/js/2.54abb4a0.chunk.js.map",
     "index.html": "/bias-awareness-platform/index.html",
-    "precache-manifest.9c96af6de409aa555694e126c0ee1ee8.js": "/bias-awareness-platform/precache-manifest.9c96af6de409aa555694e126c0ee1ee8.js",
+    "precache-manifest.aacab9eb1454573d0139e5f9c63fde07.js": "/bias-awareness-platform/precache-manifest.aacab9eb1454573d0139e5f9c63fde07.js",
     "service-worker.js": "/bias-awareness-platform/service-worker.js",
     "static/css/2.11829350.chunk.css.map": "/bias-awareness-platform/static/css/2.11829350.chunk.css.map",
-    "static/css/main.72afe788.chunk.css.map": "/bias-awareness-platform/static/css/main.72afe788.chunk.css.map",
-    "static/js/2.f8a503b3.chunk.js.LICENSE.txt": "/bias-awareness-platform/static/js/2.f8a503b3.chunk.js.LICENSE.txt",
+    "static/css/main.7e74399d.chunk.css.map": "/bias-awareness-platform/static/css/main.7e74399d.chunk.css.map",
+    "static/js/2.54abb4a0.chunk.js.LICENSE.txt": "/bias-awareness-platform/static/js/2.54abb4a0.chunk.js.LICENSE.txt",
     "static/media/help.svg": "/bias-awareness-platform/static/media/help.8a36d3fb.svg",
     "static/media/info.svg": "/bias-awareness-platform/static/media/info.cffe9e14.svg",
     "static/media/left-arrow.svg": "/bias-awareness-platform/static/media/left-arrow.4d84261b.svg",
@@ -23,8 +23,8 @@
   "entrypoints": [
     "static/js/runtime-main.b7e6e405.js",
     "static/css/2.11829350.chunk.css",
-    "static/js/2.f8a503b3.chunk.js",
-    "static/css/main.72afe788.chunk.css",
-    "static/js/main.06b3f6a2.chunk.js"
+    "static/js/2.54abb4a0.chunk.js",
+    "static/css/main.7e74399d.chunk.css",
+    "static/js/main.81528c2d.chunk.js"
   ]
 }
