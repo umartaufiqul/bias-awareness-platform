@@ -103,6 +103,7 @@ const Visualization = () => {
     const [categoryList, setCategoryList] = useState(categories[0])
     const [category, setCategory] = useState(categoryList[0])
     const [exploreActive, setExploreActive] = useState("data")
+    const [resultAvailable, setResultAvailable] = useState(false)
     const [labelActive, setLabelActive] = useState([])
     const [resultStat, setResultStat] = useState([{}])
     const [accStat, setAccStat] = useState([{}])
@@ -266,7 +267,9 @@ const Visualization = () => {
         dispatch(activateLoader())
         setTimeout(function(){
             dispatch(deactivateLoader())
-            alert("The model has been reloaded")
+            setResultAvailable(true)
+            setExploreActive("result")
+            alert("The model has been built")
         }, 5000)
     }
 
@@ -292,19 +295,31 @@ const Visualization = () => {
 
     function selectExplore() {
         if (exploreActive === "result") {
-            return (
-            <div className="explore-container" style={{marginTop: "1rem"}}>
-            <h1> Abusive Speech Detection Result </h1>
-            <div className='scatter-chart' style={{position: "relative", overflowY: "auto"}}>
-                <ScatterChart width={10} height={10} catName={category}/>
-                <form className='form-inline justify-content-center align-item-center' style={{marginTop: "1rem"}}>
-                    <label style={{marginRight: "1rem"}}> <h6> Class: </h6></label>
-                    <DropdownButton id="dropdown-basic-button" title={category}>
-                        {returnBadCategory()}
-                    </DropdownButton>
-                </form>
-            </div>
-        </div>)
+            if (resultAvailable) {
+                return (
+                    <div className="explore-container" style={{marginTop: "1rem"}}>
+                    <h1> Abusive Speech Detection Result </h1>
+                    <div className='scatter-chart' style={{position: "relative", overflowY: "auto"}}>
+                        <ScatterChart width={10} height={10} catName={category}/>
+                        <form className='form-inline justify-content-center align-item-center' style={{marginTop: "1rem"}}>
+                            <label style={{marginRight: "1rem"}}> <h6> Class: </h6></label>
+                            <DropdownButton id="dropdown-basic-button" title={category}>
+                                {returnBadCategory()}
+                            </DropdownButton>
+                        </form>
+                    </div>
+                </div>)
+            }
+            else {
+                return(
+                    <div style={{marginTop: "1rem", padding: "0rem 5rem"}}>
+                        <h1> Abusive Speech Detection Result </h1>
+                        <h3 style={{marginTop: "20%", color: "#676767"}}> No result to display </h3>
+                        <p> There is no model that has been built yet. You can build a model using the model builder panel on the right side of the page. </p>
+                    </div>
+                )
+            }
+            
         }
         else {
             return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample}/>)
@@ -382,7 +397,7 @@ const Visualization = () => {
                             <span> Model: Model {resultModel+1} </span>
                             <span style={{marginLeft: "1rem"}}> Dataset: Dataset {resultData+1} </span> 
                         </div> */}
-                        <Result resultStat={resultStat} accStat={accStat}/>
+                        <Result resultStat={resultStat} accStat={accStat} resultAvailable={resultAvailable}/>
                     </div>
                 </div>
             </div>

@@ -24,12 +24,21 @@ const MyNavbar = () => {
             )
         },
         {
+            selector: '.explore-container',
+            content: () => (
+                <div>
+                    <h3 className='text-center'> Explore Dataset </h3>
+                    <p> There are several dataset that are can be used in this platform. Use this data exploring tab to observe what kind of tweets that belong to a certain class </p>
+                </div> 
+            )
+        },
+        {
             selector: '#interactive-controller',
             content: () => (
                 <div>
                     <h3 className='text-center'> Dataset and Model </h3>
                     <p> In this part, you can change the model and dataset used for classification. </p>
-                    <p> Try several combinations to see how they interact with each other. Don't forget to click the "Build Model" button everytime you want to try the new combination</p>
+                    <p> Try several combinations to see how they interact with each other. Don't forget to click the "Build Model" button everytime you want to try the new combination. Try to click it, and wait until an alert appear! </p>
                 </div>
             )
         },
@@ -48,7 +57,7 @@ const MyNavbar = () => {
             content: () => (
                 <div>
                     <h3 className='text-center'> Result Box </h3>
-                    <p> The result box display not only the accuracy result for the model, but also the distribution of each class with each label </p>
+                    <p> Now that the model has been built, the result box will display not only the accuracy result for the model, but also the distribution of each class with each label </p>
                 </div>
             )
         },
