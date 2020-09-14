@@ -73,20 +73,20 @@ const MyNavbar = () => {
         }
     ]
 
-    const sectionList = ["1. Visualization", "2. Debiasing"]
+    const sectionList = ["1. Visualization", "2. Bias Testing", "3. Debiasing"]
     const section = useSelector(state => state.section)
     const dispatch = useDispatch()
     const [isTourOpen, setIsTourOpen] = useState(false)
 
     useEffect(() => {
         if (window.location.href.includes("mitigation")) {
-            dispatch(setSection(2))
+            dispatch(setSection(3))
         }
         else if (window.location.href.includes("visualization")) {
             dispatch(setSection(1))
         }
-        else if (window.location.href.includes("evaluation")) {
-            dispatch(setSection(3))
+        else if (window.location.href.includes("bias-testing")) {
+            dispatch(setSection(2))
         }
         else if (window.location.href.includes("fin")) {
             dispatch(setSection(4))
@@ -110,12 +110,12 @@ const MyNavbar = () => {
                 break;
                 // window.location.reload()
             case 2:
-                window.location.href = "/bias-awareness-platform/#/mitigation"
+                window.location.href = "/bias-awareness-platform/#/bias-testing"
                 dispatch(setSection(2))
                 break;
                 // window.location.reload()
             case 3:
-                window.location.href = "/bias-awareness-platform/#/evaluation"
+                window.location.href = "/bias-awareness-platform/#/mitigation"
                 dispatch(setSection(3))
                 // alert("This page is not available. For now")
                 break;
@@ -154,15 +154,15 @@ const MyNavbar = () => {
     }
 
     const usePrev = () => {
-        return section > 1 && section < 3
+        return section > 1 && section < 4
     }
 
     const useNext = () => {
-        return section > 0 && section < 2
+        return section > 0 && section < 3
     }
 
     const useDropdown = () => {
-        return section > 0 && section < 3
+        return section > 0 && section < 4
     }
 
     return(
@@ -173,9 +173,11 @@ const MyNavbar = () => {
                     {usePrev() ? <img src={require('../icons/left-arrow.svg')} alt='' onClick={() => goToPage(section-1)}/> : <span style={{height: "16px", width: "16px"}}></span>}
                 </Col>
                 <Col>
-                    {useDropdown() ? <NavDropdown title={sectionList[section-1]} className='text-left' id='navbar-dropdown'>
-                    <NavDropdown.Item href="/bias-awareness-platform/#/visualization">1. Visualization</NavDropdown.Item>
-                        <NavDropdown.Item href="/bias-awareness-platform/#/mitigation"> 2. Debiasing </NavDropdown.Item>
+                    {useDropdown() ? 
+                    <NavDropdown title={sectionList[section-1]} className='text-left' id='navbar-dropdown'>
+                        <NavDropdown.Item href="/bias-awareness-platform/#/visualization"> 1. Visualization</NavDropdown.Item>
+                        <NavDropdown.Item href="/bias-awareness-platform/#/bias-mitigation"> 2. Bias Testing </NavDropdown.Item>
+                        <NavDropdown.Item href="/bias-awareness-platform/#/mitigation"> 3. Debiasing </NavDropdown.Item>
                     </NavDropdown>
                     : <div style={{height: "2.5rem"}}></div>
                     }
