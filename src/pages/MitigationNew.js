@@ -8,6 +8,7 @@ import Dropdown from "react-bootstrap/Dropdown"
 import DropdownButton from "react-bootstrap/DropdownButton"
 import Form from "react-bootstrap/Form"
 import { activateLoader, deactivateLoader } from "../actions"
+import JupyterNotebook from "./Jupyter.js"
 
 const MitigationNew = () => {
 
@@ -153,6 +154,9 @@ const MitigationNew = () => {
                 <p style={{marginTop: "1rem"}}> Your work is currently being submitted.</p>
                 <div className='spinner'></div>
             </div>
+
+            <JupyterNotebook> </JupyterNotebook>
+        {/*
             <div className='submit-mitigation text-center'>
                 <h3> Submit your mitigation algorithm! </h3>
                 <form className=' justify-content-center' style={{marginTop: "2rem"}}>
@@ -276,6 +280,7 @@ const MitigationNew = () => {
                     </button>
                 </Modal.Footer>
             </Modal>
+            */}
         </div>
     )
 }

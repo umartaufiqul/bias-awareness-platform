@@ -8,12 +8,17 @@ const DataTable = (props) => {
     const categoryList = props.categoryList
     const tweetListSample = props.tweetListSample
     
+    console.log(props);
+
     const [labelActive, setLabelActive] = useState([])
     const [currPage, setCurrPage] = useState(1)
     const [filterTweet, setFilterTweet] = useState(tweetListSample.length)
     const [update, setUpdate] = useState(false)
     const [numTweet, setNumTweet] = useState(10)
     
+    useEffect(() => {
+        setFilterTweet(tweetListSample.length);
+    }, [tweetListSample.length])
     useEffect(() => {
         var label = []
         for (var i = 0; i < categoryList.length; i++) {
@@ -22,14 +27,13 @@ const DataTable = (props) => {
         setLabelActive(label)
     }, [categoryList.length])
 
-    useEffect(() => {
-
-    }, [filterTweet.length])
     function returnFilteredTweet(tweet_list, size) {
         let filtered_tweet = [...tweet_list]
         filtered_tweet = filtered_tweet.filter((item) => labelActive[categoryList.findIndex((cat_item) => cat_item === item.label)])
         let paged_tweet = filtered_tweet.slice(0+size*(currPage-1), size*currPage)
+
         if (update) {
+            console.log("here");
             setFilterTweet(filtered_tweet.length)
             setUpdate(false)
         }
@@ -46,8 +50,6 @@ const DataTable = (props) => {
     function handleFilter(index) {
         var new_label = [...labelActive]
         new_label[index] = !labelActive[index]
-        console.log(index)
-        console.log(new_label)
         setLabelActive(new_label)
         setUpdate(true)
     }
@@ -59,7 +61,6 @@ const DataTable = (props) => {
     function createPagination(size) {
         //Calculate the number of pagination
         const pageNum = Math.ceil(filterTweet/size)
-        console.log(pageNum)
         let pageItem = [<Pagination.First style={{width: "auto", margin: "0rem"}} onClick={() => setCurrPage(1)}/>,
             <Pagination.Prev style={{width: "auto", margin: "0rem"}} disabled={currPage === 1} onClick={() => setCurrPage(currPage-1)}/>]
         if (pageNum > 3) {

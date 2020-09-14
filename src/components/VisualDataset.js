@@ -1,11 +1,18 @@
-import React from "react"
+import React, { useEffect } from "react"
 import {useSelector, useDispatch} from "react-redux"
 import {changeDataset} from "../actions"
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 
-const data_values = ['data1', 'data2', 'data3']
+const data_values = ['data1', 'data2']
 const data_specs = [
+    {
+        title: "A Benchmark Dataset for Learning to Intervene in Online Hate Speech",
+        author: "Jing Qian et al.",
+        tweet_num: 5000,
+        categories: 2,
+        abuse_rate: 0.8,
+    }, 
     {
         title: "A Benchmark Dataset for Learning to Intervene in Online Hate Speech",
         author: "Jing Qian et al.",
@@ -15,9 +22,13 @@ const data_specs = [
     }
 ]
 
-const VisualDataset = () => {
+const VisualDataset = (props) => {
     const data = useSelector(state => state.data)
     const dispatch = useDispatch()
+
+    useEffect(d => {
+         props.onChange(data);
+    }, [data]);
 
     return(
         <div className='visual-dataset'>
