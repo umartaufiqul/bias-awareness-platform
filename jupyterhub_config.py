@@ -53,7 +53,7 @@
 #c.JupyterHub.admin_access = False
 
 ## DEPRECATED since version 0.7.2, use Authenticator.admin_users instead.
-c.JupyterHub.admin_users = {'hyungyushin'}
+c.JupyterHub.admin_users = {'ubuntu'}
 c.LocalAuthenticator.create_system_users=True
 
 ## Allow named single-user servers per user
@@ -539,7 +539,16 @@ c.LocalAuthenticator.create_system_users=True
 #c.JupyterHub.template_vars = {}
 
 ## Extra settings overrides to pass to the tornado application.
-#c.JupyterHub.tornado_settings = {}
+# c.Spawner.args = ["'--NotebookApp.tornado_settings={ 'headers': { 'Content-Security-Policy': 'frame-ancestors * self 3.35.21.90:3000'},'slow_spawn_timeout': 60}'"]
+
+c.JupyterHub.tornado_settings = {
+   'headers': {
+       'Content-Security-Policy': "frame-ancestors * self 3.35.21.90:3000 ",
+    },
+   'slow_spawn_timeout': 60
+}
+
+
 
 ## Trust user-provided tokens (via JupyterHub.service_tokens) to have good
 #  entropy.

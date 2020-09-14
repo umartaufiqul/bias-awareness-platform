@@ -112,3 +112,7 @@
 .chartjs-size-monitor {
   overflow-y: none !important;
 }
+
+html, body {
+  height: 100%;
+}

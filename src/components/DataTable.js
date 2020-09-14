@@ -8,12 +8,18 @@ const DataTable = (props) => {
     const categoryList = props.categoryList
     const tweetListSample = props.tweetListSample
     
+    console.log(props);
+
     const [labelActive, setLabelActive] = useState([])
     const [currPage, setCurrPage] = useState(1)
     const [filterTweet, setFilterTweet] = useState(tweetListSample.length)
     const [update, setUpdate] = useState(false)
     const [numTweet, setNumTweet] = useState(10)
     
+    useEffect(() => {
+        console.log("hi");
+        setFilterTweet(tweetListSample.length);
+    }, [tweetListSample.length])
     useEffect(() => {
         var label = []
         for (var i = 0; i < categoryList.length; i++) {
@@ -22,14 +28,21 @@ const DataTable = (props) => {
         setLabelActive(label)
     }, [categoryList.length])
 
-    useEffect(() => {
-
-    }, [filterTweet.length])
     function returnFilteredTweet(tweet_list, size) {
+        console.log(tweet_list);
+        console.log(size);
+
         let filtered_tweet = [...tweet_list]
+        console.log(filtered_tweet);
         filtered_tweet = filtered_tweet.filter((item) => labelActive[categoryList.findIndex((cat_item) => cat_item === item.label)])
+        console.log(filtered_tweet);
         let paged_tweet = filtered_tweet.slice(0+size*(currPage-1), size*currPage)
+        console.log(filtered_tweet);
+        console.log(paged_tweet);
+        console.log(filterTweet);
+
         if (update) {
+            console.log("here");
             setFilterTweet(filtered_tweet.length)
             setUpdate(false)
         }
@@ -59,6 +72,7 @@ const DataTable = (props) => {
     function createPagination(size) {
         //Calculate the number of pagination
         const pageNum = Math.ceil(filterTweet/size)
+        console.log(filterTweet)
         console.log(pageNum)
         let pageItem = [<Pagination.First style={{width: "auto", margin: "0rem"}} onClick={() => setCurrPage(1)}/>,
             <Pagination.Prev style={{width: "auto", margin: "0rem"}} disabled={currPage === 1} onClick={() => setCurrPage(currPage-1)}/>]

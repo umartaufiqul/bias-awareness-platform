@@ -12,14 +12,14 @@ import { activateLoader, deactivateLoader } from "../actions"
 import Form from "react-bootstrap/Form"
 import Result from "../components/Result"
 import DataTable from "../components/DataTable"
+import Papa from 'papaparse'
 
 const Visualization = () => {
-
     const [datasetActive, setDatasetActive] = useState("active")
     const [modelActive, setModelActive] = useState("")
     const [wordInput, setWordInput] = useState("")
     const [wordList, setWordList] = useState([])
-    const [categoryList, setCategoryList] = useState(["Hateful", "Abusive", "neither"])
+    const [categoryList, setCategoryList] = useState(["0", "1", "2"])
     const [category, setCategory] = useState(categoryList[0])
     const [exploreActive, setExploreActive] = useState("data")
     const [labelActive, setLabelActive] = useState([])
@@ -27,9 +27,47 @@ const Visualization = () => {
     const loaderActive = useSelector(state => state.loaderActive)
     const resultModel = useSelector(state => state.model)
     const resultData = useSelector(state => state.data)
+    const [tweetListSample, setTweetListSample] = useState([{}])
+    const [tweetListReadFinished, setTweetListReadFinished] = useState(false)
     const dispatch = useDispatch()
     
+    async function fetchData() {
+        const response = await fetch(`http://3.35.21.90:3000/bias-awareness-platform/david_formatted.csv`)
+        const reader = response.body.getReader()
+        const result = await reader.read() // raw array
 
+        console.log(result)
+
+        const decoder = new TextDecoder('utf-8')
+        const csv = decoder.decode(result.value) // the csv text
+        
+        const results = Papa.parse(csv, {
+            header: true,
+            complete: function (results) {
+                var tweetData = [];
+
+                console.log(results);
+                for (var i = 0; i < results.data.length; i++) {
+                    tweetData.push({
+                        tweet: results.data[i].tweet.trim(),
+                        label: results.data[i].class
+                    });
+                }
+
+                console.log(tweetData);
+
+                setTweetListSample(tweetData);
+                // setTweetListReadFinished(true);
+            }
+        }) // object with { data, errors, meta }
+
+    }
+    useEffect(() => {
+        fetchData();
+    }, [tweetListReadFinished])
+
+
+    /*
     const tweetListSample = [{
       tweet: "Tweet sample but I nned to make it long so forgive me for the length okay",
       label: "neither"
@@ -49,6 +87,7 @@ const Visualization = () => {
           tweet: "Tweet sample but I nned to make it long so forgive me for the length okay",
           label: "Abusive"
         }]
+        */
     const resultStat = [{
         class: "Racism",
         pblack: 0.001,
@@ -74,7 +113,6 @@ const Visualization = () => {
         f1_score: 0.79,
         support: 1344
     }]
-
 
     function changeActiveState(id) {
         console.log(id)
