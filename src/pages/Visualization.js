@@ -1,8 +1,8 @@
-import React, {useState, useEffect, useCallback} from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import "../style/Visualization.css"
-import {useDispatch, useSelector} from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import ScatterChart from "../components/ScatterChart"
 import VisualDataset from "../components/VisualDataset"
 import VisualModelNew from "../components/VisualModelNew"
@@ -25,6 +25,76 @@ const Visualization = () => {
         ["0", "1"]
     ];
 
+    const resultStatValues = [[{
+        class: "Hateful",
+        pblack: 0.001,
+        pwhite: 0.003,
+        pblack_white: 0.005,
+    }, {
+        class: "Abusive",
+        pblack: 0.083,
+        pwhite: 0.048,
+        pblack_white: 1.724
+    }, {
+        class: "Neither",
+        pblack: 0.083,
+        pwhite: 0.048,
+        pblack_white: 1.724
+    }
+    ],
+
+    [{
+        class: "Hateful",
+        pblack: 0.083,
+        pwhite: 0.048,
+        pblack_white: 1.724
+    }, {
+        class: "Normal",
+        pblack: 0.083,
+        pwhite: 0.048,
+        pblack_white: 1.724
+    }]
+
+    ]
+
+    const accStatValues = [[{
+        class: "Hateful",
+        precision: 0.77,
+        recall: 0.86,
+        f1_score: 0.81,
+        support: 3756
+    }, {
+        class: "Abusive",
+        precision: 0.84,
+        recall: 0.75,
+        f1_score: 0.79,
+        support: 1344
+    },
+    {
+        class: "Neither",
+        precision: 0.84,
+        recall: 0.75,
+        f1_score: 0.79,
+        support: 1344
+    }],
+    [
+        {
+            class: "Hateful",
+            precision: 0.84,
+            recall: 0.75,
+            f1_score: 0.79,
+            support: 1344
+        },
+        {
+            class: "Normal",
+            precision: 0.84,
+            recall: 0.75,
+            f1_score: 0.79,
+            support: 1344
+
+        }
+    ]]
+
     const [currentDatasetIndex, setCurrentDatasetIndex] = useState("0")
     const [datasetActive, setDatasetActive] = useState("active")
     const [modelActive, setModelActive] = useState("")
@@ -34,6 +104,8 @@ const Visualization = () => {
     const [category, setCategory] = useState(categoryList[0])
     const [exploreActive, setExploreActive] = useState("data")
     const [labelActive, setLabelActive] = useState([])
+    const [resultStat, setResultStat] = useState([{}])
+    const [accStat, setAccStat] = useState([{}])
 
     const loaderActive = useSelector(state => state.loaderActive)
     const resultModel = useSelector(state => state.model)
@@ -80,6 +152,8 @@ const Visualization = () => {
 
     useEffect(() => {
         fetchData(0);
+        setResultStat(resultStatValues[0]);
+        setAccStat(accStatValues[0]);
     }, [tweetListReadFinished])
 
 
@@ -104,6 +178,7 @@ const Visualization = () => {
           label: "Abusive"
         }]
         */
+       /*
     const resultStat = [{
         class: "Racism",
         pblack: 0.001,
@@ -129,6 +204,7 @@ const Visualization = () => {
         f1_score: 0.79,
         support: 1344
     }]
+    */
 
     function handleDatasetChange(datasetIndex) {
         if(currentDatasetIndex != datasetIndex) {
@@ -136,6 +212,9 @@ const Visualization = () => {
             setCategoryList(categories[parseInt(datasetIndex)]);
             setCategory(categories[parseInt(datasetIndex)][0]);
             setCurrentDatasetIndex(datasetIndex);
+
+            setResultStat(resultStatValues[parseInt(datasetIndex)]);
+            setAccStat(accStatValues[parseInt(datasetIndex)]);
         }
     }
 
@@ -281,17 +360,21 @@ const Visualization = () => {
                     <div id='interactive-controller'>
                         <div className='d-flex interact-tab'> 
                             <div className={'interactive-choice '+ datasetActive} id="dataset-tab" onClick={(e) => changeActiveState(e.currentTarget.id)}> DATASET </div>
+                            {/*
                             <div className={'interactive-choice '+modelActive} id="model-tab" onClick={(e) => changeActiveState(e.currentTarget.id)}> MODEL </div>
+                            */}
                         </div>
                         <div className="interact-container">
                             {changeContent()}
                         </div>
+                        {/*
                         <div className='load-btn'>
                             <button type='button' className="btn btn-green" onClick={(e) => {
                             e.preventDefault()
                             handleModelChange()
                             }}> Build Model </button>
                         </div>
+                        */}
                     </div>
                     <div id='visual-result'>
                         <h3> Result </h3>
