@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, useCallback} from "react"
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import "../style/Visualization.css"
@@ -15,11 +15,22 @@ import DataTable from "../components/DataTable"
 import Papa from 'papaparse'
 
 const Visualization = () => {
+    const datasetURL = [
+        'http://3.35.21.90:3000/bias-awareness-platform/david_formatted.csv',
+        'http://3.35.21.90:3000/bias-awareness-platform/hatespeech_formatted.csv'
+    ];
+
+    const categories = [
+        ["0", "1", "2"],
+        ["0", "1"]
+    ];
+
+    const [currentDatasetIndex, setCurrentDatasetIndex] = useState("0")
     const [datasetActive, setDatasetActive] = useState("active")
     const [modelActive, setModelActive] = useState("")
     const [wordInput, setWordInput] = useState("")
     const [wordList, setWordList] = useState([])
-    const [categoryList, setCategoryList] = useState(["0", "1", "2"])
+    const [categoryList, setCategoryList] = useState(categories[0])
     const [category, setCategory] = useState(categoryList[0])
     const [exploreActive, setExploreActive] = useState("data")
     const [labelActive, setLabelActive] = useState([])
@@ -31,8 +42,8 @@ const Visualization = () => {
     const [tweetListReadFinished, setTweetListReadFinished] = useState(false)
     const dispatch = useDispatch()
     
-    async function fetchData() {
-        const response = await fetch(`http://3.35.21.90:3000/bias-awareness-platform/david_formatted.csv`)
+    async function fetchData(datasetIndex) {
+        const response = await fetch(datasetURL[datasetIndex])
         const reader = response.body.getReader()
         const result = await reader.read() // raw array
 
@@ -62,8 +73,13 @@ const Visualization = () => {
         }) // object with { data, errors, meta }
 
     }
+
+    useEffect((data) => {
+        console.log(data);
+    });
+
     useEffect(() => {
-        fetchData();
+        fetchData(0);
     }, [tweetListReadFinished])
 
 
@@ -114,6 +130,15 @@ const Visualization = () => {
         support: 1344
     }]
 
+    function handleDatasetChange(datasetIndex) {
+        if(currentDatasetIndex != datasetIndex) {
+            fetchData(parseInt(datasetIndex));
+            setCategoryList(categories[parseInt(datasetIndex)]);
+            setCategory(categories[parseInt(datasetIndex)][0]);
+            setCurrentDatasetIndex(datasetIndex);
+        }
+    }
+
     function changeActiveState(id) {
         console.log(id)
         if (id === "dataset-tab" && datasetActive === "") {
@@ -127,7 +152,7 @@ const Visualization = () => {
 
     function changeContent() {
         if (datasetActive === "active") {
-            return <VisualDataset />
+            return <VisualDataset onChange={handleDatasetChange}/>
         }
         else {
             return <VisualModelNew />

@@ -17,7 +17,6 @@ const DataTable = (props) => {
     const [numTweet, setNumTweet] = useState(10)
     
     useEffect(() => {
-        console.log("hi");
         setFilterTweet(tweetListSample.length);
     }, [tweetListSample.length])
     useEffect(() => {
@@ -29,17 +28,9 @@ const DataTable = (props) => {
     }, [categoryList.length])
 
     function returnFilteredTweet(tweet_list, size) {
-        console.log(tweet_list);
-        console.log(size);
-
         let filtered_tweet = [...tweet_list]
-        console.log(filtered_tweet);
         filtered_tweet = filtered_tweet.filter((item) => labelActive[categoryList.findIndex((cat_item) => cat_item === item.label)])
-        console.log(filtered_tweet);
         let paged_tweet = filtered_tweet.slice(0+size*(currPage-1), size*currPage)
-        console.log(filtered_tweet);
-        console.log(paged_tweet);
-        console.log(filterTweet);
 
         if (update) {
             console.log("here");
@@ -59,8 +50,6 @@ const DataTable = (props) => {
     function handleFilter(index) {
         var new_label = [...labelActive]
         new_label[index] = !labelActive[index]
-        console.log(index)
-        console.log(new_label)
         setLabelActive(new_label)
         setUpdate(true)
     }
@@ -72,8 +61,6 @@ const DataTable = (props) => {
     function createPagination(size) {
         //Calculate the number of pagination
         const pageNum = Math.ceil(filterTweet/size)
-        console.log(filterTweet)
-        console.log(pageNum)
         let pageItem = [<Pagination.First style={{width: "auto", margin: "0rem"}} onClick={() => setCurrPage(1)}/>,
             <Pagination.Prev style={{width: "auto", margin: "0rem"}} disabled={currPage === 1} onClick={() => setCurrPage(currPage-1)}/>]
         if (pageNum > 3) {

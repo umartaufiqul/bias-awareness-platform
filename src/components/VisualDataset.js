@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import {useSelector, useDispatch} from "react-redux"
 import {changeDataset} from "../actions"
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
@@ -15,9 +15,13 @@ const data_specs = [
     }
 ]
 
-const VisualDataset = () => {
+const VisualDataset = (props) => {
     const data = useSelector(state => state.data)
     const dispatch = useDispatch()
+
+    useEffect(d => {
+         props.onChange(data);
+    }, [data]);
 
     return(
         <div className='visual-dataset'>
