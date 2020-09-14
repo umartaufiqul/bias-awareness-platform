@@ -102,17 +102,27 @@
   margin: 1rem;
 }
 
-@media screen and (min-height: 911px) {
+/*@media screen and (min-height: 911px) { */
   .main-application {
-    height: 100vh;
+   /* height: 100vh; */
     /* background-color: black; */
+   height: calc(100% - 80px);
   }
-}
+/* } */
 
 .chartjs-size-monitor {
   overflow-y: none !important;
 }
 
 html, body {
+  height: 100%;
+}
+
+
+#root {
+  height: 100%;
+}
+
+.rootDiv {
   height: 100%;
 }

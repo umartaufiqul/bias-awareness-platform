@@ -103,7 +103,7 @@ const Visualization = () => {
     const [categoryList, setCategoryList] = useState(categories[0])
     const [category, setCategory] = useState(categoryList[0])
     const [exploreActive, setExploreActive] = useState("data")
-    const [resultAvailable, setResultAvailable] = useState(false)
+    const [resultAvailable, setResultAvailable] = useState(true)
     const [labelActive, setLabelActive] = useState([])
     const [resultStat, setResultStat] = useState([{}])
     const [accStat, setAccStat] = useState([{}])
@@ -133,7 +133,7 @@ const Visualization = () => {
                 console.log(results);
                 for (var i = 0; i < results.data.length; i++) {
                     tweetData.push({
-                        tweet: results.data[i].tweet.trim(),
+                        tweet: results.data[i].tweet,
                         label: results.data[i].class
                     });
                 }

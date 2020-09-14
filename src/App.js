@@ -6,7 +6,7 @@ import Main from './pages/Main';
 
 function App() {
   return (
-    <div>
+    <div className='rootDiv'>
         <Switch>
           <Route exact path='/' component={Introduction}></Route>
           <Route path='/' component={Main}></Route>
