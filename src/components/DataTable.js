@@ -2,6 +2,8 @@ import React, {useState, useEffect} from "react"
 import DropdownButton from "react-bootstrap/DropdownButton"
 import Form from "react-bootstrap/Form"
 import Pagination from 'react-bootstrap/Pagination'
+import Dropdown from "react-bootstrap/Dropdown"
+import {Bar} from 'react-chartjs-2'
 
 
 const DataTable = (props) => {
@@ -15,6 +17,65 @@ const DataTable = (props) => {
     const [filterTweet, setFilterTweet] = useState(tweetListSample.length)
     const [update, setUpdate] = useState(false)
     const [numTweet, setNumTweet] = useState(10)
+    const [dataExplore, setDataExplore] = useState("Table")
+
+    const barData = {
+        // labels: [0, 1, 2],
+        // dataset: [{
+        //     label: 'My First dataset',
+        //     backgroundColor: 'rgba(255,99,132,0.2)',
+        //     borderColor: 'rgba(255,99,132,1)',
+        //     borderWidth: 1,
+        //     hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+        //     hoverBorderColor: 'rgba(255,99,132,1)',
+        //     data: [0.5, 0.3, 0.2]
+        // }]
+        labels: [0, 1, 2],
+        datasets: [
+            {
+            label: 'Tweet Distribution',
+            backgroundColor: 'rgba(255,99,132,0.2)',
+            borderColor: 'rgba(255,99,132,1)',
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+            hoverBorderColor: 'rgba(255,99,132,1)',
+            data: [0.5, 0.6, 0.7]
+            }
+        ]
+    }
+
+    const barOption = {
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 1,
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    drawOnChartArea: false,
+                    color: "#131c2b"
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Label',
+                },
+            }],
+            yAxes: [{
+                gridLines: {
+                    drawOnChartArea: false,
+                    color: "#131c2b"
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Distribution',
+                },
+                ticks: {
+                    suggestedMin: 0,
+                    maxTicksLimit: 10,
+                    suggestedMax: 1
+                }  
+            }]
+        },
+    }
     
     useEffect(() => {
         setFilterTweet(tweetListSample.length);
@@ -100,41 +161,56 @@ const DataTable = (props) => {
         )
     }
 
+    function createDataExplore() {
+        if (dataExplore === "Table") {
+            return (<div>
+                <table className='table'style={{margin: "2rem 1rem", tableLayout: "fixed"}}>
+                    <thead>
+                        <tr>
+                            <th style={{width: "50px"}}>No</th>
+                            <th >Tweet</th>
+                            <th style={{width: "150px"}}>
+                            <DropdownButton id="dropdown-basic-button" title='Label'>
+                            <Form className='text-center'>
+                                {categoryList.map((item, i) => (
+                                    <Form.Check key={i}
+                                        type={'checkbox'}
+                                        label={item}
+                                        defaultChecked={labelActive[i]}
+                                        onClick={() => handleFilter(i)}
+                                    />
+                                ))}
+                                </Form>
+                            </DropdownButton>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        { returnFilteredTweet(tweetListSample, numTweet)}
+                    </tbody>
+                </table>
+                {createPagination(numTweet)}
+            </div>)
+        }
+        else {
+            //Return bar chart of distribution
+            return (<Bar data={barData} options={barOption}/>)
+        }
+    }
+
     return (
         <div className="explore-container" style={{marginTop: "1rem", padding: "0rem 2rem", overflowY: "scroll"}}>
             <h1 > Exploring Dataset </h1>
-            <table className='table'style={{margin: "2rem 1rem", tableLayout: "fixed"}}>
-                <thead>
-                    <tr>
-                        <th style={{width: "50px"}}>No</th>
-                        <th >Tweet</th>
-                        <th style={{width: "150px"}}>
-                        <DropdownButton id="dropdown-basic-button" title='Label'>
-                        <Form className='text-center'>
-                            {categoryList.map((item, i) => (
-                                <Form.Check key={i}
-                                    type={'checkbox'}
-                                    label={item}
-                                    defaultChecked={labelActive[i]}
-                                    onClick={() => handleFilter(i)}
-                                />
-                            ))}
-                            </Form>
-                        </DropdownButton>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    { returnFilteredTweet(tweetListSample, numTweet)}
-                </tbody>
-            </table>
-            {/* <Pagination className='justify-content-center' style={{padding: "0rem"}}>
-                <Pagination.Item style={{width: "auto", margin: "0rem"}}> 1 </Pagination.Item>
-                <Pagination.Item style={{width: "auto", margin: "0rem"}}> 2 </Pagination.Item>
-                <Pagination.Item style={{width: "auto", margin: "0rem"}}> 3 </Pagination.Item>
-            </Pagination> */}
-            {createPagination(numTweet)}
-
+            <div className='d-flex justify-content-center align-item-center'>
+            <h5 style={{marginRight: "1rem", paddingTop: "0.5rem"}}> Choose a data representation: </h5>
+            <DropdownButton title={dataExplore}> 
+                {['Table', 'Graph'].map((item, i) => {
+                    return (<Dropdown.Item key={i} onClick={() => setDataExplore(item)}> {item} </Dropdown.Item>)
+                })}
+            </DropdownButton>
+            </div>
+            {createDataExplore()}
+            
         </div>
     )
 }
