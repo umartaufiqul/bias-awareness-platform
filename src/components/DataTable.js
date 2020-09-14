@@ -4,13 +4,17 @@ import Form from "react-bootstrap/Form"
 import Pagination from 'react-bootstrap/Pagination'
 import Dropdown from "react-bootstrap/Dropdown"
 import {Bar} from 'react-chartjs-2'
+import Accordion from "react-bootstrap/Accordion"
+import Card from "react-bootstrap/Card"
+import Button from "react-bootstrap/Button"
+import ListGroup from "react-bootstrap/ListGroup"
 
 
 const DataTable = (props) => {
     const categoryList = props.categoryList
     const tweetListSample = props.tweetListSample
     
-    console.log(props);
+    // console.log(props);
 
     const [labelActive, setLabelActive] = useState([])
     const [currPage, setCurrPage] = useState(1)
@@ -19,21 +23,15 @@ const DataTable = (props) => {
     const [numTweet, setNumTweet] = useState(10)
     const [dataExplore, setDataExplore] = useState("Table")
 
+    //The dataview options are ['general', 'white-only', 'black-only', 'keyword']
+    const [dataView, setDataView] = useState(0)
+    const dataViewList = ['general distribution', 'white-only distribution', 'black-only distribution', 'keyword distribution']
+
     const barData = {
-        // labels: [0, 1, 2],
-        // dataset: [{
-        //     label: 'My First dataset',
-        //     backgroundColor: 'rgba(255,99,132,0.2)',
-        //     borderColor: 'rgba(255,99,132,1)',
-        //     borderWidth: 1,
-        //     hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-        //     hoverBorderColor: 'rgba(255,99,132,1)',
-        //     data: [0.5, 0.3, 0.2]
-        // }]
         labels: [0, 1, 2],
         datasets: [
             {
-            label: 'Tweet Distribution',
+            label: dataViewList[dataView],
             backgroundColor: 'rgba(255,99,132,0.2)',
             borderColor: 'rgba(255,99,132,1)',
             borderWidth: 1,
@@ -194,14 +192,57 @@ const DataTable = (props) => {
         }
         else {
             //Return bar chart of distribution
-            return (<Bar data={barData} options={barOption}/>)
+            return (
+            <div className='d-flex justify-align-center'>
+                <div style={{flex: "4", marginRight: "1rem"}}>
+                    <h6> List of view: </h6>
+                    <Accordion>
+                    <Card>
+                        <Card.Header>
+                            <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                            Label Distribution
+                            </Accordion.Toggle>
+                        </Card.Header>
+                        <Accordion.Collapse eventKey="0">
+                            <ListGroup>
+                                <ListGroup.Item action active={dataView === 0} onClick={() => setDataView(0)}>General distribution</ListGroup.Item>
+                                <ListGroup.Item action active={dataView === 1} onClick={() => setDataView(1)}>White-only distribution</ListGroup.Item>
+                                <ListGroup.Item action active={dataView === 2} onClick={() => setDataView(2)}>Black-only distribution</ListGroup.Item>
+                            </ListGroup>
+                        </Accordion.Collapse>
+                        </Card>
+                        <Card>
+                        <Card.Header>
+                            <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                            Other distribution
+                            </Accordion.Toggle>
+                        </Card.Header>
+                        <Accordion.Collapse eventKey="1">
+                            <ListGroup>
+                                <ListGroup.Item action active={dataView === 3} onClick={() => setDataView(3)}>Keyword distribution</ListGroup.Item>
+                            </ListGroup>
+                        </Accordion.Collapse>
+                        </Card>
+                    </Accordion>
+                </div>
+                <div style={{flex: "10"}}>
+                    {createBarChart()}
+                </div>
+            </div>)
+        }
+    }
+
+    function createBarChart() {
+        switch(dataView){
+            default:
+                return (<Bar data={barData} options={barOption}/>)
         }
     }
 
     return (
         <div className="explore-container" style={{marginTop: "1rem", padding: "0rem 2rem", overflowY: "scroll"}}>
             <h1 > Exploring Dataset </h1>
-            <div className='d-flex justify-content-center align-item-center'>
+            <div className='d-flex justify-content-center align-item-center' style={{marginBottom: "1rem"}}>
             <h5 style={{marginRight: "1rem", paddingTop: "0.5rem"}}> Choose a data representation: </h5>
             <DropdownButton title={dataExplore}> 
                 {['Table', 'Graph'].map((item, i) => {
