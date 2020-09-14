@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import ScatterChart from "../components/ScatterChart"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropdownButton from "react-bootstrap/DropdownButton"
-import Result from "../components/Result"
+import BiasResult from "../components/BiasResult"
 import DataTable from "../components/DataTable"
 import Papa from 'papaparse'
 
@@ -93,7 +93,7 @@ const BiasTesting = () => {
     const [categoryList, setCategoryList] = useState(categories[0])
     const [category, setCategory] = useState(categoryList[0])
     const [exploreActive, setExploreActive] = useState("data")
-    const [resultAvailable, setResultAvailable] = useState(false)
+    const [resultAvailable, setResultAvailable] = useState(true)
     const [resultStat, setResultStat] = useState([{}])
     const [accStat, setAccStat] = useState([{}])
 
@@ -230,7 +230,7 @@ const BiasTesting = () => {
                 <div className='interactive-right'>
                     <div id='visual-result'>
                         <h3> Result </h3>
-                        <Result resultStat={resultStat} accStat={accStat} resultAvailable={resultAvailable}/>
+                        <BiasResult biasStat={accStat}/>
                     </div>
                 </div>
             </div>
