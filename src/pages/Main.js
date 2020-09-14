@@ -5,6 +5,7 @@ import MyNavbar from "../components/MyNavbar"
 import Visualization from "./Visualization"
 import MitigationNew from "./MitigationNew"
 import Finish from "./Finish"
+import BiasTesting from "./BiasTesting"
 
 const Main = () => {
 
@@ -20,6 +21,7 @@ const Main = () => {
         <MyNavbar />
         <Switch>
             <Route path='/visualization' component={Visualization}></Route>
+            <Route path='/bias-testing' component={BiasTesting}></Route>
             <Route path='/fin' component={Finish}></Route>
             <Route path='/mitigation' component={MitigationNew}></Route>
         </Switch>

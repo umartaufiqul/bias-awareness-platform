@@ -205,11 +205,13 @@
 
 .visualization-new {
     text-align: center;
+    min-height: 100vh;
 }
 
 .visualization-new-container {
     border-top: 1px solid #e1e4e8;
     display: flex;
+    min-height: 100vh;
 }
 .visualization-new h1 {
     font-size: 2rem;
@@ -372,7 +374,7 @@
 }
 
 .explore-container {
-    height: 500px;
+    height: 90vh;
 }
 
 @media only screen and (min-height: 900) {

@@ -162,7 +162,7 @@ const DataTable = (props) => {
     function createDataExplore() {
         if (dataExplore === "Table") {
             return (<div>
-                <table className='table'style={{margin: "2rem 1rem", tableLayout: "fixed"}}>
+                <table className='table'style={{margin: "1rem 1rem", tableLayout: "fixed"}}>
                     <thead>
                         <tr>
                             <th style={{width: "50px"}}>No</th>
@@ -240,7 +240,7 @@ const DataTable = (props) => {
     }
 
     return (
-        <div className="explore-container" style={{marginTop: "1rem", padding: "0rem 2rem", overflowY: "scroll"}}>
+        <div>
             <h1 > Exploring Dataset </h1>
             <div className='d-flex justify-content-center align-item-center' style={{marginBottom: "1rem"}}>
             <h5 style={{marginRight: "1rem", paddingTop: "0.5rem"}}> Choose a data representation: </h5>
@@ -250,9 +250,13 @@ const DataTable = (props) => {
                 })}
             </DropdownButton>
             </div>
+            <div className="explore-container" style={{marginTop: "1rem", padding: "0rem 2rem", overflowY: "scroll"}}>
+            
             {createDataExplore()}
             
         </div>
+        </div>
+        
     )
 }
 
