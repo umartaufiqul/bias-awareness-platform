@@ -124,14 +124,20 @@ const Visualization = () => {
 
         const decoder = new TextDecoder('utf-8')
         const csv = decoder.decode(result.value) // the csv text
+        //The commented area is for umar's local development
+        // const csv = require("../david_formatted.csv")
         
         const results = Papa.parse(csv, {
             header: true,
+            // download: true,
             complete: function (results) {
                 var tweetData = [];
 
                 console.log(results);
                 for (var i = 0; i < results.data.length; i++) {
+                    // if (typeof results.data[i].tweet === "undefined") {
+                    //     continue;
+                    // }
                     tweetData.push({
                         tweet: results.data[i].tweet,
                         label: results.data[i].class
@@ -335,10 +341,10 @@ const Visualization = () => {
             </div>
             <div className='visualization-new-container'>
                 <div className='graph-left'>
-                    <div className='d-flex justify-content-center'>
+                    {/* <div className='d-flex justify-content-center'>
                         <div className={exploreActive === "data" ? 'explore-choice active' : 'explore-choice'} onClick={() => handleExploreChange("data")}> Data </div>
                         <div className={exploreActive === "result" ? 'explore-choice active' : 'explore-choice'} onClick={() => handleExploreChange("result")}> Result </div>
-                    </div>
+                    </div> */}
                     {selectExplore()}
                     {/* <div className='associated-words'>
                         <form className='form-inline'>
