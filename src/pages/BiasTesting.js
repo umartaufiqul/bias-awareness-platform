@@ -211,7 +211,7 @@ const BiasTesting = () => {
             
         }
         else {
-            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample}/>)
+            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample} datasetIndex={0}/>)
         }
     }
 

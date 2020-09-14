@@ -285,6 +285,9 @@ const DataTable = (props) => {
     },*/
     ];
 
+    console.log(datasetIndex);
+    console.log(graphIndex);
+
     const barData = {
         labels: graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].label : [] ,
         datasets: [
