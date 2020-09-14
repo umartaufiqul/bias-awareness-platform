@@ -326,7 +326,7 @@ const Visualization = () => {
             
         }
         else {
-            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample}/>)
+            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample} datasetIndex={currentDatasetIndex}/>)
         }
     }
 
