@@ -21,7 +21,7 @@ const DataTable = (props) => {
     const [filterTweet, setFilterTweet] = useState(tweetListSample.length)
     const [update, setUpdate] = useState(false)
     const [numTweet, setNumTweet] = useState(10)
-    const [dataExplore, setDataExplore] = useState("Graph")
+    const [dataExplore, setDataExplore] = useState("Table")
 
     //The dataview options are ['general', 'white-only', 'black-only', 'keyword']
     const [dataView, setDataView] = useState(0)
