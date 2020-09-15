@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react"
+import {useSelector} from "react-redux"
 import DropdownButton from "react-bootstrap/DropdownButton"
 import Form from "react-bootstrap/Form"
 import Pagination from 'react-bootstrap/Pagination'
@@ -26,6 +27,11 @@ const DataTable = (props) => {
     //The dataview options are ['general', 'white-only', 'black-only', 'keyword']
     const [dataView, setDataView] = useState(0)
     const dataViewList = ['general distribution', 'white-only distribution', 'black-only distribution', 'keyword distribution']
+
+    //For the dataset name
+    const datasetUsed = useSelector(state => state.data)
+    //Change the dataset name here freely
+    const datasetList = ["Dataset 1", "Dataset 2"]
 
     const barData = {
         labels: [0, 1, 2],
@@ -242,8 +248,9 @@ const DataTable = (props) => {
     return (
         <div>
             <h1 > Exploring Dataset </h1>
+            <h5 style={{marginTop: "1rem", textDecoration: "underline"}}> Dataset used: {datasetList[datasetUsed]} </h5>
             <div className='d-flex justify-content-center align-item-center' style={{marginBottom: "1rem"}}>
-            <h5 style={{marginRight: "1rem", paddingTop: "0.5rem"}}> Choose a data representation: </h5>
+            <h6 style={{marginRight: "1rem", paddingTop: "0.5rem"}}> Choose a data representation: </h6>
             <DropdownButton title={dataExplore}> 
                 {['Table', 'Graph'].map((item, i) => {
                     return (<Dropdown.Item key={i} onClick={() => setDataExplore(item)}> {item} </Dropdown.Item>)
