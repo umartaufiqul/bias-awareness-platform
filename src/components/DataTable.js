@@ -404,6 +404,10 @@ const DataTable = (props) => {
         return -1;
     }
 
+    console.log(graphData);
+    console.log(datasetIndex);
+    console.log(graphIndex);
+
     const barData = {
         labels: graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].label : [] ,
         datasets: [
@@ -484,7 +488,7 @@ const DataTable = (props) => {
         return paged_tweet.map((item, i) => 
             <tr> 
                 <th style={{width: "50px"}}> {size*(currPage-1)+i+1} </th>
-                <td> {item.tweet} </td>
+                <td style={{textAlign: 'left'}}> {item.tweet} </td>
                 <td style={{width: "150px"}}> {props.testFlag? testLabels[item.label] : classificationLabels[datasetIndex][item.label]} </td>
             </tr>
         )
@@ -554,7 +558,7 @@ const DataTable = (props) => {
                             <th className='align-middle'>Tweet</th>
                             <th style={{width: "150px"}}>
                             <DropdownButton id="dropdown-basic-button" title='Label' variant='secondary'>
-                            <Form className='text-center'>
+                            <Form style={{marginLeft: "30px"}}>
                                 {categoryList.map((item, i) => (
                                     <Form.Check key={i}
                                         type={'checkbox'}

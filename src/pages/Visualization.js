@@ -380,26 +380,30 @@ const Visualization = (props) => {
                 <div className='interactive-right'>
                     <div id='interactive-controller'>
                         <div className='d-flex interact-tab'> 
-                            {/* <div className={'interactive-choice '+ datasetActive} id="dataset-tab" onClick={(e) => changeActiveState(e.currentTarget.id)}> DATASET </div> */}
-                            {/*
+                            { <div className={'interactive-choice '+ datasetActive} id="dataset-tab" onClick={(e) => changeActiveState(e.currentTarget.id)}> DATASET </div> }
+                            {
                             <div className={'interactive-choice '+modelActive} id="model-tab" onClick={(e) => changeActiveState(e.currentTarget.id)}> MODEL </div>
-                            */}
-                            <div style={{padding: "1rem"}}>
-                                <h5> Choose a dataset: </h5>
-                            </div>
-                            <VisualDataset onChange={handleDatasetChange}/>
+                            }
+
                         </div>
-                        {/* <div className="interact-container">
-                            {changeContent()}
-                        </div> */}
                         {/*
+                        <div style={{padding: "1rem"}}>
+                            <h5> Choose a dataset: </h5>
+                        </div>
+                        <VisualDataset onChange={handleDatasetChange}/>
+                        */}
+                        {<div className="interact-container">
+                            {changeContent()}
+                        </div> }
+                            {
+                                /*
                         <div className='load-btn'>
                             <button type='button' className="btn btn-green" onClick={(e) => {
                             e.preventDefault()
                             handleModelChange()
                             }}> Build Model </button>
                         </div>
-                        */}
+                        */ }
                     </div>
                     <div id='visual-result'>
                         <h3> Result </h3>

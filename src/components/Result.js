@@ -42,7 +42,7 @@ const Result = (props) => {
             {
                 'macro' in accStat ?
                 <>
-                        <tr style={{ 'border-top': '3px solid gray' }}>
+                        <tr style={{ 'border-top': '2px solid rgb(200, 207, 204)' }}>
                             <th> accuray </th>
                             <td>  </td>
                             <td> </td>
