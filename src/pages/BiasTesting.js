@@ -53,6 +53,11 @@ const BiasTesting = (props) => {
     const [tweetListSample, setTweetListSample] = useState([{}])
     const [tweetListReadFinished, setTweetListReadFinished] = useState(false)
     const dispatch = useDispatch()
+
+    //For the dataset name
+    const datasetUsed = useSelector(state => state.data)
+    //Change the dataset name here freely
+    const datasetList = ["Dataset 1", "Dataset 2"]
     
     async function fetchData() {
         console.log(datasetURL);

@@ -1,3 +1,7 @@
 .barChartPlaneList {
     list-style: none;
 }
+
+#green-1:focus {
+    box-shadow: 0 0 0 0.1rem #6C9688;
+}

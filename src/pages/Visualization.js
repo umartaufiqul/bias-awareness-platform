@@ -340,14 +340,18 @@ const Visualization = (props) => {
                 <div className='interactive-right'>
                     <div id='interactive-controller'>
                         <div className='d-flex interact-tab'> 
-                            <div className={'interactive-choice '+ datasetActive} id="dataset-tab" onClick={(e) => changeActiveState(e.currentTarget.id)}> DATASET </div>
+                            {/* <div className={'interactive-choice '+ datasetActive} id="dataset-tab" onClick={(e) => changeActiveState(e.currentTarget.id)}> DATASET </div> */}
                             {/*
                             <div className={'interactive-choice '+modelActive} id="model-tab" onClick={(e) => changeActiveState(e.currentTarget.id)}> MODEL </div>
                             */}
+                            <div style={{padding: "1rem"}}>
+                                <h5> Choose a dataset: </h5>
+                            </div>
+                            <VisualDataset onChange={handleDatasetChange}/>
                         </div>
-                        <div className="interact-container">
+                        {/* <div className="interact-container">
                             {changeContent()}
-                        </div>
+                        </div> */}
                         {/*
                         <div className='load-btn'>
                             <button type='button' className="btn btn-green" onClick={(e) => {
