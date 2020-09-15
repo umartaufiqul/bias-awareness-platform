@@ -23,38 +23,78 @@ const Visualization = (props) => {
         ["0", "1"]
     ];
 
-    const accStatValues = [[{
-        class: "Hateful",
-        precision: 0.45,
-        recall: 0.59,
-        f1_score: 0.51,
-    }, {
-        class: "Abusive",
-        precision: 0.95,
-        recall: 0.91,
-        f1_score: 0.94,
-    },
-    {
-        class: "Neither",
-        precision: 0.83,
-        recall: 0.94,
-        f1_score: 0.88,
-    }],
-    [
+    const accStatValues = [
         {
-            class: "Normal",
-            precision: 0.84,
-            recall: 0.75,
-            f1_score: 0.79,
+            stat: [{
+                    class: "Hateful",
+                    precision: 0.45,
+                    recall: 0.59,
+                    f1_score: 0.51,
+                    support: 164
+                }, {
+                    class: "Abusive",
+                    precision: 0.95,
+                    recall: 0.91,
+                    f1_score: 0.94,
+                    support: 1905
+                }, {
+                    class: "Neither",
+                    precision: 0.83,
+                    recall: 0.94,
+                    f1_score: 0.88,
+                    support: 410
+                }],
+            accuracy: 0.89,
+            support: 2479,
+            macro: {
+                precision: 0.75,
+                recall: 0.81,
+                f1_score: 0.78,
+            },
+            weighted: {
+                precision: 0.91,
+                recall: 0.89,
+                f1_score: 0.9,
+            },
+            labels: ['Hateful', 'Abusive', 'Neither'],
+            matrix: [
+                [0.59, 0.33, 0.09],
+                [0.06, 0.91, 0.03],
+                [0.03, 0.03, 0.94]
+            ]
         },
         {
-            class: "Hateful",
-            precision: 0.84,
-            recall: 0.75,
-            f1_score: 0.79,
-
+            stat: [
+                {
+                    class: "Normal",
+                    precision: 0.84,
+                    recall: 0.75,
+                    f1_score: 0.79,
+                },
+                {
+                    class: "Hateful",
+                    precision: 0.84,
+                    recall: 0.75,
+                    f1_score: 0.79,
+                }
+            ],
+            macro: {
+                precision: 0.75,
+                recall: 0.81,
+                f1_score: 0.78
+            },
+            weighted: {
+                precision: 0.91,
+                recall: 0.89,
+                f1_score: 0.9
+            },
+            labels: ['Normal', 'Hateful'],
+            matrix: [
+                [0.96, 0.04],
+                [0.11, 0.89]
+            ]
         }
-    ]]
+        ]
 
     const [datasetActive, setDatasetActive] = useState("active")
     const [modelActive, setModelActive] = useState("")
