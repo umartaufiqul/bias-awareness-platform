@@ -34,7 +34,7 @@ const DataTable = (props) => {
     //For the dataset name
     const datasetUsed = useSelector(state => state.data)
     //Change the dataset name here freely
-    const datasetList = ["Dataset 1", "Dataset 2"]
+    const datasetList = ["DataName1", "DataName2"]
 
     const classificationLabels = [
         ['hateful', 'offensive', 'neither'],
@@ -640,10 +640,9 @@ const DataTable = (props) => {
 
     return (
         <div>
-            <h1 > Exploring Dataset </h1>
-            {props.testFlag ? <div>  
-                <h5 style={{marginTop: "1rem", textDecoration: "underline"}}> Dataset used: {datasetList[datasetUsed]} </h5></div>:
-                <div className='d-flex justify-content-center align-item-center' style={{ marginBottom: "1rem" }}>
+            <h1 > Exploring Dataset ({datasetList[datasetUsed]})</h1>
+            {props.testFlag ? <div></div>:
+                <div className='d-flex justify-content-center align-item-center' style={{ marginBottom: "1rem", marginTop: "1rem" }}>
                     <h5 style={{ marginRight: "1rem", paddingTop: "0.5rem" }}> Choose a data representation: </h5>
                     {/* <DropdownButton title={dataExplore} className='btn-green'>
                         {['Table', 'Graph'].map((item, i) => {
