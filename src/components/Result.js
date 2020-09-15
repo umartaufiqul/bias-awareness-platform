@@ -1,10 +1,14 @@
 import React, {useState, useEffect} from "react"
+import OverlayTrigger from "react-bootstrap/OverlayTrigger"
+import Tooltip from "react-bootstrap/Tooltip"
 
 const Result = (props) => {
     const accStat = props.accStat
     const resultStat = props.resultStat
     const resultAvailable = props.resultAvailable
     const activeResult = props.activeResult
+    
+    const [measureExplain, setMeasureExplain] = useState("")
 
     const reportTable = <table className='table' >
         <thead>
@@ -30,10 +34,57 @@ const Result = (props) => {
     const distrTable = <table className='table'>
         <thead>
             <tr>
-                <th scope="col">Class</th>
-                <th scope="col">Pblack</th>
-                <th scope="col">Pwhite</th>
-                <th scope="col">Pblack/Pwhite</th>
+                <th scope="col" className='align-middle'>
+                    Class
+                </th>
+                <th scope="col">
+                    Pblack
+                    <div>
+                    <OverlayTrigger
+                        key={'right'}
+                        placement={'right'}
+                        overlay={
+                            <Tooltip id={`tooltip-${'right'}`} className='text-align-left'>
+                                Click here to see how the measure is calculated
+                            </Tooltip>
+                        }
+                        >
+                        <img src={require('../icons/info.svg')} alt='' style={{cursor: "pointer"}} onClick={() => setMeasureExplain("Pblack")}/>
+                    </OverlayTrigger>
+                    </div>
+                </th>
+                <th scope="col">
+                    Pwhite
+                    <div>
+                    <OverlayTrigger
+                        key={'right'}
+                        placement={'right'}
+                        overlay={
+                            <Tooltip id={`tooltip-${'right'}`} className='text-align-left'>
+                                Click here to see how the measure is calculated
+                            </Tooltip>
+                        }
+                        >
+                        <img src={require('../icons/info.svg')} alt='' style={{cursor: "pointer"}} onClick={() => setMeasureExplain("Pwhite")}/>
+                    </OverlayTrigger>
+                    </div>
+                    </th>
+                <th scope="col">
+                    Pblack/Pwhite
+                    <div>
+                    <OverlayTrigger
+                        key={'right'}
+                        placement={'right'}
+                        overlay={
+                            <Tooltip id={`tooltip-${'right'}`} className='text-align-left'>
+                                Click here to see how the measure is calculated
+                            </Tooltip>
+                        }
+                        >
+                        <img src={require('../icons/info.svg')} alt='' style={{cursor: "pointer"}} onClick={() => setMeasureExplain("Pblack/Pwhite")}/>
+                    </OverlayTrigger>
+                    </div>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -48,6 +99,16 @@ const Result = (props) => {
         </tbody>
     </table>
 
+    //Add the measure explanation here
+    function returnMeasureExplain() {
+        switch(measureExplain){
+            default:
+                return (
+                <div style={{marginTop: "1rem"}}> This is the explanation of how measure is calculated</div>
+                )
+        }
+    }
+
     console.log(activeResult)
     console.log(distrTable)
     console.log(resultStat);
@@ -57,6 +118,11 @@ const Result = (props) => {
             <div style={{marginTop: "1rem"}}>
                 <div id='result-table' style={{overflow: "auto", height: "inherit"}}>
                     {activeResult === "report" ? reportTable : distrTable}
+                </div>
+                <div className={measureExplain === "" ? "d-none": ""}>
+                    <h5> How the measure is calculated:</h5>
+                    <h6 style={{textDecoration: "underline"}}> {measureExplain} </h6>
+                    {returnMeasureExplain()}
                 </div>
             </div>
         )

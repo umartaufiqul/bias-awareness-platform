@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react"
 import {useSelector} from "react-redux"
 import DropdownButton from "react-bootstrap/DropdownButton"
+import ButtonGroup from "react-bootstrap/ButtonGroup"
 import Form from "react-bootstrap/Form"
 import Pagination from 'react-bootstrap/Pagination'
 import Dropdown from "react-bootstrap/Dropdown"
@@ -546,13 +547,13 @@ const DataTable = (props) => {
     function createDataExplore() {
         if (dataExplore === "Table") {
             return (<div>
-                <table className='table'style={{margin: "1rem 1rem", tableLayout: "fixed"}}>
+                <table className='table' style={{margin: "1rem 1rem", tableLayout: "fixed"}}>
                     <thead>
-                        <tr>
-                            <th style={{width: "50px"}}>No</th>
-                            <th >Tweet</th>
+                        <tr >
+                            <th style={{width: "50px"}} className='align-middle'>No</th>
+                            <th className='align-middle'>Tweet</th>
                             <th style={{width: "150px"}}>
-                            <DropdownButton id="dropdown-basic-button" title='Label'>
+                            <DropdownButton id="dropdown-basic-button" title='Label' variant='secondary'>
                             <Form className='text-center'>
                                 {categoryList.map((item, i) => (
                                     <Form.Check key={i}
@@ -644,11 +645,19 @@ const DataTable = (props) => {
                 <h5 style={{marginTop: "1rem", textDecoration: "underline"}}> Dataset used: {datasetList[datasetUsed]} </h5></div>:
                 <div className='d-flex justify-content-center align-item-center' style={{ marginBottom: "1rem" }}>
                     <h5 style={{ marginRight: "1rem", paddingTop: "0.5rem" }}> Choose a data representation: </h5>
-                    <DropdownButton title={dataExplore}>
+                    {/* <DropdownButton title={dataExplore} className='btn-green'>
                         {['Table', 'Graph'].map((item, i) => {
                             return (<Dropdown.Item key={i} onClick={() => setDataExplore(item)}> {item} </Dropdown.Item>)
                         })}
-                    </DropdownButton>
+                    </DropdownButton> */}
+                    <Dropdown as={ButtonGroup}>
+                        <Dropdown.Toggle id="green-1" style={{backgroundColor: "#2A6350", borderColor: "#2A6350"}}>{dataExplore}</Dropdown.Toggle>
+                        <Dropdown.Menu>
+                        {['Table', 'Graph'].map((item, i) => {
+                            return (<Dropdown.Item key={i} onClick={() => setDataExplore(item)}> {item} </Dropdown.Item>)
+                        })}
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </div>
             }
             <div className="explore-container" style={{ marginTop: "1rem", padding: "0rem 2rem", overflowY: "scroll" }}>
