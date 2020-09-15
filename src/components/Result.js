@@ -1,11 +1,10 @@
 import React, {useState, useEffect} from "react"
 
 const Result = (props) => {
-
     const accStat = props.accStat
     const resultStat = props.resultStat
     const resultAvailable = props.resultAvailable
-    const [activeResult, setActiveResult] = useState("report")
+    const activeResult = props.activeResult
 
     const reportTable = <table className='table' >
         <thead>
@@ -14,7 +13,6 @@ const Result = (props) => {
                 <th scope="col">Precision</th>
                 <th scope="col">Recall</th>
                 <th scope="col">f1-score</th>
-                <th scope="col">Support</th>
             </tr>
         </thead>
         <tbody>
@@ -24,7 +22,6 @@ const Result = (props) => {
                     <td> {item.precision} </td>
                     <td> {item.recall} </td>
                     <td> {item.f1_score} </td>
-                    <td> {item.support} </td>
                 </tr>
             )}
         </tbody>
@@ -51,17 +48,13 @@ const Result = (props) => {
         </tbody>
     </table>
 
-    function handleResultChange(tab) {
-        setActiveResult(tab)
-    }
+    console.log(activeResult)
+    console.log(distrTable)
+    console.log(resultStat);
 
     if (resultAvailable) {
         return(
             <div style={{marginTop: "1rem"}}>
-                <div className='d-flex justify-content-center'>
-                    <div className={activeResult === "report" ? 'explore-choice active' : 'explore-choice'} style={{fontSize: "12px"}} onClick={() => handleResultChange("report")}> Report </div>
-                    <div className={activeResult === "dist" ? 'explore-choice active' : 'explore-choice'} style={{fontSize: "12px"}} onClick={() => handleResultChange("dist")}> Distribution </div>
-                </div>
                 <div id='result-table' style={{overflow: "auto", height: "inherit"}}>
                     {activeResult === "report" ? reportTable : distrTable}
                 </div>

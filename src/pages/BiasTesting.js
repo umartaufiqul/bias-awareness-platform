@@ -5,18 +5,18 @@ import ScatterChart from "../components/ScatterChart"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropdownButton from "react-bootstrap/DropdownButton"
 import BiasResult from "../components/BiasResult"
+import Result from "../components/Result"
 import DataTable from "../components/DataTable"
 import Papa from 'papaparse'
 
-const BiasTesting = () => {
-    const datasetURL = [
-        'http://3.35.21.90:3000/bias-awareness-platform/david_formatted.csv',
-        'http://3.35.21.90:3000/bias-awareness-platform/hatespeech_formatted.csv'
-    ];
+const BiasTesting = (props) => {
+    const datasetURL = 'http://3.35.21.90:3000/bias-awareness-platform/testTweet.csv';
+    const datasetIndex = useSelector(state => state.data);
+
+    console.log(datasetIndex);
 
     const categories = [
-        ["0", "1", "2"],
-        ["0", "1"]
+        ["0", "1"],
     ];
 
     const resultStatValues = [[{
@@ -38,56 +38,18 @@ const BiasTesting = () => {
     ],
 
     [{
-        class: "Hateful",
+        class: "Normal",
         pblack: 0.083,
         pwhite: 0.048,
         pblack_white: 1.724
     }, {
-        class: "Normal",
+        class: "Hateful",
         pblack: 0.083,
         pwhite: 0.048,
         pblack_white: 1.724
     }]
 
     ]
-
-    const accStatValues = [[{
-        class: "Hateful",
-        precision: 0.77,
-        recall: 0.86,
-        f1_score: 0.81,
-        support: 3756
-    }, {
-        class: "Abusive",
-        precision: 0.84,
-        recall: 0.75,
-        f1_score: 0.79,
-        support: 1344
-    },
-    {
-        class: "Neither",
-        precision: 0.84,
-        recall: 0.75,
-        f1_score: 0.79,
-        support: 1344
-    }],
-    [
-        {
-            class: "Hateful",
-            precision: 0.84,
-            recall: 0.75,
-            f1_score: 0.79,
-            support: 1344
-        },
-        {
-            class: "Normal",
-            precision: 0.84,
-            recall: 0.75,
-            f1_score: 0.79,
-            support: 1344
-
-        }
-    ]]
 
     const [currentDatasetIndex, setCurrentDatasetIndex] = useState("0")
     const [categoryList, setCategoryList] = useState(categories[0])
@@ -107,8 +69,10 @@ const BiasTesting = () => {
     //Change the dataset name here freely
     const datasetList = ["Dataset 1", "Dataset 2"]
     
-    async function fetchData(datasetIndex) {
-        const response = await fetch(datasetURL[datasetIndex])
+    async function fetchData() {
+        console.log(datasetURL);
+
+        const response = await fetch(datasetURL)
         const reader = response.body.getReader()
         const result = await reader.read() // raw array
 
@@ -125,7 +89,6 @@ const BiasTesting = () => {
             complete: function (results) {
                 var tweetData = [];
 
-                console.log(results);
                 for (var i = 0; i < results.data.length; i++) {
                     // if (typeof results.data[i].tweet === "undefined") {
                     //     continue;
@@ -136,8 +99,6 @@ const BiasTesting = () => {
                     });
                 }
 
-                console.log(tweetData);
-
                 setTweetListSample(tweetData);
                 // setTweetListReadFinished(true);
             }
@@ -145,27 +106,13 @@ const BiasTesting = () => {
 
     }
 
-    useEffect((data) => {
-        console.log(data);
-    });
-
     useEffect(() => {
-        fetchData(0);
-        setResultStat(resultStatValues[0]);
-        setAccStat(accStatValues[0]);
-    }, [tweetListReadFinished])
+        fetchData();
+        console.log("DATASET CHANGED");
+        console.log(datasetIndex);
 
-    function handleDatasetChange(datasetIndex) {
-        if(currentDatasetIndex != datasetIndex) {
-            fetchData(parseInt(datasetIndex));
-            setCategoryList(categories[parseInt(datasetIndex)]);
-            setCategory(categories[parseInt(datasetIndex)][0]);
-            setCurrentDatasetIndex(datasetIndex);
-
-            setResultStat(resultStatValues[parseInt(datasetIndex)]);
-            setAccStat(accStatValues[parseInt(datasetIndex)]);
-        }
-    }
+        setResultStat(resultStatValues[datasetIndex]);
+    }, [datasetIndex])
 
     function changeCategory(index) {
         return () => {
@@ -216,7 +163,7 @@ const BiasTesting = () => {
             
         }
         else {
-            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample}/>)
+            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample} datasetIndex={0} testFlag={true}/>)
         }
     }
 
@@ -235,7 +182,9 @@ const BiasTesting = () => {
                 <div className='interactive-right'>
                     <div id='visual-result'>
                         <h3> Result </h3>
-                        <BiasResult biasStat={accStat}/>
+                        {/*
+                        <BiasResult biasStat={accStat}/>*/ }
+                        <Result resultStat={resultStat} accStat={accStat} resultAvailable={resultAvailable} datasetIndex={datasetIndex} activeResult='distr'/>
                     </div>
                 </div>
             </div>
