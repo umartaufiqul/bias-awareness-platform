@@ -12,7 +12,7 @@ import Result from "../components/Result"
 import DataTable from "../components/DataTable"
 import Papa from 'papaparse'
 
-const Visualization = () => {
+const Visualization = (props) => {
     const datasetURL = [
         'http://3.35.21.90:3000/bias-awareness-platform/david_formatted.csv',
         'http://3.35.21.90:3000/bias-awareness-platform/hatespeech_formatted.csv'
@@ -23,77 +23,39 @@ const Visualization = () => {
         ["0", "1"]
     ];
 
-    const resultStatValues = [[{
-        class: "Hateful",
-        pblack: 0.001,
-        pwhite: 0.003,
-        pblack_white: 0.005,
-    }, {
-        class: "Abusive",
-        pblack: 0.083,
-        pwhite: 0.048,
-        pblack_white: 1.724
-    }, {
-        class: "Neither",
-        pblack: 0.083,
-        pwhite: 0.048,
-        pblack_white: 1.724
-    }
-    ],
-
-    [{
-        class: "Hateful",
-        pblack: 0.083,
-        pwhite: 0.048,
-        pblack_white: 1.724
-    }, {
-        class: "Normal",
-        pblack: 0.083,
-        pwhite: 0.048,
-        pblack_white: 1.724
-    }]
-
-    ]
-
     const accStatValues = [[{
         class: "Hateful",
-        precision: 0.77,
-        recall: 0.86,
-        f1_score: 0.81,
-        support: 3756
+        precision: 0.45,
+        recall: 0.59,
+        f1_score: 0.51,
     }, {
         class: "Abusive",
-        precision: 0.84,
-        recall: 0.75,
-        f1_score: 0.79,
-        support: 1344
+        precision: 0.95,
+        recall: 0.91,
+        f1_score: 0.94,
     },
     {
         class: "Neither",
-        precision: 0.84,
-        recall: 0.75,
-        f1_score: 0.79,
-        support: 1344
+        precision: 0.83,
+        recall: 0.94,
+        f1_score: 0.88,
     }],
     [
-        {
-            class: "Hateful",
-            precision: 0.84,
-            recall: 0.75,
-            f1_score: 0.79,
-            support: 1344
-        },
         {
             class: "Normal",
             precision: 0.84,
             recall: 0.75,
             f1_score: 0.79,
-            support: 1344
+        },
+        {
+            class: "Hateful",
+            precision: 0.84,
+            recall: 0.75,
+            f1_score: 0.79,
 
         }
     ]]
 
-    const [currentDatasetIndex, setCurrentDatasetIndex] = useState("0")
     const [datasetActive, setDatasetActive] = useState("active")
     const [modelActive, setModelActive] = useState("")
     const [wordInput, setWordInput] = useState("")
@@ -106,9 +68,11 @@ const Visualization = () => {
     const [resultStat, setResultStat] = useState([{}])
     const [accStat, setAccStat] = useState([{}])
 
+    const resultData = useSelector(state => state.data)
+    const [currentDatasetIndex, setCurrentDatasetIndex] = useState(resultData)
+
     const loaderActive = useSelector(state => state.loaderActive)
     const resultModel = useSelector(state => state.model)
-    const resultData = useSelector(state => state.data)
     const [tweetListSample, setTweetListSample] = useState([{}])
     const [tweetListReadFinished, setTweetListReadFinished] = useState(false)
     const dispatch = useDispatch()
@@ -157,7 +121,6 @@ const Visualization = () => {
 
     useEffect(() => {
         fetchData(0);
-        setResultStat(resultStatValues[0]);
         setAccStat(accStatValues[0]);
     }, [tweetListReadFinished])
 
@@ -218,7 +181,6 @@ const Visualization = () => {
             setCategory(categories[parseInt(datasetIndex)][0]);
             setCurrentDatasetIndex(datasetIndex);
 
-            setResultStat(resultStatValues[parseInt(datasetIndex)]);
             setAccStat(accStatValues[parseInt(datasetIndex)]);
         }
     }
@@ -326,7 +288,7 @@ const Visualization = () => {
             
         }
         else {
-            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample}/>)
+            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample} datasetIndex={currentDatasetIndex}/>)
         }
     }
 
@@ -401,7 +363,7 @@ const Visualization = () => {
                             <span> Model: Model {resultModel+1} </span>
                             <span style={{marginLeft: "1rem"}}> Dataset: Dataset {resultData+1} </span> 
                         </div> */}
-                        <Result resultStat={resultStat} accStat={accStat} resultAvailable={resultAvailable}/>
+                        <Result resultStat={resultStat} accStat={accStat} resultAvailable={resultAvailable} activeResult='report'/>
                     </div>
                 </div>
             </div>

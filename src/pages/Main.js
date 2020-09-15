@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState, useEffect} from "react"
 import { Switch, Route } from "react-router-dom"
 import {useSelector} from "react-redux"
 import MyNavbar from "../components/MyNavbar"
@@ -9,7 +9,7 @@ import BiasTesting from "./BiasTesting"
 
 const Main = () => {
 
-
+    const [datasetIndex, setDatasetIndex] = useState(0)
     const loaderActive = useSelector(state => state.loaderActive)
     
     return(

@@ -126,3 +126,7 @@ html, body {
 .rootDiv {
   height: 100%;
 }
+
+.barChartPlaneList {
+  list-style: none;
+}
