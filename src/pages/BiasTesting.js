@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import ScatterChart from "../components/ScatterChart"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropdownButton from "react-bootstrap/DropdownButton"
-import BiasResult from "../components/BiasResult"
+import VisualDataset from "../components/VisualDataset"
 import Result from "../components/Result"
 import DataTable from "../components/DataTable"
 import Papa from 'papaparse'
@@ -16,7 +16,8 @@ const BiasTesting = (props) => {
     console.log(datasetIndex);
 
     const categories = [
-        ["0", "1"],
+        ["0", "1", "2"],
+        ["0", "1"]
     ];
 
     const resultStatValues = [[{
@@ -41,6 +42,39 @@ const BiasTesting = (props) => {
 
     ]
 
+    const accStatValues = [[{
+        class: "Hateful",
+        precision: 0.45,
+        recall: 0.59,
+        f1_score: 0.51,
+    }, {
+        class: "Abusive",
+        precision: 0.95,
+        recall: 0.91,
+        f1_score: 0.94,
+    },
+    {
+        class: "Neither",
+        precision: 0.83,
+        recall: 0.94,
+        f1_score: 0.88,
+    }],
+    [
+        {
+            class: "Normal",
+            precision: 0.84,
+            recall: 0.75,
+            f1_score: 0.79,
+        },
+        {
+            class: "Hateful",
+            precision: 0.84,
+            recall: 0.75,
+            f1_score: 0.79,
+
+        }
+    ]]
+
     const [currentDatasetIndex, setCurrentDatasetIndex] = useState("0")
     const [categoryList, setCategoryList] = useState(categories[0])
     const [category, setCategory] = useState(categoryList[0])
@@ -53,6 +87,12 @@ const BiasTesting = (props) => {
     const [tweetListSample, setTweetListSample] = useState([{}])
     const [tweetListReadFinished, setTweetListReadFinished] = useState(false)
     const dispatch = useDispatch()
+
+
+    // useEffect(() => {
+    //     fetchData(0);
+    //     setAccStat(accStatValues[0]);
+    // }, [tweetListReadFinished])
 
     //For the dataset name
     const datasetUsed = useSelector(state => state.data)
@@ -157,6 +197,17 @@ const BiasTesting = (props) => {
         }
     }
 
+    function handleDatasetChange(datasetIndex) {
+        if(currentDatasetIndex != datasetIndex) {
+            fetchData(parseInt(datasetIndex));
+            setCategoryList(categories[parseInt(datasetIndex)]);
+            setCategory(categories[parseInt(datasetIndex)][0]);
+            setCurrentDatasetIndex(datasetIndex);
+
+            setAccStat(accStatValues[parseInt(datasetIndex)]);
+        }
+    }
+
     return(
         <div className='visualization-new'>
             <div className={'loader '+loaderActive}>
@@ -170,6 +221,14 @@ const BiasTesting = (props) => {
                     
                 </div>
                 <div className='interactive-right'>
+                <div id='interactive-controller'>
+                        <div className='d-flex interact-tab'> 
+                            <div style={{padding: "1rem"}}>
+                                <h5> Choose a dataset: </h5>
+                            </div>
+                            <VisualDataset onChange={handleDatasetChange}/>
+                        </div>
+                    </div>
                     <div id='visual-result'>
                         <h3> Result </h3>
                         {/*
