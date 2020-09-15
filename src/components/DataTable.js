@@ -16,8 +16,6 @@ const DataTable = (props) => {
     const tweetListSample = props.tweetListSample
     const datasetIndex = parseInt(props.datasetIndex)
     
-    // console.log(props);
-
     const [labelActive, setLabelActive] = useState([])
     const [currPage, setCurrPage] = useState(1)
     const [filterTweet, setFilterTweet] = useState(tweetListSample.length)
@@ -34,25 +32,77 @@ const DataTable = (props) => {
     const classificationLabels = [
         ['hateful', 'offensive', 'neither'],
         ['normal', 'hateful'],
-        ['positive', 'negative']
+        ['positive', 'negative'],
     ]
+
+    const testLabels = ['black', 'white']
 
     const radioLabels = [
         [ // david
-            ['total'], // total label statistics
-            ['total', '1-gram', '2-gram', '3-gram'], // total
-            ['total', '1-gram', '2-gram', '3-gram'], // 0-only
-            ['total', '1-gram', '2-gram', '3-gram'], // 1-only
-            ['total', '1-gram', '2-gram', '3-gram'], // 2-only
+            [], // total label statistics
+            ['Total', '1-gram', '2-gram', '3-gram'], // total
+            ['Total', '1-gram', '2-gram', '3-gram'], // 0-only
+            ['Total', '1-gram', '2-gram', '3-gram'], // 1-only
+            ['Total', '1-gram', '2-gram', '3-gram'], // 2-only
+        ],
+        [ // david
+            [], // total label statistics
+            ['Total', '1-gram', '2-gram', '3-gram'], // total
+            ['Total', '1-gram', '2-gram', '3-gram'], // 0-only
+            ['Total', '1-gram', '2-gram', '3-gram'], // 1-only
         ]
     ]
 
     const graphNames = [
         [ // david
-            "Total label distribution",
-             "0-only",
-             "1-only",
-             "2-only"
+            {
+                'category': 'General statistics',
+                'graphs': [
+                    {
+                        'label': "Label distribution",
+                        'graphIndex': 0
+                    },
+                    {
+                        'label': "N-gram distribution",
+                        'graphIndex': 1
+                    },
+                    {
+                        'label': "N-gram distribution of 'Hateful' tweet",
+                        'graphIndex': 2
+                    },
+                    {
+                        'label': "N-gram distribution of 'Abusive' tweet",
+                        'graphIndex': 3
+                    },
+                    {
+                        'label': "N-gram distribution of 'Neither' tweet",
+                        'graphIndex': 4
+                    },
+                ]
+            },
+        ],
+        [ // hate speech
+            {
+                'category': 'General statistics',
+                'graphs': [
+                    {
+                        'label': "Label distribution",
+                        'graphIndex': 0
+                    },
+                    {
+                        'label': "N-gram distribution",
+                        'graphIndex': 1
+                    },
+                    {
+                        'label': "N-gram distribution of 'Normal' tweet",
+                        'graphIndex': 2
+                    },
+                    {
+                        'label': "N-gram distribution of 'Hateful' tweet",
+                        'graphIndex': 3
+                    },
+                ]
+            },
         ]
     ]
 
@@ -171,45 +221,96 @@ const DataTable = (props) => {
             ],
         ],
         [ // hatespeech
+            [
+                {
+                    'code': 'hatespeech',
+                    'condition': 'total_label',
+                    'label': ['normal', 'hateful'],
+                    'data': [12522, 7478]
+                },
+            ],
+            [
+                {
+                    'code': 'hatespeech',
+                    'condition': 'total_total',
+                    'label': ['fuck', 'thi', 'like', 'get', 'amp', 'wa', 'one', 'peopl', 'know', 'go', 'hi', 'u', 'ass', 'time', 'bitch', 'day', 'make', 'look', 'say', 'want', 'whi', 'love', 'ha', 'hate', 'see', 'think', 'would', 'need', 'got', 'idiot'],
+                    'data': [4789, 2643, 1636, 1242, 1080, 1068, 908, 862, 842, 818, 756, 735, 708, 706, 688, 676, 668, 665, 656, 655, 602, 591, 568, 567, 543, 523, 515, 492, 487, 486]
+                },
+                {
+                    'code': 'hatespeech',
+                    'condition': 'total_1gram',
+                    'label': ['fuck', 'thi', 'like', 'get', 'amp', 'wa', 'one', 'peopl', 'know', 'go', 'hi', 'u', 'ass', 'time', 'bitch', 'day', 'make', 'look', 'say', 'want', 'whi', 'love', 'ha', 'hate', 'see', 'think', 'would', 'need', 'got', 'idiot'],
+                    'data': [4789, 2643, 1636, 1242, 1080, 1068, 908, 862, 842, 818, 756, 735, 708, 706, 688, 676, 668, 665, 656, 655, 602, 591, 568, 567, 543, 523, 515, 492, 487, 486]
+                },
+                {
+                    'code': 'hatespeech',
+                    'condition': 'total_2gram',
+                    'label': ['thi fuck', 'look like', 'get fuck', 'like thi', 'feel like', 'ugli ass', 'found transpond', 'transpond snail', 'ass bitch', 'one person', 'automat check', 'unfollow automat', 'like video', 'bad bitch', 'fuck hate', 'got fuck', 'reason whi', 'oh god', 'know fuck', 'bitch like', 'april fool', 'gt gt', 'wa fuck', 'wanna fuck', 'thi week', 'realli fuck', 'thi nigga', 'call racist', 'georg bush', 'year old'],
+                    'data': [235, 132, 126, 123, 103, 101, 97, 97, 91, 90, 77, 77, 73, 72, 69, 67, 66, 63, 61, 57, 56, 56, 56, 55, 54, 52, 51, 50, 50, 50]
+                },
+                {
+                    'code': 'hatespeech',
+                    'condition': 'total_3gram',
+                    'label': ['found transpond snail', 'unfollow automat check', 'bush call racist', 'fuck georg bush', 'georg bush call', 'know fuck georg', 'follow one person', 'one person unfollow', 'person unfollow automat', 'ugli ass bitch', 'sorri ugli ass', 'bitch like thi', 'would even say', 'like thi would', 'thi would even', 'ass bitch like', 'one person follow', 'let fuck go', 'ad video playlist', 'even say oh', 'say oh god', 'follow peopl unfollow', 'peopl unfollow automat', 'eat food cold', 'food cold flourish', 'happen separ yo', 'nigga eat food', 'self nigga eat', 'separ yo self', 'thi happen separ'],
+                    'data': [97, 77, 48, 48, 48, 48, 47, 47, 47, 44, 43, 42, 40, 38, 37, 36, 34, 33, 32, 32, 32, 30, 30, 29, 29, 29, 29, 29, 29, 29]
+                },
+            ],
+            [
+                {
+                    'code': 'hatespeech',
+                    'condition': '0_total',
+                    'label': ['thi', 'like', 'amp', 'wa', 'one', 'get', 'peopl', 'love', 'time', 'day', 'go', 'know', 'make', 'hi', 'new', 'look', 'ha', 'today', 'want', 'see', 'thank', 'say', 'us', 'follow', 'via', 'would', 'good', 'u', 'think', 'work'],
+                    'data': [1406, 896, 820, 794, 695, 685, 548, 544, 541, 517, 486, 476, 474, 471, 454, 413, 410, 406, 405, 404, 404, 369, 348, 347, 343, 343, 338, 338, 334, 327]
+                },
+                {
+                    'code': 'hatespeech',
+                    'condition': '0_1gram',
+                    'label': ['thi', 'like', 'amp', 'wa', 'one', 'get', 'peopl', 'love', 'time', 'day', 'go', 'know', 'make', 'hi', 'new', 'look', 'ha', 'today', 'want', 'see', 'thank', 'say', 'us', 'follow', 'via', 'would', 'good', 'u', 'think', 'work'],
+                    'data': [1406, 896, 820, 794, 695, 685, 548, 544, 541, 517, 486, 476, 474, 471, 454, 413, 410, 406, 405, 404, 404, 369, 348, 347, 343, 343, 338, 338, 334, 327]
+                },
+                {
+                    'code': 'hatespeech',
+                    'condition': '0_2gram',
+                    'label': ['found transpond', 'transpond snail', 'one person', 'automat check', 'unfollow automat', 'look like', 'like video', 'feel like', 'follow one', 'person unfollow', 'peopl follow', 'year old', 'gt gt', 'like thi', 'thi week', 'happi birthday', 'person follow', 'ad video', 'thi year', 'video playlist', 'everi time', 'follow peopl', 'last night', 'peopl unfollow', 'april fool', 'thi one', 'best friend', 'new york', 'first time', 'white hous'],
+                    'data': [96, 96, 87, 77, 77, 72, 71, 49, 47, 47, 45, 45, 43, 43, 43, 42, 34, 32, 32, 32, 31, 31, 30, 30, 29, 29, 28, 28, 27, 27]
+                },
+                {
+                    'code': 'hatespeech',
+                    'condition': '0_3gram',
+                    'label': ['found transpond snail', 'unfollow automat check', 'follow one person', 'one person unfollow', 'person unfollow automat', 'one person follow', 'ad video playlist', 'follow peopl unfollow', 'peopl unfollow automat', 'peopl follow one', 'person follow one', 'gt gt gt', 'amaz encount trecru', 'giant sea monster', 'monster amaz encount', 'peopl follow peopl', 'sea monster amaz', 'snail giant sea', 'transpond snail giant', 'person follow peopl', 'rain today mm', 'time great show', 'yasss time great', 'april fool day', 'thank recent follow', 'abc news report', 'aircraft base befor', 'base befor strike', 'c rain today', 'equip aircraft base']
+                    ,
+                    'data': [96, 77, 47, 47, 47, 34, 32, 30, 30, 27, 20, 19, 16, 16, 16, 16, 16, 16, 16, 14, 12, 12, 12, 11, 11, 10, 10, 10, 10, 10]
+                },
+            ],
+            [
+                {
+                    'code': 'hatespeech',
+                    'condition': 'total_1gram',
+                    'label': ['fuck', 'thi', 'like', 'bitch', 'ass', 'get', 'hate', 'idiot', 'nigga', 'u', 'know', 'bad', 'go', 'peopl', 'shit', 'whi', 'say', 'hi', 'wa', 'stupid', 'amp', 'look', 'want', 'ugli', 'got', 'thi fuck', 'damn', 'even', 'one', 'im'],
+                    'data': [4661, 1237, 740, 673, 660, 557, 491, 461, 435, 397, 366, 333, 332, 314, 306, 289, 287, 285, 274, 270, 260, 252, 250, 249, 246, 230, 228, 220, 213, 210]
+                },
+                {
+                    'code': 'hatespeech',
+                    'condition': '1_1gram',
+                    'label': ['fuck', 'thi', 'like', 'bitch', 'ass', 'get', 'hate', 'idiot', 'nigga', 'u', 'know', 'bad', 'go', 'peopl', 'shit', 'whi', 'say', 'hi', 'wa', 'stupid', 'amp', 'look', 'want', 'ugli', 'got', 'damn', 'even', 'one', 'im', 'make'],
+                    'data': [4661, 1237, 740, 673, 660, 557, 491, 461, 435, 397, 366, 333, 332, 314, 306, 289, 287, 285, 274, 270, 260, 252, 250, 249, 246, 228, 220, 213, 210, 194]
+                },
+                {
+                    'code': 'hatespeech',
+                    'condition': '1_2gram',
+                    'label': ['thi fuck', 'get fuck', 'ugli ass', 'ass bitch', 'like thi', 'bad bitch', 'got fuck', 'fuck hate', 'look like', 'know fuck', 'oh god', 'bitch like', 'wa fuck', 'feel like', 'wanna fuck', 'thi nigga', 'call racist', 'thi stupid', 'bush call', 'fuck georg', 'georg bush', 'fuck go', 'realli fuck', 'reason whi', 'im fuck', 'let fuck', 'stop fuck', 'sorri ugli', 'stupid ass', 'fuck thing'],
+                    'data': [230, 124, 97, 89, 80, 72, 67, 66, 60, 59, 57, 55, 55, 54, 53, 50, 48, 48, 47, 47, 47, 46, 46, 46, 44, 44, 43, 42, 41, 40]
+                },
+                {
+                    'code': 'hatespeech',
+                    'condition': '1_3gram',
+                    'label': ['bush call racist', 'fuck georg bush', 'georg bush call', 'know fuck georg', 'ugli ass bitch', 'sorri ugli ass', 'bitch like thi', 'would even say', 'like thi would', 'thi would even', 'ass bitch like', 'let fuck go', 'even say oh', 'say oh god', 'eat food cold', 'food cold flourish', 'happen separ yo', 'nigga eat food', 'self nigga eat', 'separ yo self', 'thi happen separ', 'yo self nigga', 'either side side', 'fuck go nowornev', 'happen song video', 'preorder let fuck', 'side fuck way', 'side side fuck', 'song video preorder', 'video preorder let'],
+                    'data': [47, 47, 47, 47, 42, 41, 40, 38, 36, 35, 34, 33, 30, 30, 29, 29, 29, 29, 29, 29, 29, 29, 27, 27, 27, 27, 27, 27, 27, 27]
+                }
+            ]
         ]
-        /*
-    {
-        'code': 'hatespeech',
-        'condition': '0_1gram',
-        'label': ['thi', 'like', 'amp', 'wa', 'one', 'get', 'peopl', 'love', 'time', 'day', 'go', 'know', 'make', 'hi', 'new', 'look', 'ha', 'today', 'want', 'see', 'thank', 'say', 'us', 'follow', 'via', 'would', 'good', 'u', 'think', 'work'],
-        'data': [1406, 896, 820, 794, 695, 685, 548, 544, 541, 517, 486, 476, 474, 471, 454, 413, 410, 406, 405, 404, 404, 369, 348, 347, 343, 343, 338, 338, 334, 327]
-    },
-    {
-        'code': 'hatespeech',
-        'condition': '0_2gram',
-        'label': ['found transpond', 'transpond snail', 'one person', 'automat check', 'unfollow automat', 'look like', 'like video', 'feel like', 'follow one', 'person unfollow', 'peopl follow', 'year old', 'gt gt', 'like thi', 'thi week', 'happi birthday', 'person follow', 'ad video', 'thi year', 'video playlist', 'everi time', 'follow peopl', 'last night', 'peopl unfollow', 'april fool', 'thi one', 'best friend', 'new york', 'first time', 'white hous'],
-        'data':[96, 96, 87, 77, 77, 72, 71, 49, 47, 47, 45, 45, 43, 43, 43, 42, 34, 32, 32, 32, 31, 31, 30, 30, 29, 29, 28, 28, 27, 27]
-    },
-    {
-        'code': 'hatespeech',
-        'condition': '0_3gram',
-        'label': ['found transpond snail', 'unfollow automat check', 'follow one person', 'one person unfollow', 'person unfollow automat', 'one person follow', 'ad video playlist', 'follow peopl unfollow', 'peopl unfollow automat', 'peopl follow one', 'person follow one', 'gt gt gt', 'amaz encount trecru', 'giant sea monster', 'monster amaz encount', 'peopl follow peopl', 'sea monster amaz', 'snail giant sea', 'transpond snail giant', 'person follow peopl', 'rain today mm', 'time great show', 'yasss time great', 'april fool day', 'thank recent follow', 'abc news report', 'aircraft base befor', 'base befor strike', 'c rain today', 'equip aircraft base']
-        ,
-        'data':[96, 77, 47, 47, 47, 34, 32, 30, 30, 27, 20, 19, 16, 16, 16, 16, 16, 16, 16, 14, 12, 12, 12, 11, 11, 10, 10, 10, 10, 10]
-    },
-    {
-        'code': 'hatespeech',
-        'condition': '1_1gram',
-        'label': ['fuck', 'thi', 'like', 'bitch', 'ass', 'get', 'hate', 'idiot', 'nigga', 'u', 'know', 'bad', 'go', 'peopl', 'shit', 'whi', 'say', 'hi', 'wa', 'stupid', 'amp', 'look', 'want', 'ugli', 'got', 'damn', 'even', 'one', 'im', 'make'],
-        'data': [4661, 1237, 740, 673, 660, 557, 491, 461, 435, 397, 366, 333, 332, 314, 306, 289, 287, 285, 274, 270, 260, 252, 250, 249, 246, 228, 220, 213, 210, 194]
-    },
-    {
-        'code': 'hatespeech',
-        'condition': '1_2gram',
-        'label': ['thi fuck', 'get fuck', 'ugli ass', 'ass bitch', 'like thi', 'bad bitch', 'got fuck', 'fuck hate', 'look like', 'know fuck', 'oh god', 'bitch like', 'wa fuck', 'feel like', 'wanna fuck', 'thi nigga', 'call racist', 'thi stupid', 'bush call', 'fuck georg', 'georg bush', 'fuck go', 'realli fuck', 'reason whi', 'im fuck', 'let fuck', 'stop fuck', 'sorri ugli', 'stupid ass', 'fuck thing'],
-        'data': [230, 124, 97, 89, 80, 72, 67, 66, 60, 59, 57, 55, 55, 54, 53, 50, 48, 48, 47, 47, 47, 46, 46, 46, 44, 44, 43, 42, 41, 40]
-    },
-    {
-        'code': 'hatespeech',
-        'condition': '1_3gram',
-        'label': ['bush call racist', 'fuck georg bush', 'georg bush call', 'know fuck georg', 'ugli ass bitch', 'sorri ugli ass', 'bitch like thi', 'would even say', 'like thi would', 'thi would even', 'ass bitch like', 'let fuck go', 'even say oh', 'say oh god', 'eat food cold', 'food cold flourish', 'happen separ yo', 'nigga eat food', 'self nigga eat', 'separ yo self', 'thi happen separ', 'yo self nigga', 'either side side', 'fuck go nowornev', 'happen song video', 'preorder let fuck', 'side fuck way', 'side side fuck', 'song video preorder', 'video preorder let'],
-        'data': [47, 47, 47, 47, 42, 41, 40, 38, 36, 35, 34, 33, 30, 30, 29, 29, 29, 29, 29, 29, 29, 29, 27, 27, 27, 27, 27, 27, 27, 27]
-    },
+            /*
+    ]
     {
         'code': 'sentiment',
         'condition': '0_1gram',
@@ -285,14 +386,22 @@ const DataTable = (props) => {
     },*/
     ];
 
-    console.log(datasetIndex);
-    console.log(graphIndex);
+    function getLabel(graphindex) {
+        for(var i=0;i<graphNames[datasetIndex].length;i++) {
+            for(var j=0;j<graphNames[datasetIndex][i].graphs.length;j++) {
+                if (graphNames[datasetIndex][i].graphs[j].graphIndex == graphindex)
+                    return graphNames[datasetIndex][i].graphs[j].label
+            }
+        }
+
+        return -1;
+    }
 
     const barData = {
         labels: graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].label : [] ,
         datasets: [
             {
-            label: graphNames[datasetIndex][graphIndex],
+            label: getLabel(graphIndex),
             backgroundColor: 'rgba(255,99,132,0.2)',
             borderColor: 'rgba(255,99,132,1)',
             borderWidth: 1,
@@ -342,9 +451,6 @@ const DataTable = (props) => {
     }, [datasetIndex]);
 
     useEffect(() => {
-        console.log("setRadioIndex");
-        console.log(graphIndex);
-        console.log(radioIndex);
         setRadioIndex(0);
     }, [graphIndex]);
 
@@ -365,7 +471,6 @@ const DataTable = (props) => {
         let paged_tweet = filtered_tweet.slice(0+size*(currPage-1), size*currPage)
 
         if (update) {
-            console.log("here");
             setFilterTweet(filtered_tweet.length)
             setUpdate(false)
         }
@@ -373,7 +478,7 @@ const DataTable = (props) => {
             <tr> 
                 <th style={{width: "50px"}}> {size*(currPage-1)+i+1} </th>
                 <td> {item.tweet} </td>
-                <td style={{width: "150px"}}> {classificationLabels[datasetIndex][item.label]} </td>
+                <td style={{width: "150px"}}> {props.testFlag? testLabels[item.label] : classificationLabels[datasetIndex][item.label]} </td>
             </tr>
         )
     }
@@ -446,7 +551,7 @@ const DataTable = (props) => {
                                 {categoryList.map((item, i) => (
                                     <Form.Check key={i}
                                         type={'checkbox'}
-                                        label={classificationLabels[datasetIndex][i]}
+                                        label={props.testFlag? testLabels[i] : classificationLabels[datasetIndex][i]}
                                         defaultChecked={labelActive[i]}
                                         onClick={() => handleFilter(i)}
                                     />
@@ -470,20 +575,23 @@ const DataTable = (props) => {
                 <div style={{flex: "4", marginRight: "1rem"}}>
                     <h6> List of view: </h6>
                     <Accordion>
-                    <Card>
-                        <Card.Header>
-                            <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                            Label Distribution
-                            </Accordion.Toggle>
-                        </Card.Header>
-                        <Accordion.Collapse eventKey="0">
-                            <ListGroup>
-                                <ListGroup.Item action active={graphIndex === 0} onClick={() => setGraphIndex(0)}>General distribution</ListGroup.Item>
-                                <ListGroup.Item action active={graphIndex === 1} onClick={() => setGraphIndex(1)}>White-only distribution</ListGroup.Item>
-                                <ListGroup.Item action active={graphIndex === 2} onClick={() => setGraphIndex(2)}>Black-only distribution</ListGroup.Item>
-                            </ListGroup>
-                        </Accordion.Collapse>
-                    </Card>
+                        {
+                        graphNames[datasetIndex].map((item, i) => (
+                            <Card>
+                                <Card.Header>
+                                    <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                                        {item.category}
+                                    </Accordion.Toggle>
+                                </Card.Header>
+                                <Accordion.Collapse eventKey="0">
+                                    <ListGroup>
+                                        {item.graphs.map((item2, j) => (
+                                            <ListGroup.Item action active={graphIndex === item2.graphIndex} onClick={() => setGraphIndex(item2.graphIndex)}>{item2.label}</ListGroup.Item>
+                                        ))}
+                                    </ListGroup>
+                                </Accordion.Collapse>
+                            </Card>
+                        ))}
                     {/*
                     <Card>
                         <Card.Header>
@@ -526,19 +634,19 @@ const DataTable = (props) => {
     return (
         <div>
             <h1 > Exploring Dataset </h1>
-            <div className='d-flex justify-content-center align-item-center' style={{marginBottom: "1rem"}}>
-            <h5 style={{marginRight: "1rem", paddingTop: "0.5rem"}}> Choose a data representation: </h5>
-            <DropdownButton title={dataExplore}> 
-                {['Table', 'Graph'].map((item, i) => {
-                    return (<Dropdown.Item key={i} onClick={() => setDataExplore(item)}> {item} </Dropdown.Item>)
-                })}
-            </DropdownButton>
+            {props.testFlag ? <div></div>:
+                <div className='d-flex justify-content-center align-item-center' style={{ marginBottom: "1rem" }}>
+                    <h5 style={{ marginRight: "1rem", paddingTop: "0.5rem" }}> Choose a data representation: </h5>
+                    <DropdownButton title={dataExplore}>
+                        {['Table', 'Graph'].map((item, i) => {
+                            return (<Dropdown.Item key={i} onClick={() => setDataExplore(item)}> {item} </Dropdown.Item>)
+                        })}
+                    </DropdownButton>
+                </div>
+            }
+            <div className="explore-container" style={{ marginTop: "1rem", padding: "0rem 2rem", overflowY: "scroll" }}>
+                {createDataExplore()}
             </div>
-            <div className="explore-container" style={{marginTop: "1rem", padding: "0rem 2rem", overflowY: "scroll"}}>
-            
-            {createDataExplore()}
-            
-        </div>
         </div>
         
     )
