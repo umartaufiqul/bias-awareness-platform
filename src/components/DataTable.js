@@ -641,7 +641,7 @@ const DataTable = (props) => {
         <div>
             <h1 > Exploring Dataset </h1>
             {props.testFlag ? <div>  
-                <h5 style={{marginTop: "1rem", textDecoration: "underline"}}> Dataset used: {datasetList[datasetUsed]}> </h5></div>:
+                <h5 style={{marginTop: "1rem", textDecoration: "underline"}}> Dataset used: {datasetList[datasetUsed]} </h5></div>:
                 <div className='d-flex justify-content-center align-item-center' style={{ marginBottom: "1rem" }}>
                     <h5 style={{ marginRight: "1rem", paddingTop: "0.5rem" }}> Choose a data representation: </h5>
                     <DropdownButton title={dataExplore}>
