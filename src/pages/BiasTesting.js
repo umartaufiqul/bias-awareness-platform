@@ -170,7 +170,7 @@ const BiasTesting = (props) => {
         const decoder = new TextDecoder('utf-8')
         const csv = decoder.decode(result.value) // the csv text
         //The commented area is for umar's local development
-        const csv = require("../testTweet.csv")
+        // const csv = require("../testTweet.csv")
         
         const results = Papa.parse(csv, {
             header: true,
