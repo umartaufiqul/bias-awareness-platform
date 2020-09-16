@@ -18,7 +18,7 @@ import seaborn
 import warnings
 
 def dataImporting(dataTitle) :
-    df = pd.read_csv("./" + dataTitle, encoding='utf-8')
+    df = pd.read_csv(dataTitle, encoding='utf-8')
 
     return df
 
@@ -26,14 +26,14 @@ def dataFormatting(df, dataCode) :
     # make sure we have 'tweet' column and 'class' column
     retValue = ''
     
-    if dataCode == 'david' :
+    if "david.csv" in dataCode['filename'] :
         retValue = df[['class', 'tweet']]
-    elif dataCode == 'hatespeech' :
+    elif "hatespeech.csv" in dataCode['filename']  :
         df[['class']] = df[['class']].replace(to_replace='hateful', value='1')
         df[['class']] = df[['class']].replace(to_replace='normal', value='0')
 
         retValue = df
-    elif dataCode == 'sentiment' :
+    else :
         df[['target']] = df[['target']].replace(to_replace='4', value='1')
         df = df.rename(columns={"target": "class", "text": "tweet"})
 
@@ -41,49 +41,118 @@ def dataFormatting(df, dataCode) :
 
     return retValue
 
+def preprocess(text_string):
+    """
+    Accepts a text string and replaces:
+    1) urls with URLHERE
+    2) lots of whitespace with one instance
+    3) mentions with MENTIONHERE
+
+    This allows us to get standardized counts of urls and mentions
+    Without caring about specific people mentioned
+    """
+    space_pattern = '\s+'
+    giant_url_regex = ('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|'
+        '[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
+    mention_regex = '@[\w\-]+'
+    parsed_text = re.sub(space_pattern, ' ', text_string)
+    parsed_text = re.sub(giant_url_regex, '', parsed_text)
+    parsed_text = re.sub(mention_regex, '', parsed_text)
+    return parsed_text
+
+def basic_tokenize(tweet):
+    """Same as tokenize but without the stemming"""
+    tweet = " ".join(re.split("[^a-zA-Z.,!?]*", tweet.lower())).strip()
+    return tweet.split()
+
+def get_feature_array(tweets):
+    sentiment_analyzer = VS()
+    feats=[]
+
+    for t in tweets:
+        feats.append(other_features(t, sentiment_analyzer))
+    return np.array(feats)
+
+def count_twitter_objs(text_string):
+    """
+    Accepts a text string and replaces:
+    1) urls with URLHERE
+    2) lots of whitespace with one instance
+    3) mentions with MENTIONHERE
+    4) hashtags with HASHTAGHERE
+
+    This allows us to get standardized counts of urls and mentions
+    Without caring about specific people mentioned.
+    
+    Returns counts of urls, mentions, and hashtags.
+    """
+    space_pattern = '\s+'
+    giant_url_regex = ('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|'
+        '[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
+    mention_regex = '@[\w\-]+'
+    hashtag_regex = '#[\w\-]+'
+    parsed_text = re.sub(space_pattern, ' ', text_string)
+    parsed_text = re.sub(giant_url_regex, 'URLHERE', parsed_text)
+    parsed_text = re.sub(mention_regex, 'MENTIONHERE', parsed_text)
+    parsed_text = re.sub(hashtag_regex, 'HASHTAGHERE', parsed_text)
+    return(parsed_text.count('URLHERE'),parsed_text.count('MENTIONHERE'),parsed_text.count('HASHTAGHERE'))
+
+def other_features(tweet, sentiment_analyzer):
+    """This function takes a string and returns a list of features.
+    These include Sentiment scores, Text and Readability scores,
+    as well as Twitter specific features"""
+
+    sentiment = sentiment_analyzer.polarity_scores(tweet)
+    
+    words = preprocess(tweet) #Get text only
+    
+    syllables = textstat.syllable_count(words)
+    num_chars = sum(len(w) for w in words)
+    num_chars_total = len(tweet)
+    num_terms = len(tweet.split())
+    num_words = len(words.split())
+    avg_syl = round(float((syllables+0.001))/float(num_words+0.001),4)
+    num_unique_terms = len(set(words.split()))
+    
+    ###Modified FK grade, where avg words per sentence is just num words/1
+    FKRA = round(float(0.39 * float(num_words)/1.0) + float(11.8 * avg_syl) - 15.59,1)
+    ##Modified FRE score, where sentence fixed to 1
+    FRE = round(206.835 - 1.015*(float(num_words)/1.0) - (84.6*float(avg_syl)),2)
+    
+    twitter_objs = count_twitter_objs(tweet)
+    retweet = 0
+    if "rt" in words:
+        retweet = 1
+    features = [FKRA, FRE,syllables, avg_syl, num_chars, num_chars_total, num_terms, num_words,
+                num_unique_terms, sentiment['neg'], sentiment['pos'], sentiment['neu'], sentiment['compound'],
+                twitter_objs[2], twitter_objs[1],
+                twitter_objs[0], retweet]
+    #features = pandas.DataFrame(features)
+    return features
+
 def dataPreprocessing(df) :
+    import nltk
+
+    nltk.download('stopwords')
+    nltk.download('averaged_perceptron_tagger')
+    nltk.download('vader_lexicon')
+
     tweets=df.tweet
 
     stopwords = nltk.corpus.stopwords.words("english")
 
     other_exclusions = ["#ff", "ff", "rt"]
     stopwords.extend(other_exclusions)
-
+    
     stemmer = PorterStemmer()
 
-    print("Feature generation ...")
-
-    def preprocess(text_string):
-        """
-        Accepts a text string and replaces:
-        1) urls with URLHERE
-        2) lots of whitespace with one instance
-        3) mentions with MENTIONHERE
-    
-        This allows us to get standardized counts of urls and mentions
-        Without caring about specific people mentioned
-        """
-        space_pattern = '\s+'
-        giant_url_regex = ('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|'
-            '[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
-        mention_regex = '@[\w\-]+'
-        parsed_text = re.sub(space_pattern, ' ', text_string)
-        parsed_text = re.sub(giant_url_regex, '', parsed_text)
-        parsed_text = re.sub(mention_regex, '', parsed_text)
-        return parsed_text
-    
     def tokenize(tweet):
         """Removes punctuation & excess whitespace, sets to lowercase,
         and stems tweets. Returns a list of stemmed tokens."""
         tweet = " ".join(re.split("[^a-zA-Z]*", tweet.lower())).strip()
         tokens = [stemmer.stem(t) for t in tweet.split()]
         return tokens
-    
-    def basic_tokenize(tweet):
-        """Same as tokenize but without the stemming"""
-        tweet = " ".join(re.split("[^a-zA-Z.,!?]*", tweet.lower())).strip()
-        return tweet.split()
-    
+
     vectorizer = TfidfVectorizer(
         tokenizer=tokenize,
         preprocessor=preprocess,
@@ -136,82 +205,14 @@ def dataPreprocessing(df) :
     pos_vocab = {v:i for i, v in enumerate(pos_vectorizer.get_feature_names())}
 
     #ow get other features
-    sentiment_analyzer = VS()
     
-    def count_twitter_objs(text_string):
-        """
-        Accepts a text string and replaces:
-        1) urls with URLHERE
-        2) lots of whitespace with one instance
-        3) mentions with MENTIONHERE
-        4) hashtags with HASHTAGHERE
     
-        This allows us to get standardized counts of urls and mentions
-        Without caring about specific people mentioned.
-        
-        Returns counts of urls, mentions, and hashtags.
-        """
-        space_pattern = '\s+'
-        giant_url_regex = ('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|'
-            '[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
-        mention_regex = '@[\w\-]+'
-        hashtag_regex = '#[\w\-]+'
-        parsed_text = re.sub(space_pattern, ' ', text_string)
-        parsed_text = re.sub(giant_url_regex, 'URLHERE', parsed_text)
-        parsed_text = re.sub(mention_regex, 'MENTIONHERE', parsed_text)
-        parsed_text = re.sub(hashtag_regex, 'HASHTAGHERE', parsed_text)
-        return(parsed_text.count('URLHERE'),parsed_text.count('MENTIONHERE'),parsed_text.count('HASHTAGHERE'))
-    
-    def other_features(tweet):
-        """This function takes a string and returns a list of features.
-        These include Sentiment scores, Text and Readability scores,
-        as well as Twitter specific features"""
-        sentiment = sentiment_analyzer.polarity_scores(tweet)
-        
-        words = preprocess(tweet) #Get text only
-        
-        syllables = textstat.syllable_count(words)
-        num_chars = sum(len(w) for w in words)
-        num_chars_total = len(tweet)
-        num_terms = len(tweet.split())
-        num_words = len(words.split())
-        avg_syl = round(float((syllables+0.001))/float(num_words+0.001),4)
-        num_unique_terms = len(set(words.split()))
-        
-        ###Modified FK grade, where avg words per sentence is just num words/1
-        FKRA = round(float(0.39 * float(num_words)/1.0) + float(11.8 * avg_syl) - 15.59,1)
-        ##Modified FRE score, where sentence fixed to 1
-        FRE = round(206.835 - 1.015*(float(num_words)/1.0) - (84.6*float(avg_syl)),2)
-        
-        twitter_objs = count_twitter_objs(tweet)
-        retweet = 0
-        if "rt" in words:
-            retweet = 1
-        features = [FKRA, FRE,syllables, avg_syl, num_chars, num_chars_total, num_terms, num_words,
-                    num_unique_terms, sentiment['neg'], sentiment['pos'], sentiment['neu'], sentiment['compound'],
-                    twitter_objs[2], twitter_objs[1],
-                    twitter_objs[0], retweet]
-        #features = pandas.DataFrame(features)
-        return features
-    
-    def get_feature_array(tweets):
-        feats=[]
-        for t in tweets:
-            feats.append(other_features(t))
-        return np.array(feats)
-
     other_features_names = ["FKRA", "FRE","num_syllables", "avg_syl_per_word", "num_chars", "num_chars_total", \
                         "num_terms", "num_words", "num_unique_words", "vader neg","vader pos","vader neu", \
                         "vader compound", "num_hashtags", "num_mentions", "num_urls", "is_retweet"]
 
     feats = get_feature_array(tweets)
-    #Now join them all up
-    M = np.concatenate([tfidf,pos,feats],axis=1)    
-    print(M.shape)
-    print(vectorizer)
-    print(vectorizer.get_feature_names())
-    print(len(vectorizer.get_feature_names()))
-    print(pos_vectorizer)
+    M = np.concatenate([tfidf,pos,feats],axis=1)
 
     return {
         'vocab': vocab,
@@ -220,9 +221,26 @@ def dataPreprocessing(df) :
         'df': df,
         'M': M,
         'y': df['class'].astype(int),
-        'vectorizer': vectorizer,
-        'pos_vectorizer': pos_vectorizer
+        'vectorizer': (vectorizer, pos_vectorizer),
     };
+
+def vectorize(vectorizer, tweets) :
+    v1 = vectorizer[0]
+    v2 = vectorizer[1]
+
+    tweet_tags = []
+    for t in tweets:
+        tokens = basic_tokenize(preprocess(t))
+        tags = nltk.pos_tag(tokens)
+        tag_list = [x[1] for x in tags]
+        tag_str = " ".join(tag_list)
+        tweet_tags.append(tag_str)
+
+    tfidf = v1.transform(tweets).toarray()
+    pos = v2.transform(pd.Series(tweet_tags)).toarray() 
+    feats = get_feature_array(tweets)
+
+    return np.concatenate([tfidf,pos,feats],axis=1)
 
 def buildModel(p) :
     # vocab, pos_vocab, other_feature_names, 

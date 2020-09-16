@@ -70,23 +70,29 @@ const Visualization = (props) => {
                     precision: 0.84,
                     recall: 0.75,
                     f1_score: 0.79,
+                    support: 1013,
                 },
                 {
                     class: "Hateful",
                     precision: 0.84,
                     recall: 0.75,
                     f1_score: 0.79,
+                    support: 987
                 }
             ],
+            accuracy: 0.72,
+            support: 2000,
             macro: {
                 precision: 0.75,
                 recall: 0.81,
-                f1_score: 0.78
+                f1_score: 0.78,
+                support: 2000
             },
             weighted: {
                 precision: 0.91,
                 recall: 0.89,
-                f1_score: 0.9
+                f1_score: 0.9,
+                support: 2000
             },
             labels: ['Normal', 'Hateful'],
             matrix: [
@@ -395,7 +401,7 @@ const Visualization = (props) => {
                         {<div className="interact-container">
                             {changeContent()}
                         </div> }
-                            {
+                        {
                                 /*
                         <div className='load-btn'>
                             <button type='button' className="btn btn-green" onClick={(e) => {

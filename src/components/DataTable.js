@@ -37,12 +37,12 @@ const DataTable = (props) => {
     const datasetList = ["DataName1", "DataName2"]
 
     const classificationLabels = [
-        ['hateful', 'offensive', 'neither'],
-        ['normal', 'hateful'],
-        ['positive', 'negative'],
+        ['Hateful', 'Offensive', 'Neither'],
+        ['Normal', 'Hateful'],
+        ['Positive', 'Negative'],
     ]
 
-    const testLabels = ['black', 'white']
+    const testLabels = ['Black', 'White']
 
     const radioLabels = [
         [ // david
@@ -409,7 +409,7 @@ const DataTable = (props) => {
     console.log(graphIndex);
 
     const barData = {
-        labels: graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].label : [] ,
+        labels: graphData[datasetIndex].length > graphIndex && graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].label : [] ,
         datasets: [
             {
             label: getLabel(graphIndex),
@@ -418,7 +418,7 @@ const DataTable = (props) => {
             borderWidth: 1,
             hoverBackgroundColor: 'rgba(255,99,132,0.4)',
             hoverBorderColor: 'rgba(255,99,132,1)',
-            data: graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].data : [],
+            data: graphData[datasetIndex].length > graphIndex && graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].data : [],
             }
         ]
     }
