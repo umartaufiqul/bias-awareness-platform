@@ -25,7 +25,7 @@ function Introduction() {
                 </Row>
                 <p> Your task is to create a model that can automatically detect and remove such feedback, while taking the school board concern into consideration</p>
                  */}
-                <p> Hate speech detection is commonly used in social media context, such as facebook and twitter, in order to filter out post that are deemed hateful or abusive. However, many papers pointed out that hate speech detection technology, such as perspective AI, are biased toward flagging more tweets that use AAE (African-American English) dialect. </p>
+                <p> Hate speech detection is commonly used in social media context, such as facebook and twitter, in order to filter out post that are deemed hateful or abusive. However, many papers pointed out that hate speech detection technology, such as perspective API, are biased toward flagging more tweets that use AAE (African-American English) dialect. </p>
                 <p> In this activity, you will be able to explore and interactive platform where you can combine several different models with dataset, and observe how some combinations may affect the fairness of the of model </p>
                 <p> You will also need to submit a model suspected of being biased that you have mitigate the bias with a debiasing technique, and see how it compare with the original model</p> 
                 <div className="text-center">
