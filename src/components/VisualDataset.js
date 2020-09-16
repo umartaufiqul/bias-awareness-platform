@@ -4,21 +4,19 @@ import {changeDataset} from "../actions"
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 
-const data_values = ['data1', 'data2']
+const data_values = ['Data 1 (Davidson et al.)', 'Data 2 (Founta et al.)']
 const data_specs = [
     {
-        title: "A Benchmark Dataset for Learning to Intervene in Online Hate Speech",
-        author: "Jing Qian et al.",
-        tweet_num: 5000,
-        categories: 2,
-        abuse_rate: 0.8,
+        title: "Automated Hate Speech Detection and the Problem of Offensive Language",
+        author: "Davidson et al.",
+        tweet_num: 25297,
+        categories: 3,
     }, 
     {
-        title: "A Benchmark Dataset for Learning to Intervene in Online Hate Speech",
-        author: "Jing Qian et al.",
-        tweet_num: 5000,
+        title: "Large Scale Crowdsourcing and Characterization of Twitter Abusive Behavior",
+        author: "Founta et al.",
+        tweet_num: 20000,
         categories: 2,
-        abuse_rate: 0.8,
     }
 ]
 
@@ -35,17 +33,16 @@ const VisualDataset = (props) => {
             <ul>
                 {data_values.map((values, i) => 
                         <li key={i+1} style={{width: "auto"}}> <input type='radio' name ='dataset' value={values} onClick={() => dispatch(changeDataset(i))} checked={ data === i}/> 
-                            <label htmlFor={values} style={{marginLeft: '8px', marginBottom: '0px'}}> Data {i+1} </label>
+                            <label htmlFor={values} style={{marginLeft: '8px', marginBottom: '0px'}}> {data_values[i]} </label>
                             <OverlayTrigger
                             key={'right'}
                             placement={'right'}
                             overlay={
                                 <Tooltip id={`tooltip-${'right'}`} className='text-align-left'>
-                                    Title : {data_specs[0].title} <br />
-                                    Author : {data_specs[0].author} <br />
-                                    Number of Tweets : {data_specs[0].tweet_num} <br />
-                                    Categories: {data_specs[0].categories} <br />
-                                    Abuse rate: {data_specs[0].abuse_rate}
+                                    Title : {data_specs[i].title} <br />
+                                    Author : {data_specs[i].author} <br />
+                                    Number of Tweets : {data_specs[i].tweet_num} <br />
+                                    Categories: {data_specs[i].categories} <br />
                                 </Tooltip>
                             }
                             >

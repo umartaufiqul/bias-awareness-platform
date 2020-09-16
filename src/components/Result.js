@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react"
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import Tooltip from "react-bootstrap/Tooltip"
 import HeapMap from 'react-heatmap-grid'
+import MathJax from 'react-mathjax2'
 
 const Result = (props) => {
     const accStat = props.accStat
@@ -28,7 +29,7 @@ const Result = (props) => {
                             placement={'top'}
                             overlay={
                                 <Tooltip id={`tooltip-${'right'}`} className='text-align-left'>
-                                    The number of <br /> predications by model <br />
+                                    The number of <br /> predictions by model <br />
                                 </Tooltip>
                             }
                             >
@@ -89,52 +90,45 @@ const Result = (props) => {
                     Class
                 </th>
                 <th scope="col">
-                    Pblack
+                    P<sub>AAE</sub>
                     <div>
                     <OverlayTrigger
                         key={'right'}
                         placement={'right'}
                         overlay={
                             <Tooltip id={`tooltip-${'right'}`} className='text-align-left'>
-                                Click here to see how the measure is calculated
+                                {/*</Tooltip>
+                                <MathJax.Context
+                                input='ascii'
+                                >
+                                <MathJax.Node inline>text={'frac{# of blahblah }{# tweets}'} < /MathJax.Node>
+                                </MathJax.Context>*/}
+                                # of predicted labels / <br /> # of tweets <br /> given AAE
                             </Tooltip>
                         }
                         >
-                        <img src={require('../icons/info.svg')} alt='' style={{cursor: "pointer"}} onClick={() => setMeasureExplain("Pblack")}/>
+                        <img src={require('../icons/info.svg')} alt='' style={{cursor: "pointer"}} />
                     </OverlayTrigger>
                     </div>
                 </th>
                 <th scope="col">
-                    Pwhite
+                    P<sub>SAE</sub>
                     <div>
                     <OverlayTrigger
                         key={'right'}
                         placement={'right'}
                         overlay={
                             <Tooltip id={`tooltip-${'right'}`} className='text-align-left'>
-                                Click here to see how the measure is calculated
+                                # of predicted labels / <br /> # of tweets <br /> given SAE
                             </Tooltip>
                         }
                         >
-                        <img src={require('../icons/info.svg')} alt='' style={{cursor: "pointer"}} onClick={() => setMeasureExplain("Pwhite")}/>
+                        <img src={require('../icons/info.svg')} alt='' style={{cursor: "pointer"}}/>
                     </OverlayTrigger>
                     </div>
                     </th>
                 <th scope="col">
-                    Pblack/Pwhite
-                    <div>
-                    <OverlayTrigger
-                        key={'right'}
-                        placement={'right'}
-                        overlay={
-                            <Tooltip id={`tooltip-${'right'}`} className='text-align-left'>
-                                Click here to see how the measure is calculated
-                            </Tooltip>
-                        }
-                        >
-                        <img src={require('../icons/info.svg')} alt='' style={{cursor: "pointer"}} onClick={() => setMeasureExplain("Pblack/Pwhite")}/>
-                    </OverlayTrigger>
-                    </div>
+                    P<sub>AAE</sub> / P<sub>SAE</sub>
                 </th>
             </tr>
         </thead>

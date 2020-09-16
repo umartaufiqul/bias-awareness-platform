@@ -15,6 +15,7 @@ import "../style/DataTable.css"
 
 const DataTable = (props) => {
     const categoryList = props.categoryList
+    const categoryList2 = props.categoryList2
     const tweetListSample = props.tweetListSample
     const datasetIndex = parseInt(props.datasetIndex)
     
@@ -42,7 +43,7 @@ const DataTable = (props) => {
         ['Positive', 'Negative'],
     ]
 
-    const testLabels = ['Black', 'White']
+    const testLabels = ['African-A', 'Standard-A']
 
     const radioLabels = [
         [ // david
@@ -404,10 +405,6 @@ const DataTable = (props) => {
         return -1;
     }
 
-    console.log(graphData);
-    console.log(datasetIndex);
-    console.log(graphIndex);
-
     const barData = {
         labels: graphData[datasetIndex].length > graphIndex && graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].label : [] ,
         datasets: [
@@ -491,7 +488,7 @@ const DataTable = (props) => {
                 <td style={{textAlign: 'left'}}> {item.tweet} </td>
                 <td style={{width: "150px"}}> {props.testFlag? testLabels[item.label] : classificationLabels[datasetIndex][item.label]} </td>
                 {/* This is the column that only exist in the bias testing plane */}
-                <td style={{width: "150px"}} className={props.testFlag? '': 'd-none'}> {props.testFlag? testLabels[item.label] : classificationLabels[datasetIndex][item.label]} </td>
+                <td style={{width: "150px"}} className={props.testFlag? '': 'd-none'}> {classificationLabels[datasetIndex][item.predLabel]} </td>
             </tr>
         )
     }
@@ -559,7 +556,7 @@ const DataTable = (props) => {
                             <th style={{width: "50px"}} className='align-middle'>No</th>
                             <th className='align-middle'>Tweet</th>
                             <th style={{width: "150px"}}>
-                            <DropdownButton id="dropdown-basic-button" title='Label' variant='secondary'>
+                            <DropdownButton id="dropdown-basic-button" title={props.testFlag?'Dialect':'Abusive Label'} variant='secondary'>
                             <Form style={{marginLeft: "30px"}}>
                                 {categoryList.map((item, i) => (
                                     <Form.Check key={i}
@@ -573,20 +570,24 @@ const DataTable = (props) => {
                             </DropdownButton>
                             </th>
                             {/* This is where the column that only exist in bias testing page only */}
-                            <th style={{width: "150px"}} className={props.testFlag? '': 'd-none'}>
-                                <DropdownButton id="dropdown-basic-button" title='Class' variant='secondary'>
-                                <Form className='text-center'>
-                                    {categoryList.map((item, i) => (
-                                        <Form.Check key={i}
-                                            type={'checkbox'}
-                                            label={props.testFlag? testLabels[i] : classificationLabels[datasetIndex][i]}
-                                            defaultChecked={labelActive[i]}
-                                            onClick={() => handleFilter(i)}
-                                        />
-                                    ))}
-                                    </Form>
-                                </DropdownButton>
-                            </th>
+                            { props.testFlag ?
+                                <th style={{ width: "150px" }} className={props.testFlag ? '' : 'd-none'}>
+                                    <DropdownButton id="dropdown-basic-button" title='Predicted Label' variant='secondary' style={{ transform: 'translateX(-15px)' }}>
+                                        <Form className='text-center'>
+                                            {categoryList2.map((item, i) => (
+                                                <Form.Check key={i}
+                                                    type={'checkbox'}
+                                                    label={classificationLabels[datasetIndex][i]}
+                                                    defaultChecked={labelActive[i]}
+                                                    onClick={() => handleFilter(i)}
+                                                />
+                                            ))}
+                                        </Form>
+                                    </DropdownButton>
+                                </th>
+                                :
+                                ''
+                            }
                         </tr>
                     </thead>
                     <tbody>
@@ -661,7 +662,7 @@ const DataTable = (props) => {
 
     return (
         <div>
-            <h1 > Exploring Dataset {/*datasetList[datasetUsed]*/}</h1>
+            <h1> Dataset {props.testFlag? "For Bias Testing" : "Exploration"} {/*datasetList[datasetUsed]*/}</h1>
             {props.testFlag ? <div></div>:
                 <div className='d-flex justify-content-center align-item-center' style={{ marginBottom: "1rem", marginTop: "1rem" }}>
                     <h5 style={{ marginRight: "1rem", paddingTop: "0.5rem" }}> Choose a data representation: </h5>

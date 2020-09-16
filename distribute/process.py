@@ -26,9 +26,9 @@ def dataFormatting(df, dataCode) :
     # make sure we have 'tweet' column and 'class' column
     retValue = ''
     
-    if "david.csv" in dataCode['filename'] :
+    if "david" in dataCode['filename'] :
         retValue = df[['class', 'tweet']]
-    elif "hatespeech.csv" in dataCode['filename']  :
+    elif "hatespeech" in dataCode['filename']  :
         df[['class']] = df[['class']].replace(to_replace='hateful', value='1')
         df[['class']] = df[['class']].replace(to_replace='normal', value='0')
 

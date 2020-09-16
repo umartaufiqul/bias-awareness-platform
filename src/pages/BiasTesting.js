@@ -15,15 +15,25 @@ import {Bar} from "react-chartjs-2"
 import Papa from 'papaparse'
 
 const BiasTesting = (props) => {
-    const datasetURL = 'http://3.35.21.90:3000/bias-awareness-platform/testTweet.csv';
+    const datasetURL = [
+        'http://3.35.21.90:3000/bias-awareness-platform/testTweet_withPrediction_david.csv',
+        'http://3.35.21.90:3000/bias-awareness-platform/testTweet_withPrediction_hatespeech.csv',
+    ]
+
     const datasetIndex = useSelector(state => state.data);
     const [graphIndex, setGraphIndex] = useState(0)
 
     console.log(datasetIndex);
 
     const categories = [
-        ["0", "1", "2"],
-        ["0", "1"]
+        [
+            ["0", "1"],
+            ["0", "1", "2"],
+        ],
+        [
+            ["0", "1"],
+            ["0", "1"]
+        ]
     ];
 
     const graphNames = [
@@ -32,24 +42,20 @@ const BiasTesting = (props) => {
                 'category': 'General statistics',
                 'graphs': [
                     {
-                        'label': "Label distribution",
+                        'label': "Dialect distribution",
                         'graphIndex': 0
                     },
                     {
-                        'label': "N-gram distribution",
+                        'label': "Prediced label distribution",
                         'graphIndex': 1
                     },
                     {
-                        'label': "N-gram distribution of 'Hateful' tweet",
+                        'label': "Predicted label distribution for AAE",
                         'graphIndex': 2
                     },
                     {
-                        'label': "N-gram distribution of 'Abusive' tweet",
+                        'label': "Predicted label distribution for SAE",
                         'graphIndex': 3
-                    },
-                    {
-                        'label': "N-gram distribution of 'Neither' tweet",
-                        'graphIndex': 4
                     },
                 ]
             },
@@ -59,19 +65,19 @@ const BiasTesting = (props) => {
                 'category': 'General statistics',
                 'graphs': [
                     {
-                        'label': "Label distribution",
+                        'label': "Dialect distribution",
                         'graphIndex': 0
                     },
                     {
-                        'label': "N-gram distribution",
+                        'label': "Prediced label distribution",
                         'graphIndex': 1
                     },
                     {
-                        'label': "N-gram distribution of 'Normal' tweet",
+                        'label': "Predicted label distribution for AAE",
                         'graphIndex': 2
                     },
                     {
-                        'label': "N-gram distribution of 'Hateful' tweet",
+                        'label': "Predicted label distribution for SAE",
                         'graphIndex': 3
                     },
                 ]
@@ -81,7 +87,7 @@ const BiasTesting = (props) => {
 
     const resultStatValues = [[{
         class: "Hateful",
-        pblack: 0.001,
+        pblack: 0.704,
         pwhite: 0.003,
         pblack_white: 0.005,
     }, {
@@ -93,10 +99,10 @@ const BiasTesting = (props) => {
    ],
 
     [{
-        class: "Normal",
-        pblack: 0.083,
-        pwhite: 0.048,
-        pblack_white: 1.724
+        class: "Hateful",
+        pblack: 0.296,
+        pwhite: 0.060,
+        pblack_white: 4.933
     }, ]
 
     ]
@@ -134,6 +140,77 @@ const BiasTesting = (props) => {
         }
     ]]
 
+    const graphData = [
+        [ // david
+            [
+                {
+                    'code': 'david',
+                    'condition': 'total_dialect',
+                    'label': ['AAE', 'SAE'],
+                    'data': [1000, 1000]
+                }
+            ],
+            [
+                {
+                    'code': 'david',
+                    'condition': 'total_label',
+                    'label': ['Hateful', 'Abusive', 'Neither'],
+                    'data': [88, 248, 1664]
+                },
+            ],
+            [
+                {
+                    'code': 'david',
+                    'condition': 'AAE_label',
+                    'label': ['Hateful', 'Abusive', 'Neither'],
+                    'data': [78, 218, 704]
+                },
+            ],
+            [
+                {
+                    'code': 'david',
+                    'condition': 'SAE_label',
+                    'label': ['Hateful', 'Abusive', 'Neither'],
+                    'data': [10, 30, 960]
+                }
+            ],
+        ],
+        [ // hatespeech
+            [
+                {
+                    'code': 'hatespeech',
+                    'condition': 'total_dialect',
+                    'label': ['AAE', 'SAE'],
+                    'data': [1000, 1000]
+                }
+            ],
+            [
+                {
+                    'code': 'hatespeech',
+                    'condition': 'total_label',
+                    'label': ['Normal', 'Hateful'],
+                    'data': [1644, 356]
+                },
+            ],
+            [
+                {
+                    'code': 'david',
+                    'condition': 'AAE_label',
+                    'label': ['Normal', 'Hateful'],
+                    'data': [704, 296]
+                },
+            ],
+            [
+                {
+                    'code': 'david',
+                    'condition': 'SAE_label',
+                    'label': ['Normal', 'Hateful'],
+                    'data': [940, 60]
+                }
+            ],
+        ]
+    ]
+
     const [currentDatasetIndex, setCurrentDatasetIndex] = useState("0")
     const [categoryList, setCategoryList] = useState(categories[0])
     const [category, setCategory] = useState(categoryList[0])
@@ -158,10 +235,10 @@ const BiasTesting = (props) => {
     //Change the dataset name here freely
     const datasetList = ["Dataset 1", "Dataset 2"]
     
-    async function fetchData() {
-        console.log(datasetURL);
+    async function fetchData(datasetIndex) {
+        console.log(datasetURL[datasetIndex]);
 
-        const response = await fetch(datasetURL)
+        const response = await fetch(datasetURL[datasetIndex])
         const reader = response.body.getReader()
         const result = await reader.read() // raw array
 
@@ -184,7 +261,8 @@ const BiasTesting = (props) => {
                     // }
                     tweetData.push({
                         tweet: results.data[i].tweet.trim(),
-                        label: results.data[i].class
+                        label: results.data[i].class,
+                        predLabel: results.data[i].predLabel
                     });
                 }
 
@@ -196,7 +274,7 @@ const BiasTesting = (props) => {
     }
 
     useEffect(() => {
-        fetchData();
+        fetchData(datasetIndex);
         console.log("DATASET CHANGED");
         console.log(datasetIndex);
 
@@ -242,20 +320,20 @@ const BiasTesting = (props) => {
         },
     }
 
+    console.log(graphNames);
+    console.log(datasetIndex);
+
     const barData = {
-        // labels: graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].label : [] ,
-        labels: ["Label1", "Label2", "Label3"],
+        labels: graphIndex < graphData[datasetIndex].length ? graphData[datasetIndex][graphIndex][0].label : [] ,
         datasets: [
             {
-            // label: getLabel(graphIndex),
-            label: "Sample Graph",
+            label: graphIndex < graphNames[datasetIndex][0].graphs.length ? graphNames[datasetIndex][0].graphs[graphIndex].label : '',
             backgroundColor: 'rgba(255,99,132,0.2)',
             borderColor: 'rgba(255,99,132,1)',
             borderWidth: 1,
             hoverBackgroundColor: 'rgba(255,99,132,0.4)',
             hoverBorderColor: 'rgba(255,99,132,1)',
-            // data: graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].data : [],
-            data: [0.34, 0.44, 0.73]
+            data: graphIndex < graphData[datasetIndex].length ? graphData[datasetIndex][graphIndex][0].data : [] ,
             }
         ]
     }
@@ -336,7 +414,7 @@ const BiasTesting = (props) => {
             
         }
         else {
-            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample} datasetIndex={0} testFlag={true}/>)
+            return (<DataTable categoryList={categoryList[0]} categoryList2={categoryList[1]} tweetListSample={tweetListSample} datasetIndex={datasetIndex} testFlag={true}/>)
         }
     }
 
