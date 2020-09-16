@@ -37,12 +37,12 @@ const DataTable = (props) => {
     const datasetList = ["DataName1", "DataName2"]
 
     const classificationLabels = [
-        ['hateful', 'offensive', 'neither'],
-        ['normal', 'hateful'],
-        ['positive', 'negative'],
+        ['Hateful', 'Offensive', 'Neither'],
+        ['Normal', 'Hateful'],
+        ['Positive', 'Negative'],
     ]
 
-    const testLabels = ['black', 'white']
+    const testLabels = ['Black', 'White']
 
     const radioLabels = [
         [ // david
@@ -404,8 +404,12 @@ const DataTable = (props) => {
         return -1;
     }
 
+    console.log(graphData);
+    console.log(datasetIndex);
+    console.log(graphIndex);
+
     const barData = {
-        labels: graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].label : [] ,
+        labels: graphData[datasetIndex].length > graphIndex && graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].label : [] ,
         datasets: [
             {
             label: getLabel(graphIndex),
@@ -414,7 +418,7 @@ const DataTable = (props) => {
             borderWidth: 1,
             hoverBackgroundColor: 'rgba(255,99,132,0.4)',
             hoverBorderColor: 'rgba(255,99,132,1)',
-            data: graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].data : [],
+            data: graphData[datasetIndex].length > graphIndex && graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].data : [],
             }
         ]
     }
@@ -484,7 +488,7 @@ const DataTable = (props) => {
         return paged_tweet.map((item, i) => 
             <tr> 
                 <th style={{width: "50px"}}> {size*(currPage-1)+i+1} </th>
-                <td> {item.tweet} </td>
+                <td style={{textAlign: 'left'}}> {item.tweet} </td>
                 <td style={{width: "150px"}}> {props.testFlag? testLabels[item.label] : classificationLabels[datasetIndex][item.label]} </td>
                 {/* This is the column that only exist in the bias testing plane */}
                 <td style={{width: "150px"}} className={props.testFlag? '': 'd-none'}> {props.testFlag? testLabels[item.label] : classificationLabels[datasetIndex][item.label]} </td>
@@ -556,7 +560,7 @@ const DataTable = (props) => {
                             <th className='align-middle'>Tweet</th>
                             <th style={{width: "150px"}}>
                             <DropdownButton id="dropdown-basic-button" title='Label' variant='secondary'>
-                            <Form className='text-center'>
+                            <Form style={{marginLeft: "30px"}}>
                                 {categoryList.map((item, i) => (
                                     <Form.Check key={i}
                                         type={'checkbox'}
@@ -657,7 +661,7 @@ const DataTable = (props) => {
 
     return (
         <div>
-            <h1 > Exploring Dataset ({/*datasetList[datasetUsed]*/})</h1>
+            <h1 > Exploring Dataset {/*datasetList[datasetUsed]*/}</h1>
             {props.testFlag ? <div></div>:
                 <div className='d-flex justify-content-center align-item-center' style={{ marginBottom: "1rem", marginTop: "1rem" }}>
                     <h5 style={{ marginRight: "1rem", paddingTop: "0.5rem" }}> Choose a data representation: </h5>

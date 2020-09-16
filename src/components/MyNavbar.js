@@ -176,7 +176,7 @@ const MyNavbar = () => {
                     {useDropdown() ? 
                     <NavDropdown title={sectionList[section-1]} className='text-left' id='navbar-dropdown'>
                         <NavDropdown.Item href="/bias-awareness-platform/#/visualization"> 1. Visualization</NavDropdown.Item>
-                        <NavDropdown.Item href="/bias-awareness-platform/#/bias-mitigation"> 2. Bias Testing </NavDropdown.Item>
+                        <NavDropdown.Item href="/bias-awareness-platform/#/bias-testing"> 2. Bias Testing </NavDropdown.Item>
                         <NavDropdown.Item href="/bias-awareness-platform/#/mitigation"> 3. Debiasing </NavDropdown.Item>
                     </NavDropdown>
                     : <div style={{height: "2.5rem"}}></div>
