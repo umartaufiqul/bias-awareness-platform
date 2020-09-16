@@ -123,18 +123,29 @@ const Visualization = (props) => {
     const [tweetListReadFinished, setTweetListReadFinished] = useState(false)
     const dispatch = useDispatch()
     
-    async function fetchData(datasetIndex) {
-        const response = await fetch(datasetURL[datasetIndex])
-        const reader = response.body.getReader()
-        const result = await reader.read() // raw array
+    function processCSV(chunks, receivedLength) {
+        console.log(chunks);
+        console.log(receivedLength);
 
-        console.log(result)
+        // Step 4: concatenate chunks into single Uint8Array
+        let chunksAll = new Uint8Array(receivedLength); // (4.1)
+        let position = 0;
+        for (let chunk of chunks) {
+            chunksAll.set(chunk, position); // (4.2)
+            position += chunk.length;
+        }
 
-        const decoder = new TextDecoder('utf-8')
-        const csv = decoder.decode(result.value) // the csv text
+        // Step 5: decode into a string
+        let merged = new TextDecoder("utf-8").decode(chunksAll);
+
+        console.log(merged);
+
+        const csv = merged // the csv text
         //The commented area is for umar's local development
         // const csv = require("../david_formatted.csv")
-        
+
+        console.log(csv);
+
         const results = Papa.parse(csv, {
             header: true,
             // download: true,
@@ -158,6 +169,46 @@ const Visualization = (props) => {
                 // setTweetListReadFinished(true);
             }
         }) // object with { data, errors, meta }
+    }
+
+    async function fetchData(datasetIndex) {
+        const response = await fetch(datasetURL[datasetIndex])
+        const reader = response.body.getReader()
+
+        var chunks = [];
+        var receivedLength = 0;
+
+        const stream = new ReadableStream({
+            start(controller) {
+              // The following function handles each data chunk
+              function push() {
+                // "done" is a Boolean and value a "Uint8Array"
+                reader.read().then(({ done, value }) => {
+                  // Is there no more data to read?
+                  if (done) {
+                    // Tell the browser that we have finished sending data
+                    controller.close();
+                    
+                    processCSV(chunks, receivedLength);
+
+                    return;
+                  }
+                  console.log(value);
+                  console.log(new TextDecoder("utf-8").decode(value))
+                  console.log(value.length);
+
+                  chunks.push(value);
+                  receivedLength += value.length;
+        
+                  // Get the data and send it to the browser via the controller
+                  controller.enqueue(value);
+                  push();
+                });
+              };
+              
+              push();
+            }
+        });
 
     }
 
