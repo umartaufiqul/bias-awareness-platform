@@ -486,6 +486,8 @@ const DataTable = (props) => {
                 <th style={{width: "50px"}}> {size*(currPage-1)+i+1} </th>
                 <td> {item.tweet} </td>
                 <td style={{width: "150px"}}> {props.testFlag? testLabels[item.label] : classificationLabels[datasetIndex][item.label]} </td>
+                {/* This is the column that only exist in the bias testing plane */}
+                <td style={{width: "150px"}} className={props.testFlag? '': 'd-none'}> {props.testFlag? testLabels[item.label] : classificationLabels[datasetIndex][item.label]} </td>
             </tr>
         )
     }
@@ -565,6 +567,21 @@ const DataTable = (props) => {
                                 ))}
                                 </Form>
                             </DropdownButton>
+                            </th>
+                            {/* This is where the column that only exist in bias testing page only */}
+                            <th style={{width: "150px"}} className={props.testFlag? '': 'd-none'}>
+                                <DropdownButton id="dropdown-basic-button" title='Class' variant='secondary'>
+                                <Form className='text-center'>
+                                    {categoryList.map((item, i) => (
+                                        <Form.Check key={i}
+                                            type={'checkbox'}
+                                            label={props.testFlag? testLabels[i] : classificationLabels[datasetIndex][i]}
+                                            defaultChecked={labelActive[i]}
+                                            onClick={() => handleFilter(i)}
+                                        />
+                                    ))}
+                                    </Form>
+                                </DropdownButton>
                             </th>
                         </tr>
                     </thead>
