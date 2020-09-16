@@ -4,14 +4,20 @@ import { useDispatch, useSelector } from "react-redux"
 import ScatterChart from "../components/ScatterChart"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropdownButton from "react-bootstrap/DropdownButton"
+import Accordion from "react-bootstrap/Accordion"
+import Button from "react-bootstrap/Button"
+import Card from "react-bootstrap/Card"
+import ListGroup from "react-bootstrap/ListGroup"
 import VisualDataset from "../components/VisualDataset"
 import Result from "../components/Result"
 import DataTable from "../components/DataTable"
+import {Bar} from "react-chartjs-2"
 import Papa from 'papaparse'
 
 const BiasTesting = (props) => {
     const datasetURL = 'http://3.35.21.90:3000/bias-awareness-platform/testTweet.csv';
     const datasetIndex = useSelector(state => state.data);
+    const [graphIndex, setGraphIndex] = useState(0)
 
     console.log(datasetIndex);
 
@@ -19,6 +25,59 @@ const BiasTesting = (props) => {
         ["0", "1", "2"],
         ["0", "1"]
     ];
+
+    const graphNames = [
+        [ // david
+            {
+                'category': 'General statistics',
+                'graphs': [
+                    {
+                        'label': "Label distribution",
+                        'graphIndex': 0
+                    },
+                    {
+                        'label': "N-gram distribution",
+                        'graphIndex': 1
+                    },
+                    {
+                        'label': "N-gram distribution of 'Hateful' tweet",
+                        'graphIndex': 2
+                    },
+                    {
+                        'label': "N-gram distribution of 'Abusive' tweet",
+                        'graphIndex': 3
+                    },
+                    {
+                        'label': "N-gram distribution of 'Neither' tweet",
+                        'graphIndex': 4
+                    },
+                ]
+            },
+        ],
+        [ // hate speech
+            {
+                'category': 'General statistics',
+                'graphs': [
+                    {
+                        'label': "Label distribution",
+                        'graphIndex': 0
+                    },
+                    {
+                        'label': "N-gram distribution",
+                        'graphIndex': 1
+                    },
+                    {
+                        'label': "N-gram distribution of 'Normal' tweet",
+                        'graphIndex': 2
+                    },
+                    {
+                        'label': "N-gram distribution of 'Hateful' tweet",
+                        'graphIndex': 3
+                    },
+                ]
+            },
+        ]
+    ]
 
     const resultStatValues = [[{
         class: "Hateful",
@@ -111,7 +170,7 @@ const BiasTesting = (props) => {
         const decoder = new TextDecoder('utf-8')
         const csv = decoder.decode(result.value) // the csv text
         //The commented area is for umar's local development
-        // const csv = require("../david_formatted.csv")
+        const csv = require("../testTweet.csv")
         
         const results = Papa.parse(csv, {
             header: true,
@@ -147,6 +206,90 @@ const BiasTesting = (props) => {
     function changeCategory(index) {
         return () => {
             setCategory(categoryList[index])
+        }
+    }
+
+    const barOption = {
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 1,
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    drawOnChartArea: false,
+                    color: "#131c2b"
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Label',
+                },
+            }],
+            yAxes: [{
+                gridLines: {
+                    drawOnChartArea: false,
+                    color: "#131c2b"
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Distribution',
+                },
+                ticks: {
+                    suggestedMin: 0,
+                    maxTicksLimit: 10,
+                    suggestedMax: 1
+                }  
+            }]
+        },
+    }
+
+    const barData = {
+        // labels: graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].label : [] ,
+        labels: ["Label1", "Label2", "Label3"],
+        datasets: [
+            {
+            // label: getLabel(graphIndex),
+            label: "Sample Graph",
+            backgroundColor: 'rgba(255,99,132,0.2)',
+            borderColor: 'rgba(255,99,132,1)',
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+            hoverBorderColor: 'rgba(255,99,132,1)',
+            // data: graphData[datasetIndex][graphIndex].length > radioIndex ? graphData[datasetIndex][graphIndex][radioIndex].data : [],
+            data: [0.34, 0.44, 0.73]
+            }
+        ]
+    }
+
+    function createBarChart() {
+        switch(true) {
+            default:
+                return(
+                    <div style={{margin: "1rem"}}>
+                        <Bar data={barData} options={barOption} />
+                        <div className='d-flex justify-content-center' style={{marginTop: "1rem"}}>
+                            <h5 style={{marginRight: "1rem", marginTop: "1rem"}}> List of view :</h5>
+                            <Accordion>
+                            {
+                            graphNames[datasetIndex].map((item, i) => (
+                                <Card>
+                                    <Card.Header>
+                                        <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                                            {item.category}
+                                        </Accordion.Toggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="0">
+                                        <ListGroup>
+                                            {item.graphs.map((item2, j) => (
+                                                <ListGroup.Item action active={graphIndex === item2.graphIndex} onClick={() => setGraphIndex(item2.graphIndex)}>{item2.label}</ListGroup.Item>
+                                            ))}
+                                        </ListGroup>
+                                    </Accordion.Collapse>
+                                </Card>
+                            ))}
+                            </Accordion>
+                        </div>
+                    </div>
+                )
         }
     }
 
@@ -221,7 +364,7 @@ const BiasTesting = (props) => {
                     
                 </div>
                 <div className='interactive-right'>
-                <div id='interactive-controller'>
+                    <div id='interactive-controller'>
                         <div className='d-flex interact-tab'> 
                             <div style={{padding: "1rem"}}>
                                 <h5> Choose a dataset: </h5>
@@ -234,6 +377,7 @@ const BiasTesting = (props) => {
                         {/*
                         <BiasResult biasStat={accStat}/>*/ }
                         <Result resultStat={resultStat} accStat={accStat} resultAvailable={resultAvailable} datasetIndex={datasetIndex} activeResult='distr'/>
+                        {createBarChart()}
                     </div>
                 </div>
             </div>
