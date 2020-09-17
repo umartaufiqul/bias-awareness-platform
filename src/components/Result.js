@@ -127,7 +127,7 @@ const Result = (props) => {
                     </OverlayTrigger>
                     </div>
                     </th>
-                <th scope="col">
+                <th scope="col" className='align-middle'>
                     P<sub>AAE</sub> / P<sub>SAE</sub>
                 </th>
             </tr>

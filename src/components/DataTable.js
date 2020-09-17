@@ -465,17 +465,44 @@ const DataTable = (props) => {
     useEffect(() => {
         setFilterTweet(tweetListSample.length);
     }, [tweetListSample.length])
+
     useEffect(() => {
+        //If this is bias testing page, set label active into array
         var label = []
-        for (var i = 0; i < categoryList.length; i++) {
-            label.push(true)
+        if (props.testFlag) {
+            var label1 = []
+            for (var i = 0; i < categoryList.length; i++) {
+                label1.push(true)
+            }
+            label.push(label1)
+            var label2 = []
+            for (var i = 0; i < categoryList2.length; i++) {
+                label2.push(true)
+            }
+            label.push(label2)
+        }
+        else { 
+            for (var i = 0; i < categoryList.length; i++) {
+                label.push(true)
+            }
         }
         setLabelActive(label)
+        console.log("hey")
+        console.log(label)
     }, [categoryList.length])
 
     function returnFilteredTweet(tweet_list, size) {
         let filtered_tweet = [...tweet_list]
-        filtered_tweet = filtered_tweet.filter((item) => labelActive[categoryList.findIndex((cat_item) => cat_item === item.label)])
+        if (props.testFlag) {
+            var test = tweetListSample[1]
+            if (typeof test !== "undefined"){
+                var filtered_tweet1 = filtered_tweet.filter((item) => labelActive[0][categoryList.findIndex((cat_item) => cat_item === item.label)])
+                filtered_tweet = filtered_tweet1.filter((item) => labelActive[1][categoryList2.findIndex((cat_item) => cat_item === item.predLabel)])
+            }
+        }
+        else {
+            filtered_tweet = filtered_tweet.filter((item) => labelActive[categoryList.findIndex((cat_item) => cat_item === item.label)])
+        }
         let paged_tweet = filtered_tweet.slice(0+size*(currPage-1), size*currPage)
 
         if (update) {
@@ -493,10 +520,15 @@ const DataTable = (props) => {
         )
     }
 
-    
-    function handleFilter(index) {
+    //Checked
+    function handleFilter(index, choice=0) {
         var new_label = [...labelActive]
-        new_label[index] = !labelActive[index]
+        if (props.testFlag) {
+            new_label[choice][index] = !labelActive[choice][index]
+        }
+        else {
+            new_label[index] = !labelActive[index]
+        }
         setLabelActive(new_label)
         setUpdate(true)
     }
@@ -578,8 +610,8 @@ const DataTable = (props) => {
                                                 <Form.Check key={i}
                                                     type={'checkbox'}
                                                     label={classificationLabels[datasetIndex][i]}
-                                                    defaultChecked={labelActive[i]}
-                                                    onClick={() => handleFilter(i)}
+                                                    defaultChecked={labelActive.length > 1 ? labelActive[1][i]: labelActive[i] }
+                                                    onClick={() => handleFilter(i, 1)}
                                                 />
                                             ))}
                                         </Form>
@@ -603,39 +635,19 @@ const DataTable = (props) => {
             <div className='d-flex justify-align-center'>
                 <div style={{flex: "4", marginRight: "1rem"}}>
                     <h6> List of view: </h6>
-                    <Accordion>
                         {
                         graphNames[datasetIndex].map((item, i) => (
                             <Card>
                                 <Card.Header>
-                                    <Accordion.Toggle as={Button} variant="link" eventKey="0">
                                         {item.category}
-                                    </Accordion.Toggle>
                                 </Card.Header>
-                                <Accordion.Collapse eventKey="0">
                                     <ListGroup>
                                         {item.graphs.map((item2, j) => (
                                             <ListGroup.Item action active={graphIndex === item2.graphIndex} onClick={() => setGraphIndex(item2.graphIndex)}>{item2.label}</ListGroup.Item>
                                         ))}
                                     </ListGroup>
-                                </Accordion.Collapse>
                             </Card>
                         ))}
-                    {/*
-                    <Card>
-                        <Card.Header>
-                            <Accordion.Toggle as={Button} variant="link" eventKey="1">
-                            Other distribution
-                            </Accordion.Toggle>
-                        </Card.Header>
-                        <Accordion.Collapse eventKey="1">
-                            <ListGroup>
-                                <ListGroup.Item action active={graphIndex === 3} onClick={() => setDataView(3)}>Keyword distribution</ListGroup.Item>
-                            </ListGroup>
-                        </Accordion.Collapse>
-                    </Card>
-                    */}
-                    </Accordion>
                 </div>
                 <div style={{flex: "10"}}>
                     {createBarChart()}
