@@ -346,25 +346,19 @@ const BiasTesting = (props) => {
                         <Bar data={barData} options={barOption} />
                         <div className='d-flex justify-content-center' style={{marginTop: "1rem"}}>
                             <h5 style={{marginRight: "1rem", marginTop: "1rem"}}> List of view :</h5>
-                            <Accordion>
                             {
                             graphNames[datasetIndex].map((item, i) => (
                                 <Card>
                                     <Card.Header>
-                                        <Accordion.Toggle as={Button} variant="link" eventKey="0">
                                             {item.category}
-                                        </Accordion.Toggle>
                                     </Card.Header>
-                                    <Accordion.Collapse eventKey="0">
                                         <ListGroup>
                                             {item.graphs.map((item2, j) => (
                                                 <ListGroup.Item action active={graphIndex === item2.graphIndex} onClick={() => setGraphIndex(item2.graphIndex)}>{item2.label}</ListGroup.Item>
                                             ))}
                                         </ListGroup>
-                                    </Accordion.Collapse>
                                 </Card>
                             ))}
-                            </Accordion>
                         </div>
                     </div>
                 )
