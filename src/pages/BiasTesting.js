@@ -248,8 +248,8 @@ const BiasTesting = (props) => {
 
         const csv = merged // the csv text
         //The commented area is for umar's local development
-        // const csv = require("../david_formatted.csv")
-
+        // const csv = require("../testTweet_withPrediction_david.csv")
+        
         const results = Papa.parse(csv, {
             header: true,
             // download: true,
