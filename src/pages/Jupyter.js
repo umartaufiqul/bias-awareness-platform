@@ -6,13 +6,11 @@ const JupyterNotebook = () => {
 
     return(
     <div className='jupyter-notebook-div'>
-        <Iframe src='http://3.35.21.90:8000' 
+        <Iframe src='http://3.34.183.118:8000' 
                 className='jupyter-iframe'
         />
     </div>
     )
-    
-    
 }
 
 export default JupyterNotebook

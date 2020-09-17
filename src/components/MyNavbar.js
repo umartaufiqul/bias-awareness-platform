@@ -65,7 +65,19 @@ const MyNavbar = () => {
             content: () => (
                 <div>
                     <h3 className='text-center'> Dataset for Bias Testing </h3>
-                    <p> Here is the new dataset for checking bias. Here, we already made predictions, whether the tweets are abusive or not by the model we built. The dialect column represents whether a tweet is written in AAE (African-American English) or SAE (Standard American English). <br /> <br /> Therefore, we have tweets, labels of dialects, and labels of model predictions. Again, "Predicted Label" refers to model's prediction, not the ground truth. We don't have a ground truth for this dataset as this dataset is for checking the bias. <br /> <br /> In other words, we check the bias by <b>prediction results</b> of the model (whether the distribution of predictions is different with respect to the dialects), regardless of whether the prediction is correct or not. </p> 
+                    <p> Here is the new dataset for checking bias. It consists 2000 tweets, 1000 tweets written in AAE(African-American English) and 1000 tweets written in SAE(Standard-American English). 
+                        Here, we already made predictions, whether the tweets are abusive or not, by the model we built. 
+                        The dialect column represents the dialects (AAE or SAE).
+                        <br /> <br /> 
+
+                        Therefore, we have tweets, labels of dialects, and labels of model predictions. 
+                        Again, "Predicted Label" refers to model's prediction, not the ground truth. 
+                        We don't have a ground truth for this dataset as this dataset is for checking the bias. 
+                        <br /> <br /> 
+                        
+                        In other words, we check the bias by <b>prediction results</b> of the model (whether the distribution 
+                        of predictions is different with respect to the dialects), regardless of whether the prediction is 
+                        correct or not. </p> 
                 </div>
             )
         },
@@ -83,7 +95,12 @@ const MyNavbar = () => {
             content: () => (
                 <div>
                     <h3 className='text-center'> Result of Bias Testing </h3>
-                    <p> We present the result of bias testing. The table shows the portion of predictions by model with respect to the abusiveness class. For example, 0.704 in P<sub>AAE</sub> for the label "Hateful" means that our model predicted 70.4% of AAE tweets as "Hateful". <br /> <br /> The ratio between P<sub>AAE</sub> and P<sub>SAE</sub> can be used as a measure of bias. Think about the meaning of the ratio and why it can be used as a measure. <br /> Please note that the ratio can be <b> just a single measure</b> that captures <b>a specific situation</b>.  <br /> <br /> You can refer to the graph below to see general trend of the result. </p> 
+                    <p> We present the result of bias testing. The table shows the portion of predictions by model with respect to the abusiveness class. 
+                        For example, 0.704 in P<sub>AAE</sub> for the label "Hateful" means that our model predicted 70.4% of AAE tweets as "Hateful". <br /> <br /> The ratio between P<sub>AAE</sub> and P<sub>SAE</sub> can be used as a measure of bias. 
+                        Think about the meaning of the ratio and why it can be used as a measure. <br /> 
+                        Please note that the ratio can be <b> just a single measure</b> that captures <b>a specific situation</b>.  
+                        <br /> <br /> 
+                        You can refer to the graph below to see general trend of the result. It presents how classification results look like for the <b> testing dataset</b>, not the dataset used in training phase.</p> 
                 </div>
             )
         },

@@ -14,8 +14,8 @@ import Papa from 'papaparse'
 
 const Visualization = (props) => {
     const datasetURL = [
-        'http://3.35.21.90:3000/bias-awareness-platform/david_formatted.csv',
-        'http://3.35.21.90:3000/bias-awareness-platform/hatespeech_formatted.csv'
+        'http://3.34.183.118:3000/bias-awareness-platform/david_formatted.csv',
+        'http://3.34.183.118:3000/bias-awareness-platform/hatespeech_formatted.csv'
     ];
 
     const categories = [
@@ -33,7 +33,7 @@ const Visualization = (props) => {
                     support: 164
                 }, {
                     class: "Abusive",
-                    precision: 0.95,
+                    precision: 0.96,
                     recall: 0.91,
                     f1_score: 0.94,
                     support: 1905
@@ -49,7 +49,7 @@ const Visualization = (props) => {
             macro: {
                 precision: 0.75,
                 recall: 0.81,
-                f1_score: 0.78,
+                f1_score: 0.77,
             },
             weighted: {
                 precision: 0.91,
@@ -58,7 +58,7 @@ const Visualization = (props) => {
             },
             labels: ['Hateful', 'Abusive', 'Neither'],
             matrix: [
-                [0.59, 0.33, 0.09],
+                [0.59, 0.32, 0.09],
                 [0.06, 0.91, 0.03],
                 [0.03, 0.03, 0.94]
             ]
@@ -67,31 +67,31 @@ const Visualization = (props) => {
             stat: [
                 {
                     class: "Normal",
-                    precision: 0.84,
-                    recall: 0.75,
-                    f1_score: 0.79,
-                    support: 1013,
+                    precision: 0.94,
+                    recall: 0.96,
+                    f1_score: 0.95,
+                    support: 1274,
                 },
                 {
                     class: "Hateful",
-                    precision: 0.84,
-                    recall: 0.75,
-                    f1_score: 0.79,
-                    support: 987
+                    precision: 0.92,
+                    recall: 0.89,
+                    f1_score: 0.91,
+                    support: 726
                 }
             ],
-            accuracy: 0.72,
+            accuracy: 0.93,
             support: 2000,
             macro: {
-                precision: 0.75,
-                recall: 0.81,
-                f1_score: 0.78,
+                precision: 0.93,
+                recall: 0.92,
+                f1_score: 0.93,
                 support: 2000
             },
             weighted: {
-                precision: 0.91,
-                recall: 0.89,
-                f1_score: 0.9,
+                precision: 0.93,
+                recall: 0.93,
+                f1_score: 0.93,
                 support: 2000
             },
             labels: ['Normal', 'Hateful'],
@@ -121,12 +121,11 @@ const Visualization = (props) => {
     const resultModel = useSelector(state => state.model)
     const [tweetListSample, setTweetListSample] = useState([{}])
     const [tweetListReadFinished, setTweetListReadFinished] = useState(false)
+    const [tweetDB, setTweetDB] = useState([[]])
+
     const dispatch = useDispatch()
     
-    function processCSV(chunks, receivedLength) {
-        console.log(chunks);
-        console.log(receivedLength);
-
+    function processCSV(datasetIndex, chunks, receivedLength, temp) {
         // Step 4: concatenate chunks into single Uint8Array
         let chunksAll = new Uint8Array(receivedLength); // (4.1)
         let position = 0;
@@ -138,13 +137,9 @@ const Visualization = (props) => {
         // Step 5: decode into a string
         let merged = new TextDecoder("utf-8").decode(chunksAll);
 
-        console.log(merged);
-
         const csv = merged // the csv text
         //The commented area is for umar's local development
         // const csv = require("../david_formatted.csv")
-
-        console.log(csv);
 
         const results = Papa.parse(csv, {
             header: true,
@@ -152,7 +147,6 @@ const Visualization = (props) => {
             complete: function (results) {
                 var tweetData = [];
 
-                console.log(results);
                 for (var i = 0; i < results.data.length; i++) {
                     // if (typeof results.data[i].tweet === "undefined") {
                     //     continue;
@@ -163,15 +157,30 @@ const Visualization = (props) => {
                     });
                 }
 
-                console.log(tweetData);
+                temp[datasetIndex] = tweetData;
 
                 setTweetListSample(tweetData);
-                // setTweetListReadFinished(true);
+                setTweetDB(temp);
             }
         }) // object with { data, errors, meta }
     }
 
     async function fetchData(datasetIndex) {
+        var temp = tweetDB;
+
+        if(temp == null) temp = [];
+
+        while (true) {
+            if (temp.length > datasetIndex) break;
+
+            temp.push([]);
+        }
+
+        if(temp[datasetIndex].length > 0){
+            setTweetListSample(tweetDB[datasetIndex]);
+            return;
+        } 
+
         const response = await fetch(datasetURL[datasetIndex])
         const reader = response.body.getReader()
 
@@ -189,14 +198,10 @@ const Visualization = (props) => {
                     // Tell the browser that we have finished sending data
                     controller.close();
                     
-                    processCSV(chunks, receivedLength);
+                    processCSV(datasetIndex, chunks, receivedLength, temp);
 
                     return;
                   }
-                  console.log(value);
-                  console.log(new TextDecoder("utf-8").decode(value))
-                  console.log(value.length);
-
                   chunks.push(value);
                   receivedLength += value.length;
         
@@ -213,7 +218,6 @@ const Visualization = (props) => {
     }
 
     useEffect((data) => {
-        console.log(data);
     });
 
     useEffect(() => {
@@ -283,7 +287,6 @@ const Visualization = (props) => {
     }
 
     function changeActiveState(id) {
-        console.log(id)
         if (id === "dataset-tab" && datasetActive === "") {
            setDatasetActive("active");
            setModelActive("");
