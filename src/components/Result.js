@@ -55,7 +55,7 @@ const Result = (props) => {
             {
                 'macro' in accStat ?
                 <>
-                        <tr style={{ 'border-top': '2px solid rgb(120, 127, 124)' }}>
+                        <tr style={{ 'borderTop': '2px solid rgb(120, 127, 124)' }}>
                             <th> accuracy </th>
                             <td>  </td>
                             <td> </td>

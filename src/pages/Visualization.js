@@ -7,7 +7,6 @@ import VisualModelNew from "../components/VisualModelNew"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropdownButton from "react-bootstrap/DropdownButton"
 import { activateLoader, deactivateLoader } from "../actions"
-import Form from "react-bootstrap/Form"
 import Result from "../components/Result"
 import DataTable from "../components/DataTable"
 import Papa from 'papaparse'
@@ -122,6 +121,17 @@ const Visualization = (props) => {
     const [tweetListSample, setTweetListSample] = useState([{}])
     const [tweetListReadFinished, setTweetListReadFinished] = useState(false)
     const dispatch = useDispatch()
+
+    //Check if the chosen data is custom or not
+    useEffect(() => {
+        console.log(resultData)
+        if (resultData < 0) {
+            setResultAvailable(false)
+        }
+        else {
+            setResultAvailable(true)
+        }
+    }, [resultData])
     
     function processCSV(chunks, receivedLength) {
         console.log(chunks);
@@ -157,6 +167,37 @@ const Visualization = (props) => {
                     // if (typeof results.data[i].tweet === "undefined") {
                     //     continue;
                     // }
+                    tweetData.push({
+                        tweet: results.data[i].tweet,
+                        label: results.data[i].class
+                    });
+                }
+
+                console.log(tweetData);
+
+                setTweetListSample(tweetData);
+                // setTweetListReadFinished(true);
+            }
+        }) // object with { data, errors, meta }
+    }
+
+    function processCSVLocal(datasetIndex) {
+        const csvNames = [require("../david_formatted.csv"), require("../hatespeech_formatted.csv")]
+        const csv = csvNames[datasetIndex]
+
+        console.log(csv);
+
+        const results = Papa.parse(csv, {
+            header: true,
+            download: true,
+            complete: function (results) {
+                var tweetData = [];
+
+                console.log(results);
+                for (var i = 0; i < results.data.length; i++) {
+                    if (typeof results.data[i].tweet === "undefined") {
+                        continue;
+                    }
                     tweetData.push({
                         tweet: results.data[i].tweet,
                         label: results.data[i].class
@@ -218,6 +259,9 @@ const Visualization = (props) => {
 
     useEffect(() => {
         fetchData(0);
+        //----Umar Local Development-----
+        // processCSVLocal(0)
+        //-------------------------------
         setAccStat(accStatValues[0]);
     }, [tweetListReadFinished])
 
@@ -272,8 +316,15 @@ const Visualization = (props) => {
     */
 
     function handleDatasetChange(datasetIndex) {
+        //Custom dataset
+        if (datasetIndex < 0) {
+            return
+        }
         if(currentDatasetIndex != datasetIndex) {
             fetchData(parseInt(datasetIndex));
+            //-------Umar's Local Dev-----------
+            // processCSVLocal(datasetIndex)
+            //----------------------------------
             setCategoryList(categories[parseInt(datasetIndex)]);
             setCategory(categories[parseInt(datasetIndex)][0]);
             setCurrentDatasetIndex(datasetIndex);
@@ -385,7 +436,7 @@ const Visualization = (props) => {
             
         }
         else {
-            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample} datasetIndex={currentDatasetIndex}/>)
+            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample} datasetIndex={currentDatasetIndex} dataAvailable={resultAvailable}/>)
         }
     }
 

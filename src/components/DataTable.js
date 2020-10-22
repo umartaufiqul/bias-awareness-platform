@@ -672,10 +672,28 @@ const DataTable = (props) => {
         }
     }
 
+    function displayData() {
+        if (props.dataAvailable) {
+            return (
+                <div className="explore-container" style={{ marginTop: "1rem", padding: "0rem 2rem", overflowY: "scroll" }}>
+                    {createDataExplore()}
+                </div>
+            )
+        }
+        else {
+            return (
+            <div style={{ marginTop: "1rem", padding: "0rem 5rem" }}>
+                <h3 style={{ marginTop: "5rem", color: "#676767" }}> No data to display </h3>
+                <p> There is no data that has been submitted yet. You can upload your own data on the dataset section, and make sure to submit the data. </p>
+            </div>
+            )
+        }
+    }
+
     return (
         <div>
             <h1> Dataset {props.testFlag? "For Bias Testing" : "Exploration"} {/*datasetList[datasetUsed]*/}</h1>
-            {props.testFlag ? <div></div>:
+            {props.testFlag || !props.dataAvailable ? <div></div>:
                 <div className='d-flex justify-content-center align-item-center' style={{ marginBottom: "1rem", marginTop: "1rem" }}>
                     <h5 style={{ marginRight: "1rem", paddingTop: "0.5rem" }}> Choose a data representation: </h5>
                     {/* <DropdownButton title={dataExplore} className='btn-green'>
@@ -693,9 +711,7 @@ const DataTable = (props) => {
                     </Dropdown>
                 </div>
             }
-            <div className="explore-container" style={{ marginTop: "1rem", padding: "0rem 2rem", overflowY: "scroll" }}>
-                {createDataExplore()}
-            </div>
+            {displayData()}
         </div>
         
     )

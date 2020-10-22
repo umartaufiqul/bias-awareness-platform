@@ -408,7 +408,7 @@ const BiasTesting = (props) => {
             
         }
         else {
-            return (<DataTable categoryList={categoryList[0]} categoryList2={categoryList[1]} tweetListSample={tweetListSample} datasetIndex={datasetIndex} testFlag={true}/>)
+            return (<DataTable categoryList={categoryList[0]} categoryList2={categoryList[1]} tweetListSample={tweetListSample} datasetIndex={datasetIndex} testFlag={true} dataAvailable={true}/>)
         }
     }
 

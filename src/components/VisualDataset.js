@@ -32,24 +32,37 @@ const VisualDataset = (props) => {
         <div className='visual-dataset'>
             <ul>
                 {data_values.map((values, i) => 
-                        <li key={i+1} style={{width: "auto"}}> <input type='radio' name ='dataset' value={values} onClick={() => dispatch(changeDataset(i))} checked={ data === i}/> 
-                            <label htmlFor={values} style={{marginLeft: '8px', marginBottom: '0px'}}> {data_values[i]} </label>
-                            <OverlayTrigger
-                            key={'right'}
-                            placement={'right'}
-                            overlay={
-                                <Tooltip id={`tooltip-${'right'}`} className='text-align-left'>
-                                    Title : {data_specs[i].title} <br />
-                                    Author : {data_specs[i].author} <br />
-                                    Number of Tweets : {data_specs[i].tweet_num} <br />
-                                    Categories: {data_specs[i].categories} <br />
-                                </Tooltip>
-                            }
-                            >
-                            <img src={require('../icons/info.svg')} alt='' className='info-icon'/>
-                            </OverlayTrigger>
-                        </li>
-                    )}
+                    <li key={i+1} style={{width: "auto"}}> <input type='radio' name ='dataset' value={values} onClick={() => dispatch(changeDataset(i))} checked={ data === i}/> 
+                        <label htmlFor={values} style={{marginLeft: '8px', marginBottom: '0px'}}> {data_values[i]} </label>
+                        <OverlayTrigger
+                        key={'right'}
+                        placement={'right'}
+                        overlay={
+                            <Tooltip id={`tooltip-${'right'}`} className='text-align-left'>
+                                Title : {data_specs[i].title} <br />
+                                Author : {data_specs[i].author} <br />
+                                Number of Tweets : {data_specs[i].tweet_num} <br />
+                                Categories: {data_specs[i].categories} <br />
+                            </Tooltip>
+                        }
+                        >
+                        <img src={require('../icons/info.svg')} alt='' className='info-icon'/>
+                        </OverlayTrigger>
+                    </li>
+                )}
+                <li style={{width: "auto"}}> 
+                    <input type='radio' name ='dataset' onClick={() => dispatch(changeDataset(-1))} checked={data == -1}/> 
+                    <label style={{marginLeft: '8px', marginBottom: '0px'}}> Custom data </label>
+                    {/* <button className='btn btn-secondary ml-4'> Upload</button> */}
+                    <input type='file' className='my-3' onChange={
+                        (e) => {
+                            dispatch(changeDataset(-1))
+                            console.log(e.target.files[0].name)
+                        }} style={{overflowX: "auto"}}></input>
+                    <div className='text-center'>
+                        <input type='submit' className='btn btn-green'></input>
+                    </div>
+                </li>
             </ul>
         </div>
     )

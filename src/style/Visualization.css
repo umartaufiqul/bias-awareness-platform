@@ -85,7 +85,7 @@
 .interact-container {
     background-color: #fafafa;
     padding: 1rem 5rem;
-    height: 130px;
+    /* height: 130px; */
 }
 
 .legend-box {
