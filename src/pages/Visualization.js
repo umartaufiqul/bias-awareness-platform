@@ -6,6 +6,8 @@ import VisualDataset from "../components/VisualDataset"
 import VisualModelNew from "../components/VisualModelNew"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropdownButton from "react-bootstrap/DropdownButton"
+import OverlayTrigger from "react-bootstrap/OverlayTrigger"
+import Tooltip from "react-bootstrap/Tooltip"
 import { activateLoader, deactivateLoader } from "../actions"
 import Result from "../components/Result"
 import DataTable from "../components/DataTable"
@@ -109,7 +111,8 @@ const Visualization = (props) => {
     const [category, setCategory] = useState(categoryList[0])
     const [exploreActive, setExploreActive] = useState("data")
     const [resultAvailable, setResultAvailable] = useState(true)
-    const [labelActive, setLabelActive] = useState([])
+    const [dataAvailable, setDataAvailable] = useState(false) //Whether the custom data has been uploaded & processed correctly
+    const [customData, setCustomData] = useState("")
     const [resultStat, setResultStat] = useState([{}])
     const [accStat, setAccStat] = useState([{}])
 
@@ -126,10 +129,10 @@ const Visualization = (props) => {
     useEffect(() => {
         console.log(resultData)
         if (resultData < 0) {
-            setResultAvailable(false)
+            setDataAvailable(false)
         }
         else {
-            setResultAvailable(true)
+            setDataAvailable(true)
         }
     }, [resultData])
     
@@ -204,7 +207,7 @@ const Visualization = (props) => {
                     });
                 }
 
-                console.log(tweetData);
+                // console.log(tweetData);
 
                 setTweetListSample(tweetData);
                 // setTweetListReadFinished(true);
@@ -252,10 +255,6 @@ const Visualization = (props) => {
         });
 
     }
-
-    useEffect((data) => {
-        console.log(data);
-    });
 
     useEffect(() => {
         fetchData(0);
@@ -344,9 +343,35 @@ const Visualization = (props) => {
         }
     };
 
+    //Open dataset if found with the name
+    //NOTE: This only used for demonstration purpose
+    useEffect(() => {
+        if (customData === "") {
+            console.log("No file has been submitted")
+        }
+        else {
+            setTweetListSample(processDataToJSON())
+            setDataAvailable(true)
+        }
+    }, [customData])
+
+    function processDataToJSON() {
+        var data_array = [...customData.data]
+        var tweet_idx = customData.tweet
+        var label_idx = customData.label
+        data_array.shift()
+        const json_tweet = data_array.map((entry, i) => {
+            return {
+                tweet: entry.data[tweet_idx],
+                label: entry.data[label_idx]
+            }
+        })
+        return json_tweet
+    }
+
     function changeContent() {
         if (datasetActive === "active") {
-            return <VisualDataset onChange={handleDatasetChange}/>
+            return <VisualDataset onChange={handleDatasetChange} passCustomData={setCustomData}/>
         }
         else {
             return <VisualModelNew />
@@ -436,7 +461,7 @@ const Visualization = (props) => {
             
         }
         else {
-            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample} datasetIndex={currentDatasetIndex} dataAvailable={resultAvailable}/>)
+            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample} datasetIndex={currentDatasetIndex} dataAvailable={dataAvailable} customData={customData} wordList={wordList}/>)
         }
     }
 
@@ -454,7 +479,7 @@ const Visualization = (props) => {
                         <div className={exploreActive === "result" ? 'explore-choice active' : 'explore-choice'} onClick={() => handleExploreChange("result")}> Result </div>
                     </div> */}
                     {selectExplore()}
-                    {/* <div className='associated-words'>
+                    <div className='associated-words'>
                         <form className='form-inline'>
                         <label> Associated words: </label>
                         <input className="form-control ml-4" type="text" value={wordInput} onChange={handleInputChange} onKeyDown={handleInputDown}></input>
@@ -482,7 +507,7 @@ const Visualization = (props) => {
                                 </li>
                             )}
                         </ul>
-                    </div> */}
+                    </div>
                     
                 </div>
                 <div className='interactive-right'>

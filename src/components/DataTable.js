@@ -16,7 +16,7 @@ import "../style/DataTable.css"
 const DataTable = (props) => {
     const categoryList = props.categoryList
     const categoryList2 = props.categoryList2
-    const tweetListSample = props.tweetListSample
+    const tweetListSample = props.tweetListSample //What the data is passed as to this component
     const datasetIndex = parseInt(props.datasetIndex)
     
     const [labelActive, setLabelActive] = useState([])
@@ -25,6 +25,7 @@ const DataTable = (props) => {
     const [update, setUpdate] = useState(false)
     const [numTweet, setNumTweet] = useState(10)
     const [dataExplore, setDataExplore] = useState("Table")
+    const [wordFilteredTweet, setWordFilteredTweet] = useState(tweetListSample)
 
     //The dataview options are ['general', 'white-only', 'black-only', 'keyword']
     const [graphIndex, setGraphIndex] = useState(0)
@@ -467,6 +468,14 @@ const DataTable = (props) => {
     }, [tweetListSample.length])
 
     useEffect(() => {
+        handleWordList()
+    }, [props.wordList, tweetListSample])
+
+    useEffect(() => {
+        console.log(tweetListSample)
+    }, [tweetListSample])
+
+    useEffect(() => {
         //If this is bias testing page, set label active into array
         var label = []
         if (props.testFlag) {
@@ -491,7 +500,9 @@ const DataTable = (props) => {
         console.log(label)
     }, [categoryList.length])
 
+    //Create the table based on the filter
     function returnFilteredTweet(tweet_list, size) {
+        // console.log(tweet_list)
         let filtered_tweet = [...tweet_list]
         if (props.testFlag) {
             var test = tweetListSample[1]
@@ -520,7 +531,7 @@ const DataTable = (props) => {
         )
     }
 
-    //Checked
+    //Update the list of active label based on the filter
     function handleFilter(index, choice=0) {
         var new_label = [...labelActive]
         if (props.testFlag) {
@@ -531,6 +542,18 @@ const DataTable = (props) => {
         }
         setLabelActive(new_label)
         setUpdate(true)
+    }
+
+    function handleWordList() {
+        if (props.wordList.length > 0) {
+            var wordFiltered = tweetListSample.filter((entry) => props.wordList.some(word => entry.tweet.includes(word)));
+            console.log(wordFiltered)
+            setWordFilteredTweet(wordFiltered)
+            setUpdate(true)
+        }
+        else {
+            setWordFilteredTweet(tweetListSample)
+        }
     }
 
     function changePage(pagenum) {
@@ -579,6 +602,7 @@ const DataTable = (props) => {
         )
     }
 
+    //Create the table
     function createDataExplore() {
         if (dataExplore === "Table") {
             return (<div>
@@ -595,7 +619,9 @@ const DataTable = (props) => {
                                         type={'checkbox'}
                                         label={props.testFlag? testLabels[i] : classificationLabels[datasetIndex][i]}
                                         defaultChecked={labelActive[i]}
-                                        onClick={() => handleFilter(i)}
+                                        onClick={() => 
+                                            handleFilter(i) //Change the displayed based on the filter selected
+                                        }
                                     />
                                 ))}
                                 </Form>
@@ -623,7 +649,9 @@ const DataTable = (props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        { returnFilteredTweet(tweetListSample, numTweet)}
+                        { 
+                            returnFilteredTweet(wordFilteredTweet, numTweet) //return the tweet list that has been filter
+                        }
                     </tbody>
                 </table>
                 {createPagination(numTweet)}
@@ -672,6 +700,7 @@ const DataTable = (props) => {
         }
     }
 
+    //Display the data if available, otherwise return "no data" message
     function displayData() {
         if (props.dataAvailable) {
             return (

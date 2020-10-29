@@ -154,10 +154,10 @@ const Result = (props) => {
         }
     }
 
-    console.log(activeResult)
-    console.log(distrTable)
-    console.log(resultStat);
-    console.log(xLabels);
+    // console.log(activeResult)
+    // console.log(distrTable)
+    // console.log(resultStat);
+    // console.log(xLabels);
 
     if (resultAvailable) {
         return(
