@@ -1,25 +1,55 @@
 import time
+from .process import dataImporting, dataPreprocessing, buildModel, evaluateModel
 from flask import Flask 
 from flask import jsonify
+from flask import request
+from flask_cors import CORS
 import json
 import requests
-from ClassifierModule import Classifier
-from ClassifierModule.ClassifierFunction import tokenize
+# from ClassifierModule import Classifier
+# from ClassifierModule.ClassifierFunction import tokenize
 
 app = Flask(__name__)
+CORS(app)
+
+@app.route('/data', methods=['GET', 'POST'])
+def get_data():
+    req_data = request.get_json()
+
+    ##-------------- Start the Model Training ---------------##
+    # 1. Import the dataset
+    print("Step 1")
+    data = dataImporting(req_data["data"], 'json')
+    # 2. Preprocess the dataset
+    print("Step 2")
+    preprocessingResult = dataPreprocessing(data)
+    # 3. Train a model
+    print("Step 3")
+    modelResult = buildModel(preprocessingResult)
+    # 4. Evaluate the model
+    print("Step 4")
+    evaluationResult = evaluateModel(modelResult, req_data["label"])
+    print("Result is obtained")
+
+    response = jsonify(evaluationResult)
+
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+    # return jsonify(length)
 
 @app.route('/time')
 def get_current_time():
     result = {'time': time.time()}
     return jsonify(result)
 
-def tokenize(tweet):
-    """Removes punctuation & excess whitespace, sets to lowercase,
-    and stems tweets. Returns a list of stemmed tokens."""
-    tweet = " ".join(re.split("[^a-zA-Z]*", tweet.lower())).strip()
-    #tokens = re.split("[^a-zA-Z]*", tweet.lower())
-    tokens = [stemmer.stem(t) for t in tweet.split()]
-    return tokens
+# def tokenize(tweet):
+#     """Removes punctuation & excess whitespace, sets to lowercase,
+#     and stems tweets. Returns a list of stemmed tokens."""
+#     tweet = " ".join(re.split("[^a-zA-Z]*", tweet.lower())).strip()
+#     #tokens = re.split("[^a-zA-Z]*", tweet.lower())
+#     tokens = [stemmer.stem(t) for t in tweet.split()]
+#     return tokens
     
 @app.route('/classifier')
 def classify_tweet():

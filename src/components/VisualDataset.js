@@ -178,6 +178,7 @@ const VisualDataset = (props) => {
                 </li>
             </ul>
             
+            <button className='btn btn-primary'> Update result </button>
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                 <Modal.Title>Dataset Setup</Modal.Title>

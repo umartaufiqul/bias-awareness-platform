@@ -547,7 +547,26 @@ const DataTable = (props) => {
     function handleWordList() {
         if (props.wordList.length > 0) {
             var wordFiltered = tweetListSample.filter((entry) => props.wordList.some(word => entry.tweet.includes(word)));
-            console.log(wordFiltered)
+            // Send the file to the server
+            // Include the label for result evaluation
+            const data_json = {
+                "data": wordFiltered,
+                "label": classificationLabels[datasetIndex]
+            }
+
+            const otherParam = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data_json),
+                method: "POST",
+            }
+            fetch('http://127.0.0.1:5000/data', otherParam).then(
+                data => {return data.json()}
+            ).then(res => {
+                console.log(res)
+            })
+            .catch(err => console.log(err))
             setWordFilteredTweet(wordFiltered)
             setUpdate(true)
         }

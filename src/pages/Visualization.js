@@ -257,9 +257,9 @@ const Visualization = (props) => {
     }
 
     useEffect(() => {
-        fetchData(0);
+        // fetchData(0);
         //----Umar Local Development-----
-        // processCSVLocal(0)
+        processCSVLocal(0)
         //-------------------------------
         setAccStat(accStatValues[0]);
     }, [tweetListReadFinished])
@@ -320,9 +320,9 @@ const Visualization = (props) => {
             return
         }
         if(currentDatasetIndex != datasetIndex) {
-            fetchData(parseInt(datasetIndex));
+            // fetchData(parseInt(datasetIndex));
             //-------Umar's Local Dev-----------
-            // processCSVLocal(datasetIndex)
+            processCSVLocal(datasetIndex)
             //----------------------------------
             setCategoryList(categories[parseInt(datasetIndex)]);
             setCategory(categories[parseInt(datasetIndex)][0]);
