@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import {useSelector, useDispatch} from "react-redux"
-import {changeDataset} from "../actions"
+import {changeDataset, updateResult} from "../actions"
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import Modal from 'react-bootstrap/Modal'
@@ -32,6 +32,7 @@ const VisualDataset = (props) => {
     const [showModal, setShowModal] = useState(false)
     const [chosenColumn, setChosenColumn] = useState("Column list")
     const [chosenClass, setChosenClass] = useState("Column list")
+    const updateRes = useSelector(state => state.updateResult)
 
     useEffect(d => {
          props.onChange(data);
@@ -178,7 +179,10 @@ const VisualDataset = (props) => {
                 </li>
             </ul>
             
-            <button className='btn btn-primary'> Update result </button>
+            <button className='btn btn-primary' onClick={() => {
+                dispatch(updateResult("UPDATE_RESULT"))
+                sessionStorage.removeItem("updatedStat");
+            }}> Update result </button>
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                 <Modal.Title>Dataset Setup</Modal.Title>

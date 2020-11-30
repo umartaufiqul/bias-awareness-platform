@@ -42,3 +42,10 @@ export const deactivateLoader = () => {
         type: "LOADER_DEACTIVE"
     }
 }
+
+export const updateResult = (type, source) => {
+    return {
+        type,
+        source
+    }
+}

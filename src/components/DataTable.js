@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react"
-import {useSelector} from "react-redux"
+import {useSelector, useDispatch} from "react-redux"
+import {updateResult, deactivateLoader} from "../actions"
 import DropdownButton from "react-bootstrap/DropdownButton"
 import ButtonGroup from "react-bootstrap/ButtonGroup"
 import Form from "react-bootstrap/Form"
@@ -17,12 +18,15 @@ const DataTable = (props) => {
     const categoryList = props.categoryList
     const categoryList2 = props.categoryList2
     const tweetListSample = props.tweetListSample //What the data is passed as to this component
-    const datasetIndex = parseInt(props.datasetIndex)
+    const datasetIndex = parseInt(props.datasetIndex) //Index of the dataset that is used currently
+    const updateRes = useSelector(state => state.updateResult) //Whether a new update need to be refreshed
+    const dispatch = useDispatch()
     
     const [labelActive, setLabelActive] = useState([])
     const [currPage, setCurrPage] = useState(1)
     const [filterTweet, setFilterTweet] = useState(tweetListSample.length)
-    const [update, setUpdate] = useState(false)
+    const [update, setUpdate] = useState(false) //To update the table
+    const [updatedData, setUpdatedData] = useState(null) //Updated data, if not exists it's null
     const [numTweet, setNumTweet] = useState(10)
     const [dataExplore, setDataExplore] = useState("Table")
     const [wordFilteredTweet, setWordFilteredTweet] = useState(tweetListSample)
@@ -318,81 +322,7 @@ const DataTable = (props) => {
                 }
             ]
         ]
-            /*
-    ]
-    {
-        'code': 'sentiment',
-        'condition': '0_1gram',
-        'label': ['go', 'get', 'wa', 'work', 'thi', 'miss', 'day', 'like', 'want', 'today', 'got', 'back', 'feel', 'realli', 'good', 'time', 'sad', 'one', 'im', 'need', 'think', 'still', 'wish', 'know', 'home', 'quot', 'ha', 'love', 'oh', 'u'],
-        'data':[1004, 775, 736, 703, 645, 618, 600, 558, 541, 442, 433, 430, 430, 421, 386, 386, 368, 365, 362, 352, 342, 339, 332, 328, 322, 306, 295, 290, 287, 287]
-    },
-    {
-        'code': 'sentiment',
-        'condition': '0_2gram',
-        'label': ['feel like', 'last night', 'want go', 'wish could', 'wish wa', 'look like', 'go home', 'get readi', 'thi morn', 'go work', 'wanna go', 'go bed', 'realli want', 'oh well', 'go back', 'look forward', 'get better', 'come back', 'sorri hear', 'go sleep', 'last day', 'next week', 'thi week', 'make sad', 'back work', 'go away', 'thi weekend', 'thi year', 'feel better', 'dont want'],
-        'data':[95, 91, 83, 80, 71, 63, 49, 46, 46, 44, 43, 42, 42, 40, 34, 34, 33, 32, 32, 31, 30, 29, 29, 28, 27, 26, 25, 25, 24, 22]
-    },
-    {
-        'code': 'sentiment',
-        'condition': '0_3gram',
-        'label': ['find good home', 'help find good', 'last night wa', 'lost pleas help', 'pleas help find', 'want go home', 'wish could go', 'get readi work', 'gt gt gt', 'hope get better', 'realli want go', 'wanna go home', 'get readi go', 'back work tomorrow', 'feel like crap', 'im gonna miss', 'wish could see', 'go back work', 'go school tomorrow', 'hope feel better', 'jon amp kate', 'mtv movi award', 'air franc flight', 'feel like shit', 'get better soon', 'go back bed', 'need go bed', 'realli look forward', 'whi oh whi', 'wish wa go'],
-        'data':[12, 12, 12, 12, 12, 12, 12, 11, 9, 9, 9, 9, 8, 7, 7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5]
-    },
-    {
-        'code': 'sentiment',
-        'condition': '4_1gram',
-        'label': ['good', 'love', 'day', 'go', 'thank', 'get', 'wa', 'quot', 'thi', 'like', 'lol', 'u', 'time', 'see', 'got', 'today', 'amp', 'know', 'one', 'watch', 'work', 'new', 'great', 'back', 'well', 'hope', 'night', 'think', 'haha', 'look'],
-        'data':[771, 746, 715, 714, 628, 610, 598, 567, 561, 499, 480, 409, 406, 358, 351, 336, 332, 329, 327, 324, 323, 317, 316, 304, 301, 293, 288, 283, 279, 279]
-    },
-    {
-        'code': 'sentiment',
-        'condition': '4_2gram',
-        'label': ['good morn', 'last night', 'look forward', 'good luck', 'thi morn', 'good night', 'mother day', 'get readi', 'cant wait', 'go bed', 'look like', 'happi birthday', 'great day', 'thank follow', 'good day', 'happi mother', 'sound like', 'good time', 'quot quot', 'love thi', 'thank much', 'go see', 'thi week', 'thi weekend', 'wa fun', 'feel better', 'get follow', 'day use', 'feel like', 'follow day'],
-        'data':[107, 56, 55, 54, 46, 43, 40, 38, 37, 36, 36, 33, 31, 31, 29, 29, 29, 28, 27, 25, 25, 24, 24, 24, 24, 23, 23, 22, 22, 22]
-    },
-    {
-        'code': 'sentiment',
-        'condition': '4_3gram',
-        'label': ['happi mother day', 'add everyon train', 'com onc add', 'day use www', 'everyon train pay', 'follow day use', 'get follow day', 'onc add everyon', 'train pay vip', 'mtv movi award', 'tweeteradd com onc', 'use www tweeteradd', 'www tweeteradd com', 'good morn everyon', 'mcflyforgermani mcflyforgermani mcflyforgermani', 'last night wa', 'mileymonday mileymonday mileymonday', 'quot quot quot', 'thank veri much', 'tweeterfollow com onc', 'use www tweeterfollow', 'www tweeterfollow com', 'get readi go', 'love thi song', 'mother day mom', 'new moon trailer', 'cant wait see', 'cant wait till', 'happi star war', 'hope feel better'],
-        'data':[28, 20, 20, 20, 20, 20, 20, 20, 20, 18, 13, 13, 13, 11, 11, 9, 8, 7, 7, 7, 7, 7, 6, 6, 6, 6, 5, 5, 5, 5]
-    },
-    {
-        'code': 'hatespeech',
-        'condition': 'total_1gram',
-        'label': ['fuck', 'thi', 'like', 'get', 'amp', 'wa', 'one', 'peopl', 'know', 'go', 'hi', 'u', 'ass', 'time', 'bitch', 'day', 'make', 'look', 'say', 'want', 'whi', 'love', 'ha', 'hate', 'see', 'think', 'would', 'need', 'got', 'idiot'],
-        'data':[4789, 2643, 1636, 1242, 1080, 1068, 908, 862, 842, 818, 756, 735, 708, 706, 688, 676, 668, 665, 656, 655, 602, 591, 568, 567, 543, 523, 515, 492, 487, 486]
-    },
-    {
-        'code': 'hatespeech',
-        'condition': 'total_2gram',
-        'label': ['thi fuck', 'look like', 'get fuck', 'like thi', 'feel like', 'ugli ass', 'found transpond', 'transpond snail', 'ass bitch', 'one person', 'automat check', 'unfollow automat', 'like video', 'bad bitch', 'fuck hate', 'got fuck', 'reason whi', 'oh god', 'know fuck', 'bitch like', 'april fool', 'gt gt', 'wa fuck', 'wanna fuck', 'thi week', 'realli fuck', 'thi nigga', 'call racist', 'georg bush', 'year old']
-        ,
-        'data':[235, 132, 126, 123, 103, 101, 97, 97, 91, 90, 77, 77, 73, 72, 69, 67, 66, 63, 61, 57, 56, 56, 56, 55, 54, 52, 51, 50, 50, 50]
-    },
-    {
-        'code': 'hatespeech',
-        'condition': 'total_3gram',
-        'label': ['found transpond snail', 'unfollow automat check', 'bush call racist', 'fuck georg bush', 'georg bush call', 'know fuck georg', 'follow one person', 'one person unfollow', 'person unfollow automat', 'ugli ass bitch', 'sorri ugli ass', 'bitch like thi', 'would even say', 'like thi would', 'thi would even', 'ass bitch like', 'one person follow', 'let fuck go', 'ad video playlist', 'even say oh', 'say oh god', 'follow peopl unfollow', 'peopl unfollow automat', 'eat food cold', 'food cold flourish', 'happen separ yo', 'nigga eat food', 'self nigga eat', 'separ yo self', 'thi happen separ'],
-        'data':[97, 77, 48, 48, 48, 48, 47, 47, 47, 44, 43, 42, 40, 38, 37, 36, 34, 33, 32, 32, 32, 30, 30, 29, 29, 29, 29, 29, 29, 29]
-    },
-    {
-        'code': 'sentiment',
-        'condition': 'total_1gram',
-        'label': ['go', 'get', 'wa', 'day', 'thi', 'good', 'like', 'love', 'work', 'quot', 'time', 'got', 'today', 'want', 'miss', 'lol', 'back', 'thank', 'u', 'one', 'realli', 'know', 'im', 'think', 'amp', 'see', 'feel', 'watch', 'need', 'still'],
-        'data':[1718, 1385, 1334, 1315, 1206, 1157, 1057, 1036, 1026, 873, 792, 784, 778, 750, 746, 745, 734, 731, 696, 692, 664, 657, 631, 625, 615, 614, 602, 586, 572, 556]
-    },
-    {
-        'code': 'sentiment',
-        'condition': 'total_2gram',
-        'label':['last night', 'good morn', 'feel like', 'look like', 'want go', 'thi morn', 'wish could', 'look forward', 'get readi', 'wish wa', 'go bed', 'good luck', 'go home', 'realli want', 'good night', 'thi week', 'go back', 'go work', 'wanna go', 'come back', 'cant wait', 'mother day', 'next week', 'thi weekend', 'get better', 'last day', 'oh well', 'sound like', 'feel better', 'got home'],
-        'data':[147, 122, 117, 99, 96, 92, 90, 89, 84, 82, 78, 72, 57, 56, 54, 53, 52, 52, 51, 50, 49, 49, 49, 49, 48, 48, 48, 48, 47, 42]
-    },
-    {
-        'code': 'sentiment',
-        'condition': 'total_3gram',
-        'label': ['happi mother day', 'mtv movi award', 'last night wa', 'add everyon train', 'com onc add', 'day use www', 'everyon train pay', 'follow day use', 'get follow day', 'onc add everyon', 'train pay vip', 'get readi go', 'get readi work', 'tweeteradd com onc', 'use www tweeteradd', 'wish could go', 'www tweeteradd com', 'find good home', 'good morn everyon', 'gt gt gt', 'help find good', 'lost pleas help', 'pleas help find', 'want go home', 'hope feel better', 'hope get better', 'mcflyforgermani mcflyforgermani mcflyforgermani', 'realli want go', 'new moon trailer', 'wanna go home'],
-        'data':[32, 24, 21, 20, 20, 20, 20, 20, 20, 20, 20, 14, 13, 13, 13, 13, 13, 12, 12, 12, 12, 12, 12, 12, 11, 11, 11, 11, 9, 9]
-    },*/
+            
     ];
 
     function getLabel(graphindex) {
@@ -500,6 +430,65 @@ const DataTable = (props) => {
         console.log(label)
     }, [categoryList.length])
 
+    // Detect the update result button push
+    useEffect(() => {
+        //Check if update res is true AND if there is any change in the data
+        if (updateRes && updatedData !== null) {
+            console.log("Updating the result...")
+            // Send the file to the server
+            // Include the label for result evaluation
+            const data_json = {
+                "data": updatedData,
+                "label": classificationLabels[datasetIndex]
+            }
+
+            const otherParam = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data_json),
+                method: "POST",
+            }
+            fetch('http://127.0.0.1:5000/data', otherParam).then(
+                data => {return data.json()}
+            ).then(res => {
+                console.log(res)
+                //Convert the report to the acceptable format in result.js
+                var stat = []
+                for (var key in Object.keys(res.report)) {
+                    //For class prediction, convert the number into string
+                    if (/^\d+$/.test(key) && typeof res.report[key] !== 'undefined') {
+                        //Statistic for a class
+                        var curr_stat = {
+                            //Note: The class is very hardcoded and not flexible when the dataset is custom
+                            class: classificationLabels[datasetIndex][parseInt(key)],
+                            precision: res.report[key]["precision"].toFixed(2),
+                            recall: res.report[key]["recall"].toFixed(2),
+                            f1_score: res.report[key]["f1-score"].toFixed(2),
+                            support:  res.report[key]["support"]
+                        }
+                        console.log(curr_stat)
+                        stat.push(curr_stat)
+                    }
+                }
+                var final_stat = {
+                    stat,
+                    accuracy: res.report['accuracy'].toFixed(2),
+                    macro: res.report['macro avg'],
+                    weighted: res.report['weighted avg'],
+                }
+                console.log(final_stat)
+                sessionStorage.setItem("updatedStat", JSON.stringify(final_stat));
+                dispatch(updateResult("UPDATE_FINISH"))
+                dispatch(deactivateLoader())
+                setUpdatedData(null)
+                dispatch(updateResult("UPDATE_RESULT")) // The variable is set again to true in order to trigger the result change in the Result.js
+            })
+            .catch(err => console.log(err))
+            setUpdate(true)
+        }
+    }, [updateRes])
+
     //Create the table based on the filter
     function returnFilteredTweet(tweet_list, size) {
         // console.log(tweet_list)
@@ -547,28 +536,8 @@ const DataTable = (props) => {
     function handleWordList() {
         if (props.wordList.length > 0) {
             var wordFiltered = tweetListSample.filter((entry) => props.wordList.some(word => entry.tweet.includes(word)));
-            // Send the file to the server
-            // Include the label for result evaluation
-            const data_json = {
-                "data": wordFiltered,
-                "label": classificationLabels[datasetIndex]
-            }
-
-            const otherParam = {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data_json),
-                method: "POST",
-            }
-            fetch('http://127.0.0.1:5000/data', otherParam).then(
-                data => {return data.json()}
-            ).then(res => {
-                console.log(res)
-            })
-            .catch(err => console.log(err))
+            setUpdatedData(wordFiltered)
             setWordFilteredTweet(wordFiltered)
-            setUpdate(true)
         }
         else {
             setWordFilteredTweet(tweetListSample)

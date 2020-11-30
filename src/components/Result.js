@@ -1,20 +1,35 @@
 import React, {useState, useEffect} from "react"
+import {useSelector, useDispatch} from "react-redux"
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import Tooltip from "react-bootstrap/Tooltip"
 import HeapMap from 'react-heatmap-grid'
 import MathJax from 'react-mathjax2'
 
 const Result = (props) => {
-    const accStat = props.accStat
     const resultStat = props.resultStat
     const resultAvailable = props.resultAvailable
     const activeResult = props.activeResult
+    const updateRes = useSelector(state => state.updateResult) //Whether a new update need to be refreshed
 
     const xLabels = props.accStat.labels;
     const yLabels = props.accStat.labels;
     const data = props.accStat.matrix;
 
     const [measureExplain, setMeasureExplain] = useState("")
+    const [accStat, setAccStat] = useState(props.accStat)
+
+    useEffect(() => {
+        console.log(resultStat)
+    }, [accStat])
+
+    useEffect(() => {
+        if (updateRes && sessionStorage.getItem("updatedStat") !== null) {
+            console.log("Halo")
+            console.log(JSON.parse(sessionStorage.getItem("updatedStat")))
+            setAccStat(JSON.parse(sessionStorage.getItem("updatedStat")))
+            sessionStorage.removeItem("updatedStat");
+        }
+    }, [updateRes])
 
     const reportTable = <table className='table' >
         <thead>
@@ -64,17 +79,17 @@ const Result = (props) => {
                         </tr>
                         <tr>
                             <th> macro avg </th>
-                            <td> {accStat.macro.precision} </td>
-                            <td> {accStat.macro.recall} </td>
-                            <td> {accStat.macro.f1_score} </td>
-                            <td> {accStat.support} </td>
+                            <td> {accStat.macro.precision.toFixed(2)} </td>
+                            <td> {accStat.macro.recall.toFixed(2)} </td>
+                            <td> {accStat.macro["f1-score"].toFixed(2)} </td>
+                            <td> {accStat.macro.support} </td>
                         </tr>
                         <tr>
                             <th> weight avg </th>
-                            <td> {accStat.weighted.precision} </td>
-                            <td> {accStat.weighted.recall} </td>
-                            <td> {accStat.weighted.f1_score} </td>
-                            <td> {accStat.support} </td>
+                            <td> {accStat.weighted.precision.toFixed(2)} </td>
+                            <td> {accStat.weighted.recall.toFixed(2)} </td>
+                            <td> {accStat.weighted["f1-score"].toFixed(2)} </td>
+                            <td> {accStat.weighted.support} </td>
                         </tr>
                 </>
                     :

@@ -8,7 +8,7 @@ import Dropdown from "react-bootstrap/Dropdown"
 import DropdownButton from "react-bootstrap/DropdownButton"
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import Tooltip from "react-bootstrap/Tooltip"
-import { activateLoader, deactivateLoader } from "../actions"
+import { activateLoader, deactivateLoader, updateResult } from "../actions"
 import Result from "../components/Result"
 import DataTable from "../components/DataTable"
 import Papa from 'papaparse'
@@ -262,6 +262,7 @@ const Visualization = (props) => {
         processCSVLocal(0)
         //-------------------------------
         setAccStat(accStatValues[0]);
+        console.log(accStatValues[0])
     }, [tweetListReadFinished])
 
 
@@ -403,13 +404,17 @@ const Visualization = (props) => {
     };
 
     function handleModelChange() {
+        // dispatch(activateLoader())
+        console.log("Update the result")
+        dispatch(updateResult("UPDATE_RESULT"))
+        sessionStorage.removeItem("updatedStat");
         dispatch(activateLoader())
-        setTimeout(function(){
-            dispatch(deactivateLoader())
-            setResultAvailable(true)
-            setExploreActive("result")
-            alert("The model has been built")
-        }, 5000)
+        // setTimeout(function(){
+        //     dispatch(deactivateLoader())
+        //     // setResultAvailable(true)
+        //     // setExploreActive("result")
+        //     // alert("The model has been built")
+        // }, 5000)
     }
 
     function changeCategory(index) {

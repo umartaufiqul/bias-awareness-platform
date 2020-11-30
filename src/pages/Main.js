@@ -4,8 +4,13 @@ import {useSelector} from "react-redux"
 import MyNavbar from "../components/MyNavbar"
 import Visualization from "./Visualization"
 import MitigationNew from "./MitigationNew"
+import Mitigation from "./Mitigation"
 import Finish from "./Finish"
 import BiasTesting from "./BiasTesting"
+
+import DatasetMitigation from "./mitigation-pages/DatasetMitigation"
+import PredictionMitigation from "./mitigation-pages/PredictionMitigation"
+import CodingMitigation from "./mitigation-pages/CodingMitigation"
 
 const Main = () => {
 
@@ -23,6 +28,10 @@ const Main = () => {
             <Route path='/visualization' component={Visualization}></Route>
             <Route path='/bias-testing' component={BiasTesting}></Route>
             <Route path='/fin' component={Finish}></Route>
+            <Route path='/bias-mitigation' component={Mitigation}></Route>
+            <Route path='/dataset-mitigation' component={DatasetMitigation}></Route>
+            <Route path='/predict-mitigation' component={PredictionMitigation}></Route>
+            <Route path='/coding-mitigation' component={CodingMitigation}></Route>
             <Route path='/mitigation' component={MitigationNew}></Route>
         </Switch>
     </div>
