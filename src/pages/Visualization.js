@@ -30,19 +30,19 @@ const Visualization = (props) => {
                     class: "Hateful",
                     precision: 0.45,
                     recall: 0.59,
-                    f1_score: 0.51,
+                    "f1_score": 0.51,
                     support: 164
                 }, {
                     class: "Abusive",
                     precision: 0.95,
                     recall: 0.91,
-                    f1_score: 0.94,
+                    "f1_score": 0.94,
                     support: 1905
                 }, {
                     class: "Neither",
                     precision: 0.83,
                     recall: 0.94,
-                    f1_score: 0.88,
+                    "f1_score": 0.88,
                     support: 410
                 }],
             accuracy: 0.89,
@@ -50,12 +50,12 @@ const Visualization = (props) => {
             macro: {
                 precision: 0.75,
                 recall: 0.81,
-                f1_score: 0.78,
+                "f1-score": 0.78,
             },
             weighted: {
                 precision: 0.91,
                 recall: 0.89,
-                f1_score: 0.9,
+                "f1-score": 0.9,
             },
             labels: ['Hateful', 'Abusive', 'Neither'],
             matrix: [
@@ -86,13 +86,13 @@ const Visualization = (props) => {
             macro: {
                 precision: 0.75,
                 recall: 0.81,
-                f1_score: 0.78,
+                "f1-score": 0.78,
                 support: 2000
             },
             weighted: {
                 precision: 0.91,
                 recall: 0.89,
-                f1_score: 0.9,
+                "f1-score": 0.9,
                 support: 2000
             },
             labels: ['Normal', 'Hateful'],
@@ -117,6 +117,7 @@ const Visualization = (props) => {
     const [accStat, setAccStat] = useState([{}])
 
     const resultData = useSelector(state => state.data)
+    const updateRes = useSelector(state => state.updateResult)
     const [currentDatasetIndex, setCurrentDatasetIndex] = useState(resultData)
 
     const loaderActive = useSelector(state => state.loaderActive)
@@ -195,8 +196,6 @@ const Visualization = (props) => {
             download: true,
             complete: function (results) {
                 var tweetData = [];
-
-                console.log(results);
                 for (var i = 0; i < results.data.length; i++) {
                     if (typeof results.data[i].tweet === "undefined") {
                         continue;
@@ -265,55 +264,9 @@ const Visualization = (props) => {
         console.log(accStatValues[0])
     }, [tweetListReadFinished])
 
-
-    /*
-    const tweetListSample = [{
-      tweet: "Tweet sample but I nned to make it long so forgive me for the length okay",
-      label: "neither"
-    }, {
-        tweet: "Tweet sample but I need to make it long so forgive me for the length okay",
-        label: "Hateful"
-      }, {
-        tweet: "Tweet sample but I nned to make it long so forgive me for the length okay",
-        label: "Abusive"
-      }, {
-        tweet: "Tweet sample but I nned to make it long so forgive me for the length okay",
-        label: "neither"
-      }, {
-          tweet: "Tweet sample but I need to make it long so forgive me for the length okay",
-          label: "Hateful"
-        }, {
-          tweet: "Tweet sample but I nned to make it long so forgive me for the length okay",
-          label: "Abusive"
-        }]
-        */
-       /*
-    const resultStat = [{
-        class: "Racism",
-        pblack: 0.001,
-        pwhite: 0.003,
-        pblack_white: 0.005,
-    }, {
-        class: "Sexism",
-        pblack: 0.083,
-        pwhite: 0.048,
-        pblack_white: 1.724
-    }]
-
-    const accStat = [{
-        class: "Racism",
-        precision: 0.77,
-        recall: 0.86,
-        f1_score: 0.81,
-        support: 3756
-    }, {
-        class: "Sexism",
-        precision: 0.84,
-        recall: 0.75,
-        f1_score: 0.79,
-        support: 1344
-    }]
-    */
+    useEffect(() => {
+        console.log(accStat)
+    }, [accStat])
 
     function handleDatasetChange(datasetIndex) {
         //Custom dataset
@@ -370,6 +323,11 @@ const Visualization = (props) => {
         return json_tweet
     }
 
+    // Store the current dataset in session storage to be used by the dataset mitigation
+    useEffect(() => {
+        window.sessionStorage.setItem('current_dataset', JSON.stringify(tweetListSample))
+    }, [tweetListSample])
+
     function changeContent() {
         if (datasetActive === "active") {
             return <VisualDataset onChange={handleDatasetChange} passCustomData={setCustomData}/>
@@ -409,12 +367,6 @@ const Visualization = (props) => {
         dispatch(updateResult("UPDATE_RESULT"))
         sessionStorage.removeItem("updatedStat");
         dispatch(activateLoader())
-        // setTimeout(function(){
-        //     dispatch(deactivateLoader())
-        //     // setResultAvailable(true)
-        //     // setExploreActive("result")
-        //     // alert("The model has been built")
-        // }, 5000)
     }
 
     function changeCategory(index) {
@@ -434,6 +386,22 @@ const Visualization = (props) => {
                 </Dropdown.Item>
             )
         )
+    }
+
+    //Return result if the custom data is already processed, and "no result" otherwise
+    function returnResult() {
+        console.log(dataAvailable)
+        console.log(resultData)
+        if (resultData < 0 && dataAvailable) {
+            return(
+            <div style={{margin: "3rem 2.5rem"}}>
+                <p style={{color: "#d3d3d3"}}> The accuracy result for the custom model is yet to be calculated. Please click "Update result" button in order to do so</p>
+            </div>
+            )
+        }
+        else {
+            return(<Result resultStat={resultStat} accStat={accStat} resultAvailable={resultAvailable} activeResult='report'/>)
+        }
     }
 
 
@@ -469,6 +437,72 @@ const Visualization = (props) => {
             return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample} datasetIndex={currentDatasetIndex} dataAvailable={dataAvailable} customData={customData} wordList={wordList}/>)
         }
     }
+
+    // Detect the update result button push
+    useEffect(() => {
+        if (updateRes && dataAvailable && resultData < 0) {
+            console.log("Updating the result...")
+            // console.log(tweetListSample)
+            // Send the file to the server
+            // Include the label for result evaluation
+
+            const classificationLabels = [
+                ['Hateful', 'Offensive', 'Neither'],
+                ['Normal', 'Hateful'],
+                ['Positive', 'Negative'],
+            ]
+
+            const data_json = {
+                "data": tweetListSample,
+                "label": classificationLabels[0]
+            }
+
+            const otherParam = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data_json),
+                method: "POST",
+            }
+            fetch('http://127.0.0.1:5000/data', otherParam).then(
+                data => {return data.json()}
+            ).then(res => {
+                console.log(res)
+                //Convert the report to the acceptable format in result.js
+                var stat = []
+                for (var key in Object.keys(res.report)) {
+                    //For class prediction, convert the number into string
+                    if (/^\d+$/.test(key) && typeof res.report[key] !== 'undefined') {
+                        //Statistic for a class
+                        var curr_stat = {
+                            //Note: The class is very hardcoded and not flexible when the dataset is custom
+                            class: classificationLabels[0][parseInt(key)],
+                            precision: res.report[key]["precision"].toFixed(2),
+                            recall: res.report[key]["recall"].toFixed(2),
+                            f1_score: res.report[key]["f1-score"].toFixed(2),
+                            support:  res.report[key]["support"]
+                        }
+                        console.log(curr_stat)
+                        stat.push(curr_stat)
+                    }
+                }
+                var final_stat = {
+                    stat,
+                    accuracy: res.report['accuracy'].toFixed(2),
+                    macro: res.report['macro avg'],
+                    weighted: res.report['weighted avg'],
+                }
+                console.log(final_stat)
+                sessionStorage.setItem("updatedStat", JSON.stringify(final_stat));
+                dispatch(updateResult("UPDATE_FINISH"))
+                dispatch(deactivateLoader())
+                // setUpdatedData(null)
+                dispatch(updateResult("UPDATE_RESULT")) // The variable is set again to true in order to trigger the result change in the Result.js
+            })
+            .catch(err => console.log(err))
+            // setUpdate(true)
+        }
+    }, [updateRes, dataAvailable])
 
     return(
         <div className='visualization-new'>
@@ -545,11 +579,7 @@ const Visualization = (props) => {
                     </div>
                     <div id='visual-result'>
                         <h3> Result </h3>
-                        {/* <div>
-                            <span> Model: Model {resultModel+1} </span>
-                            <span style={{marginLeft: "1rem"}}> Dataset: Dataset {resultData+1} </span> 
-                        </div> */}
-                        <Result resultStat={resultStat} accStat={accStat} resultAvailable={resultAvailable} activeResult='report'/>
+                        {returnResult()}
                     </div>
                 </div>
             </div>

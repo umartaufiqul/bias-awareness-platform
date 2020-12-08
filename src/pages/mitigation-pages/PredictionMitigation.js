@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 
 const arrow_up = require("../../icons/up_arrow.svg")
 
@@ -10,6 +10,7 @@ const PredictionMitigation = () => {
             setMethod1Active(new_state)
         }
     }
+
     return (
         <div className="page-box text-center">
             <h2 style={{marginBottom: "1rem"}}> Prediction Mitigation </h2>

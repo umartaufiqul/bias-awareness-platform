@@ -401,9 +401,9 @@ const DataTable = (props) => {
         handleWordList()
     }, [props.wordList, tweetListSample])
 
-    useEffect(() => {
-        console.log(tweetListSample)
-    }, [tweetListSample])
+    // useEffect(() => {
+    //     console.log(tweetListSample)
+    // }, [tweetListSample])
 
     useEffect(() => {
         //If this is bias testing page, set label active into array

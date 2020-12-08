@@ -19,8 +19,8 @@ const Result = (props) => {
     const [accStat, setAccStat] = useState(props.accStat)
 
     useEffect(() => {
-        console.log(resultStat)
-    }, [accStat])
+        setAccStat(props.accStat)
+    }, [props.accStat])
 
     useEffect(() => {
         if (updateRes && sessionStorage.getItem("updatedStat") !== null) {

@@ -178,7 +178,7 @@ def dataPreprocessing(df) :
     warnings.simplefilter(action='ignore', category=FutureWarning)
 
     #Construct tfidf matrix and get relevant scores
-    tfidf = vectorizer.fit_transform(tweets).toarray()
+    tfidf = vectorizer.fit_transform(tweets.astype('U').values).toarray()
     vocab = {v:i for i, v in enumerate(vectorizer.get_feature_names())}
     idf_vals = vectorizer.idf_
     idf_dict = {i:idf_vals[i] for i in vocab.values()} #keys are indices; values are IDF scores

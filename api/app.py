@@ -1,4 +1,5 @@
 import time
+from .twitteraae.code.dialectPrediction import load_model, predict
 from .process import dataImporting, dataPreprocessing, buildModel, evaluateModel
 from flask import Flask 
 from flask import jsonify
@@ -19,6 +20,7 @@ def get_data():
     ##-------------- Start the Model Training ---------------##
     # 1. Import the dataset
     print("Step 1")
+    print("Data size: {}".format(len(req_data["data"])))
     data = dataImporting(req_data["data"], 'json')
     # 2. Preprocess the dataset
     print("Step 2")
@@ -43,13 +45,33 @@ def get_current_time():
     result = {'time': time.time()}
     return jsonify(result)
 
-# def tokenize(tweet):
-#     """Removes punctuation & excess whitespace, sets to lowercase,
-#     and stems tweets. Returns a list of stemmed tokens."""
-#     tweet = " ".join(re.split("[^a-zA-Z]*", tweet.lower())).strip()
-#     #tokens = re.split("[^a-zA-Z]*", tweet.lower())
-#     tokens = [stemmer.stem(t) for t in tweet.split()]
-#     return tokens
+@app.route('/aae-classify', methods=['GET', 'POST'])
+def aae_classify():
+    start = time.process_time()
+    req_data = request.get_json()
+    load_model()
+    def aae_label(predict_array):
+        if predict_array is None:
+            return "SAE"
+        if (predict_array[0] > 0.4):
+            return "AAE"
+        else:
+            return "SAE"
+    classified_tweet = []
+    for entry in req_data["query"]:
+        result = predict(entry["tweet"].split())
+        if result is None:
+            print(entry["tweet"])
+            print(result)
+        entry["aae_label"] = aae_label(result)
+        classified_tweet.append(entry)
+        # print(entry)
+    # result = predict(req_data["query"].split())
+    print(time.process_time() - start)
+    response = jsonify({'result': classified_tweet})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+    # return "Correct"
     
 @app.route('/classifier')
 def classify_tweet():
