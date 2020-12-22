@@ -139,8 +139,11 @@ const Mitigation = (props) => {
             method: "POST",
         }
         fetch(server_address+ext, otherParam).then(
-            data => {return data.json()}
+            data => {
+                return data.json()}
         ).then(res => {
+            console.log("DO SOMETHING")
+            console.log(res)
             var stat = []
             for (var key in Object.keys(res.report)) {
                 //For class prediction, convert the number into string
@@ -165,6 +168,8 @@ const Mitigation = (props) => {
                 weighted: res.report['weighted avg'],
             }
             setAccStat(final_stat)
+        }).catch(err => {
+            console.log(err)
         })
     }
 
@@ -182,8 +187,8 @@ const Mitigation = (props) => {
             
             <h2 className='text-center'> Select a phase to add mitigation </h2>
             <Row className='text-center phase-choice'>
-                <Col md={{span: 2, offset: 3}}> <img src={datasetSrc} alt='' id="dataset" onClick={(e) => choose_phase(e.currentTarget.id)}/> </Col>
-                <Col md={2}> <img src={classifierSrc} alt='' id="classifier" onClick={(e) => choose_phase(e.currentTarget.id)}/> </Col>
+                <Col md={{span: 2, offset: 4}}> <img src={datasetSrc} alt='' id="dataset" onClick={(e) => choose_phase(e.currentTarget.id)}/> </Col>
+                {/* <Col md={2}> <img src={classifierSrc} alt='' id="classifier" onClick={(e) => choose_phase(e.currentTarget.id)}/> </Col> */}
                 <Col md={2}>  <img src={predictSrc} alt='' id="predict" onClick={(e) => choose_phase(e.currentTarget.id)}/> </Col>
             </Row>
         </div>

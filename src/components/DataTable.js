@@ -394,6 +394,7 @@ const DataTable = (props) => {
     }, [graphIndex]);
 
     useEffect(() => {
+        console.log("hello")
         setFilterTweet(tweetListSample.length);
     }, [tweetListSample.length])
 
@@ -543,6 +544,12 @@ const DataTable = (props) => {
             setWordFilteredTweet(tweetListSample)
         }
     }
+
+    useEffect(() => {
+        // console.log("Heyy")
+        // setWordFilteredTweet(tweetListSample)
+        handleWordList()
+    }, [tweetListSample])
 
     function changePage(pagenum) {
         setCurrPage(pagenum)

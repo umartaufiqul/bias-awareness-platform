@@ -230,7 +230,7 @@ def dataPreprocessing(df) :
         'M': M,
         'y': df['label'].astype(int),
         'vectorizer': (vectorizer, pos_vectorizer),
-    };
+    }
 
 def vectorize(vectorizer, tweets) :
     v1 = vectorizer[0]
@@ -306,10 +306,10 @@ def buildModel(p) :
 def evaluateModel(p, names) :
     model = p['model']
     X_test = p['X_test']
-    y_test = p['y_test']
+    y_test = p['y_test'] #The correct answer
 
-    y_preds = model.predict(X_test)
-    y_prob = model.predict_proba(X_test)
+    y_preds = model.predict(X_test) # The actual prediction
+    y_prob = model.predict_proba(X_test) # The prob for prediction
 
     report = classification_report( y_test, y_preds, output_dict=True)
 
@@ -334,5 +334,5 @@ def evaluateModel(p, names) :
     return {
         'report': report,
         'y_preds': y_preds.tolist(),
-		'y_prob': y_prob.tolist()
+		'y_prob': y_prob.tolist(),
     }

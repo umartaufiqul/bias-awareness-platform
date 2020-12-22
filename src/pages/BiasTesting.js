@@ -274,7 +274,10 @@ const BiasTesting = (props) => {
     }
 
     useEffect(() => {
-        fetchData(datasetIndex);
+        // fetchData(datasetIndex);
+        //----Umar Local Development-----
+        processCSVLocal(datasetIndex)
+        //-------------------------------
         console.log("DATASET CHANGED");
         console.log(datasetIndex);
 
@@ -286,6 +289,40 @@ const BiasTesting = (props) => {
             setCategory(categoryList[index])
         }
     }
+
+    function processCSVLocal(datasetIndex) {
+        const csvNames = [require("../testTweet_withPrediction_david.csv"), require("../testTweet_withPrediction_david.csv")]
+        const csv = csvNames[datasetIndex]
+
+        console.log(csv);
+
+        const results = Papa.parse(csv, {
+            header: true,
+            download: true,
+            complete: function (results) {
+                var tweetData = [];
+                for (var i = 0; i < results.data.length; i++) {
+                    if (typeof results.data[i].tweet === "undefined") {
+                        continue;
+                    }
+                    tweetData.push({
+                        tweet: results.data[i].tweet,
+                        label: results.data[i].class
+                    });
+                }
+
+                // console.log(tweetData);
+
+                setTweetListSample(tweetData);
+                console.log(tweetData)
+                // setTweetListReadFinished(true);
+            }
+        }) // object with { data, errors, meta }
+    }
+
+    useEffect(() => {
+        console.log(tweetListSample)
+    }, [tweetListSample])
 
     const barOption = {
         responsive: true,
@@ -414,7 +451,11 @@ const BiasTesting = (props) => {
 
     function handleDatasetChange(datasetIndex) {
         if(currentDatasetIndex != datasetIndex) {
-            fetchData(parseInt(datasetIndex));
+            // fetchData(parseInt(datasetIndex));
+            //----Umar Local Development-----
+            processCSVLocal(0)
+            //-------------------------------
+            processCSVLocal(0)
             setCategoryList(categories[parseInt(datasetIndex)]);
             setCategory(categories[parseInt(datasetIndex)][0]);
             setCurrentDatasetIndex(datasetIndex);

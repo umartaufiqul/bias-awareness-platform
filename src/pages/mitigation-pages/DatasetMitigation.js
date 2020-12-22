@@ -184,7 +184,7 @@ const DatasetMitigation = () => {
     function process_dataset() {
         if (currentData != null && chosenGraph === "Label") {
             //Get the labels
-            console.log(currentData)
+            // console.log(currentData)
             var complete_labels = currentData.map((entry) => {return entry.label})
             var labels = complete_labels.filter((v, i, a) => a.indexOf(v) === i)
 
@@ -251,14 +251,14 @@ const DatasetMitigation = () => {
             //Get the classes
             var complete_class = currentData.map((entry) => {return entry.aae_label})
             var classes = complete_class.filter((v, i, a) => a.indexOf(v) === i)
-            console.log(classes)
+            // console.log(classes)
             //Get the amount of tweet from each lclass
             var ratio = {}
             classes.forEach((class_name) => {ratio[class_name] = 0})
             complete_class.forEach((class_name) => {
                 ratio[class_name] = ratio[class_name] + 1
             })
-            console.log(ratio)
+            // console.log(ratio)
 
             //Display the amount of each label into graph
             const graph_data = {
@@ -320,7 +320,7 @@ const DatasetMitigation = () => {
             <div style={{textAlign: "left"}}>
                 <h3 style={{margin: "1rem 0rem"}}> Mitigation Method </h3>
                 <h4 style={{margin: "1rem 0rem"}}> Action 1: Undersampling </h4>
-                <p> Undersampling is used to blablajkjafhefkjkakshfldkjsdhklafjdlslskajdfhla</p>
+                <p> Undersampling is a preprocessing method that is imposed to the dataset in order to balance the proportion of the labels in the dataset. </p>
                 <div className='label-undersampling'>
                     <div style={{display: "flex", alignItems: "center"}} className="undersampling">
                         {/* Label refers to the abusive label. The given sample is for dataset 1 */}
