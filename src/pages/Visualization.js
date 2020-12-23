@@ -137,9 +137,8 @@ const Visualization = (props) => {
         }
     }, [resultData])
     
+    // Process retrieved CSV into JSON data
     function processCSV(chunks, receivedLength) {
-        console.log(chunks);
-        console.log(receivedLength);
 
         // Step 4: concatenate chunks into single Uint8Array
         let chunksAll = new Uint8Array(receivedLength); // (4.1)
@@ -152,13 +151,9 @@ const Visualization = (props) => {
         // Step 5: decode into a string
         let merged = new TextDecoder("utf-8").decode(chunksAll);
 
-        console.log(merged);
-
         const csv = merged // the csv text
         //The commented area is for umar's local development
         // const csv = require("../david_formatted.csv")
-
-        console.log(csv);
 
         const results = Papa.parse(csv, {
             header: true,
@@ -177,19 +172,16 @@ const Visualization = (props) => {
                     });
                 }
 
-                console.log(tweetData);
-
                 setTweetListSample(tweetData);
                 // setTweetListReadFinished(true);
             }
         }) // object with { data, errors, meta }
     }
 
+    // Process retrieved CSV from local into JSON data
     function processCSVLocal(datasetIndex) {
         const csvNames = [require("../david_formatted.csv"), require("../hatespeech_formatted.csv")]
         const csv = csvNames[datasetIndex]
-
-        console.log(csv);
 
         const results = Papa.parse(csv, {
             header: true,
@@ -255,25 +247,24 @@ const Visualization = (props) => {
 
     }
 
+    // CHECK here if the production version has been uncommented and local development is commented
     useEffect(() => {
+        //----Production version----
         // fetchData(0);
         //----Umar Local Development-----
         processCSVLocal(0)
         //-------------------------------
         setAccStat(accStatValues[0]);
-        console.log(accStatValues[0])
     }, [tweetListReadFinished])
-
-    useEffect(() => {
-        console.log(accStat)
-    }, [accStat])
 
     function handleDatasetChange(datasetIndex) {
         //Custom dataset
         if (datasetIndex < 0) {
             return
         }
+        // CHECK here if the production version has been uncommented and local development is commented
         if(currentDatasetIndex != datasetIndex) {
+            //-------Production version-------
             // fetchData(parseInt(datasetIndex));
             //-------Umar's Local Dev-----------
             processCSVLocal(datasetIndex)
@@ -286,6 +277,7 @@ const Visualization = (props) => {
         }
     }
 
+    // Change which tab (dataset or model) is active
     function changeActiveState(id) {
         console.log(id)
         if (id === "dataset-tab" && datasetActive === "") {
@@ -328,24 +320,21 @@ const Visualization = (props) => {
         window.sessionStorage.setItem('current_dataset', JSON.stringify(tweetListSample))
     }, [tweetListSample])
 
+    // Change the content of the active tab
     function changeContent() {
         if (datasetActive === "active") {
-            return <VisualDataset onChange={handleDatasetChange} passCustomData={setCustomData}/>
+            return <VisualDataset onChange={handleDatasetChange} passCustomData={setCustomData} testFlag={false}/>
         }
         else {
             return <VisualModelNew />
         }
     };
 
-    function handleExploreChange(tab) {
-        setExploreActive(tab)
-    }
-
     function handleInputChange(e) {
         setWordInput(e.target.value)
     };
 
-
+    // Handle the input for "associated word"
     function handleInputDown(e) {
         if (e.keyCode === 13) {
             e.preventDefault()
@@ -355,6 +344,7 @@ const Visualization = (props) => {
         }
     };
 
+    // Handle removing an associated word from the list
     function handleRemove(index) {
         return () => {
             setWordList(wordList.filter((item, i) => i !== index))
@@ -362,8 +352,6 @@ const Visualization = (props) => {
     };
 
     function handleModelChange() {
-        // dispatch(activateLoader())
-        console.log("Update the result")
         dispatch(updateResult("UPDATE_RESULT"))
         sessionStorage.removeItem("updatedStat");
         dispatch(activateLoader())

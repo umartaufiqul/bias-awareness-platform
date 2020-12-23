@@ -17,6 +17,7 @@ trained_model = None
 prev_dataset = None
 preprocess_result = None
 
+# Train model and get the accuracy result
 @app.route('/data', methods=['GET', 'POST'])
 def get_data():
     # global trained_model
@@ -44,6 +45,7 @@ def get_data():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
+# Train model if there is no model saved/there is new ddataset and get prediction from it
 @app.route('/predict', methods=['GET', 'POST'])
 def get_prediction():
     global trained_model
@@ -89,11 +91,7 @@ def get_prediction():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
-@app.route('/time')
-def get_current_time():
-    result = {'time': time.time()}
-    return jsonify(result)
-
+# Classify the tweet in dataset in dataset into AAE/SAE
 @app.route('/aae-classify', methods=['GET', 'POST'])
 def aae_classify():
     start = time.process_time()
@@ -121,39 +119,3 @@ def aae_classify():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
     # return "Correct"
-    
-@app.route('/classifier')
-def classify_tweet():
-    with open('bogus_data.json') as json_file:
-        data = json.load(json_file)
-        return data
-
-# @app.route('/perspective')
-# def perspective_api():
-    # dictToSend = {
-    #     "comment" : {
-    #         "text": "I'm forever thankful for the people that make stupid ass threads of stuff that makes me crack up"
-    #     },
-    #     "requestedAttributes": {
-    #         'TOXICITY': {}
-    #     }
-    # }
-    # with open('data1.json') as data_json:
-    #     data = json.load(data_json)
-    #     result = []
-    #     for i in range(20):
-    #         entry = data['tweet'][i]
-    #         curr_entry = {
-    #             "comment" : { "text": entry},
-    #             "requestedAttributes": {'TOXICITY': {}}
-    #         }
-    #         res = requests.post("https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyD31v8RcAgQGLk2m6qmJtR1DP72wElij2c", json=curr_entry)
-    #         test = json.loads(res.text)
-    #         try:
-    #             result.append(test["attributeScores"]["TOXICITY"]["summaryScore"]["value"])
-    #         except:
-    #             continue
-    #     result_json = {"result": result}
-    #     return jsonify(result_json)
-    # res = requests.post("https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyD31v8RcAgQGLk2m6qmJtR1DP72wElij2c", json=dictToSend)
-    # return res.json()

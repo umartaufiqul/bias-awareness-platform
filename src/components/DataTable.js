@@ -7,9 +7,7 @@ import Form from "react-bootstrap/Form"
 import Pagination from 'react-bootstrap/Pagination'
 import Dropdown from "react-bootstrap/Dropdown"
 import {Bar} from 'react-chartjs-2'
-import Accordion from "react-bootstrap/Accordion"
 import Card from "react-bootstrap/Card"
-import Button from "react-bootstrap/Button"
 import ListGroup from "react-bootstrap/ListGroup"
 import "../style/DataTable.css"
 
@@ -22,7 +20,7 @@ const DataTable = (props) => {
     const updateRes = useSelector(state => state.updateResult) //Whether a new update need to be refreshed
     const dispatch = useDispatch()
     
-    const [labelActive, setLabelActive] = useState([])
+    const [labelActive, setLabelActive] = useState([true, true, true])
     const [currPage, setCurrPage] = useState(1)
     const [filterTweet, setFilterTweet] = useState(tweetListSample.length)
     const [update, setUpdate] = useState(false) //To update the table
@@ -394,7 +392,6 @@ const DataTable = (props) => {
     }, [graphIndex]);
 
     useEffect(() => {
-        console.log("hello")
         setFilterTweet(tweetListSample.length);
     }, [tweetListSample.length])
 
@@ -402,36 +399,8 @@ const DataTable = (props) => {
         handleWordList()
     }, [props.wordList, tweetListSample])
 
-    // useEffect(() => {
-    //     console.log(tweetListSample)
-    // }, [tweetListSample])
 
-    useEffect(() => {
-        //If this is bias testing page, set label active into array
-        var label = []
-        if (props.testFlag) {
-            var label1 = []
-            for (var i = 0; i < categoryList.length; i++) {
-                label1.push(true)
-            }
-            label.push(label1)
-            var label2 = []
-            for (var i = 0; i < categoryList2.length; i++) {
-                label2.push(true)
-            }
-            label.push(label2)
-        }
-        else { 
-            for (var i = 0; i < categoryList.length; i++) {
-                label.push(true)
-            }
-        }
-        setLabelActive(label)
-        console.log("hey")
-        console.log(label)
-    }, [categoryList.length])
-
-    // Detect the update result button push
+    // Detect the update result button push. Used in using custom dataset
     useEffect(() => {
         //Check if update res is true AND if there is any change in the data
         if (updateRes && updatedData !== null) {
@@ -492,7 +461,6 @@ const DataTable = (props) => {
 
     //Create the table based on the filter
     function returnFilteredTweet(tweet_list, size) {
-        // console.log(tweet_list)
         let filtered_tweet = [...tweet_list]
         if (props.testFlag) {
             var test = tweetListSample[1]
@@ -524,6 +492,7 @@ const DataTable = (props) => {
     //Update the list of active label based on the filter
     function handleFilter(index, choice=0) {
         var new_label = [...labelActive]
+        console.log(new_label)
         if (props.testFlag) {
             new_label[choice][index] = !labelActive[choice][index]
         }
@@ -534,6 +503,7 @@ const DataTable = (props) => {
         setUpdate(true)
     }
 
+    // Change the table if there are words entered in "associated words" bar
     function handleWordList() {
         if (props.wordList.length > 0) {
             var wordFiltered = tweetListSample.filter((entry) => props.wordList.some(word => entry.tweet.includes(word)));
@@ -546,15 +516,15 @@ const DataTable = (props) => {
     }
 
     useEffect(() => {
-        // console.log("Heyy")
-        // setWordFilteredTweet(tweetListSample)
         handleWordList()
+        console.log(tweetListSample)
     }, [tweetListSample])
 
     function changePage(pagenum) {
         setCurrPage(pagenum)
     }
 
+    // Create the pagination based on the size of dataset
     function createPagination(size) {
         //Calculate the number of pagination
         const pageNum = Math.ceil(filterTweet/size)
@@ -597,7 +567,7 @@ const DataTable = (props) => {
         )
     }
 
-    //Create the table
+    //Create the table itself
     function createDataExplore() {
         if (dataExplore === "Table") {
             return (<div>
@@ -679,6 +649,7 @@ const DataTable = (props) => {
         }
     }
 
+    // Create the bar chart
     function createBarChart() {
         switch(true){
             default:

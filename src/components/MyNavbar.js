@@ -95,8 +95,9 @@ const MyNavbar = () => {
     const dispatch = useDispatch()
     const [isTourOpen, setIsTourOpen] = useState(false)
 
+    // Edit here if any page is added
     useEffect(() => {
-        if (window.location.href.includes("bias-mitigation")) {
+        if (window.location.href.includes("-mitigation")) {
             dispatch(setSection(4))
         }
         else if (window.location.href.includes("mitigation")) {
@@ -118,6 +119,7 @@ const MyNavbar = () => {
         setIsTourOpen(true)
     }
 
+    // Edit here if any page is added
     function goToPage(page_index) {
         console.log(page_index)
         switch(page_index) {
@@ -135,6 +137,10 @@ const MyNavbar = () => {
                 window.location.href = "/bias-awareness-platform/#/mitigation"
                 dispatch(setSection(3))
                 // alert("This page is not available. For now")
+                break;
+            case 4:
+                window.location.href = "/bias-awareness-platform/#/bias-mitigation"
+                dispatch(setSection(4))
                 break;
             default:
                 alert("No such page!")
@@ -171,11 +177,11 @@ const MyNavbar = () => {
     }
 
     const usePrev = () => {
-        return section > 1 && section < 5
+        return section > 1 && section < sectionList.length + 1
     }
 
     const useNext = () => {
-        return section > 0 && section < 4
+        return section > 0 && section < sectionList.length
     }
 
     const useDropdown = () => {

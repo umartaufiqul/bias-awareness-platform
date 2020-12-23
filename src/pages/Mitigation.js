@@ -41,6 +41,7 @@ const Mitigation = (props) => {
         else { setPredictSrc(predict_fill) }
     }
 
+    // Display the current accuracy of the model
     function display_pred_res(accStat) {
         if (accStat !== null) {
             const reportTable = 

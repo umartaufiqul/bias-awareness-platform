@@ -118,7 +118,7 @@ const VisualDataset = (props) => {
                         </OverlayTrigger>
                     </li>
                 )}
-                <li style={{width: "auto"}}> 
+                {props.testFlag ? <span></span>: <li style={{width: "auto"}}> 
                     <input type='radio' name ='dataset' checked={data == -1}/> 
                     <label style={{marginLeft: '8px', marginBottom: '0px'}}> Custom data </label>
                     {/* <button className='btn btn-secondary ml-4'> Upload</button> */}
@@ -176,13 +176,15 @@ const VisualDataset = (props) => {
                             )}
                         </CSVReader>
                     </div>
-                </li>
+                </li>}
+                
             </ul>
             
+            {props.testFlag ? <span></span>: 
             <button className='btn btn-primary' onClick={() => {
                 dispatch(updateResult("UPDATE_RESULT"))
                 sessionStorage.removeItem("updatedStat");
-            }}> Update result </button>
+            }}> Update result </button>}
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                 <Modal.Title>Dataset Setup</Modal.Title>

@@ -214,7 +214,6 @@ const BiasTesting = (props) => {
     const [currentDatasetIndex, setCurrentDatasetIndex] = useState("0")
     const [categoryList, setCategoryList] = useState(categories[0])
     const [category, setCategory] = useState(categoryList[0])
-    const [exploreActive, setExploreActive] = useState("data")
     const [resultAvailable, setResultAvailable] = useState(true)
     const [resultStat, setResultStat] = useState([{}])
     const [accStat, setAccStat] = useState([{}])
@@ -225,24 +224,17 @@ const BiasTesting = (props) => {
     const dispatch = useDispatch()
 
 
-    // useEffect(() => {
-    //     fetchData(0);
-    //     setAccStat(accStatValues[0]);
-    // }, [tweetListReadFinished])
-
     //For the dataset name
     const datasetUsed = useSelector(state => state.data)
     //Change the dataset name here freely
     const datasetList = ["Dataset 1", "Dataset 2"]
     
+    // Fetch the data based on the chosen dataset name
     async function fetchData(datasetIndex) {
-        console.log(datasetURL[datasetIndex]);
 
         const response = await fetch(datasetURL[datasetIndex])
         const reader = response.body.getReader()
         const result = await reader.read() // raw array
-
-        console.log(result)
 
         const decoder = new TextDecoder('utf-8')
         const csv = decoder.decode(result.value) // the csv text
@@ -273,7 +265,9 @@ const BiasTesting = (props) => {
 
     }
 
+    // CHECK here if the production version has been uncommented and local development is commented
     useEffect(() => {
+        //----Production version-----
         // fetchData(datasetIndex);
         //----Umar Local Development-----
         processCSVLocal(datasetIndex)
@@ -284,12 +278,14 @@ const BiasTesting = (props) => {
         setResultStat(resultStatValues[datasetIndex]);
     }, [datasetIndex])
 
+    // Change the category based on the chosen index
     function changeCategory(index) {
         return () => {
             setCategory(categoryList[index])
         }
     }
 
+    // Process the csv for dataset for local development
     function processCSVLocal(datasetIndex) {
         const csvNames = [require("../testTweet_withPrediction_david.csv"), require("../testTweet_withPrediction_david.csv")]
         const csv = csvNames[datasetIndex]
@@ -319,10 +315,6 @@ const BiasTesting = (props) => {
             }
         }) // object with { data, errors, meta }
     }
-
-    useEffect(() => {
-        console.log(tweetListSample)
-    }, [tweetListSample])
 
     const barOption = {
         responsive: true,
@@ -356,9 +348,6 @@ const BiasTesting = (props) => {
             }]
         },
     }
-
-    console.log(graphNames);
-    console.log(datasetIndex);
 
     const barData = {
         labels: graphIndex < graphData[datasetIndex].length ? graphData[datasetIndex][graphIndex][0].label : [] ,
@@ -402,60 +391,15 @@ const BiasTesting = (props) => {
         }
     }
 
-    function returnBadCategory() {
-        //The only good category should be on the last
-        var categories = [...categoryList]
-        categories.pop()
-        return (
-            categories.map((item, i) => 
-                <Dropdown.Item key={i} onClick={changeCategory(i)}>
-                    {item}
-                </Dropdown.Item>
-            )
-        )
-    }
-
-
-    function selectExplore() {
-        if (exploreActive === "result") {
-            if (resultAvailable) {
-                return (
-                    <div className="explore-container" style={{marginTop: "1rem"}}>
-                    <h1> Abusive Speech Detection Result </h1>
-                    <div className='scatter-chart' style={{position: "relative", overflowY: "auto"}}>
-                        <ScatterChart width={10} height={10} catName={category}/>
-                        <form className='form-inline justify-content-center align-item-center' style={{marginTop: "1rem"}}>
-                            <label style={{marginRight: "1rem"}}> <h6> Class: </h6></label>
-                            <DropdownButton id="dropdown-basic-button" title={category}>
-                                {returnBadCategory()}
-                            </DropdownButton>
-                        </form>
-                    </div>
-                </div>)
-            }
-            else {
-                return(
-                    <div style={{marginTop: "1rem", padding: "0rem 5rem"}}>
-                        <h1> Abusive Speech Detection Result </h1>
-                        <h3 style={{marginTop: "20%", color: "#676767"}}> No result to display </h3>
-                        <p> There is no model that has been built yet. You can build a model using the model builder panel on the right side of the page. </p>
-                    </div>
-                )
-            }
-            
-        }
-        else {
-            return (<DataTable categoryList={categoryList[0]} categoryList2={categoryList[1]} tweetListSample={tweetListSample} datasetIndex={datasetIndex} testFlag={true} dataAvailable={true} wordList={[]}/>)
-        }
-    }
-
+    // Handle the dataset change during selection
     function handleDatasetChange(datasetIndex) {
+        // CHECK here if the production version has been uncommented and local development is commented
         if(currentDatasetIndex != datasetIndex) {
+            //----Production version----
             // fetchData(parseInt(datasetIndex));
             //----Umar Local Development-----
             processCSVLocal(0)
             //-------------------------------
-            processCSVLocal(0)
             setCategoryList(categories[parseInt(datasetIndex)]);
             setCategory(categories[parseInt(datasetIndex)][0]);
             setCurrentDatasetIndex(datasetIndex);
@@ -473,8 +417,7 @@ const BiasTesting = (props) => {
             </div>
             <div className='visualization-new-container'>
                 <div className='graph-left'>
-                    {selectExplore()}
-                    
+                    <DataTable categoryList={categoryList[0]} categoryList2={categoryList[1]} tweetListSample={tweetListSample} datasetIndex={datasetIndex} testFlag={true} dataAvailable={true} wordList={[]}/> 
                 </div>
                 <div className='interactive-right'>
                     <div id='interactive-controller'>
@@ -482,7 +425,7 @@ const BiasTesting = (props) => {
                             <div style={{padding: "1rem"}}>
                                 <h5> Choose a dataset: </h5>
                             </div>
-                            <VisualDataset onChange={handleDatasetChange}/>
+                            <VisualDataset onChange={handleDatasetChange} testFlag={true}/>
                         </div>
                     </div>
                     <div id='visual-result'>
