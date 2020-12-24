@@ -126,6 +126,8 @@ const Visualization = (props) => {
     const [tweetListReadFinished, setTweetListReadFinished] = useState(false)
     const dispatch = useDispatch()
 
+    const server_data = 'http://127.0.0.1:5000/data' // Edit this in production version for model accuracy statistic
+
     //Check if the chosen data is custom or not
     useEffect(() => {
         console.log(resultData)
@@ -452,7 +454,7 @@ const Visualization = (props) => {
                 body: JSON.stringify(data_json),
                 method: "POST",
             }
-            fetch('http://127.0.0.1:5000/data', otherParam).then(
+            fetch(server_data, otherParam).then(
                 data => {return data.json()}
             ).then(res => {
                 console.log(res)

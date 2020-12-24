@@ -9,7 +9,6 @@ import BiasTesting from "./BiasTesting"
 
 import DatasetMitigation from "./mitigation-pages/DatasetMitigation"
 import PredictionMitigation from "./mitigation-pages/PredictionMitigation"
-import CodingMitigation from "./mitigation-pages/CodingMitigation"
 
 const Main = () => {
 
@@ -29,7 +28,6 @@ const Main = () => {
             <Route path='/bias-mitigation' component={Mitigation}></Route>
             <Route path='/dataset-mitigation' component={DatasetMitigation}></Route>
             <Route path='/predict-mitigation' component={PredictionMitigation}></Route>
-            <Route path='/coding-mitigation' component={CodingMitigation}></Route>
             <Route path='/mitigation' component={MitigationNew}></Route>
         </Switch>
     </div>

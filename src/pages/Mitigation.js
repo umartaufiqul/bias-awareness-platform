@@ -22,7 +22,7 @@ const Mitigation = (props) => {
     const [accStat, setAccStat] = useState(null)
     const history = useHistory()
 
-    const server_address = 'http://127.0.0.1:5000/'
+    const server_data = 'http://127.0.0.1:5000/data' // Edit this in production version for model accuracy statistic
     const label = ['Hateful', 'Offensive', 'Neither']
 
     useEffect(() => {
@@ -129,8 +129,7 @@ const Mitigation = (props) => {
     function test_prediction() {
         console.log("Sending to server")
         const data = JSON.parse(window.sessionStorage.getItem("current_dataset"))
-        console.log(data)
-        var ext = 'data';const data_json = {
+        const data_json = {
             "data": data,
             "label": ['Hateful', 'Offensive', 'Neither']
         }   
@@ -142,7 +141,7 @@ const Mitigation = (props) => {
             body: JSON.stringify(data_json),
             method: "POST",
         }
-        fetch(server_address+ext, otherParam).then(
+        fetch(server_data, otherParam).then(
             data => {
                 return data.json()}
         ).then(res => {

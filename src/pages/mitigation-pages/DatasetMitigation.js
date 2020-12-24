@@ -20,6 +20,7 @@ const DatasetMitigation = () => {
     const [className, setClassName] = useState(["SAE", "AAE"])
     const [displayLoading, setDisplayLoading] = useState(false) // Display loading to indicate predicting process
     const history = useHistory()
+    const server_aae_classify = 'http://127.0.0.1:5000/aae-classify' // Edit this in production version to classify the tweet based on aae classification
 
     // TODO: Make this pass-able instead of hard-coded
     const idx_name_label = {
@@ -50,7 +51,7 @@ const DatasetMitigation = () => {
                 body: JSON.stringify(data_json),
                 method: "POST",
             }
-            fetch('http://127.0.0.1:5000/aae-classify', otherParam).then(
+            fetch(server_aae_classify, otherParam).then(
                 data => {return data.json()}
             ).then(res => {
                 setDisplayLoading(false)

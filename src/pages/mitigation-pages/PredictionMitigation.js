@@ -4,8 +4,7 @@ import {Bar} from 'react-chartjs-2'
 
 const arrow_up = require("../../icons/up_arrow.svg")
 
-const server_address = 'http://127.0.0.1:5000/'
-
+const server_predict= 'http://127.0.0.1:5000/predict' // Edit this in production version to get prediction from the trained model
 
 const PredictionMitigation = () => {
     const [method1Active, setMethod1Active] = useState(true)
@@ -52,7 +51,6 @@ const PredictionMitigation = () => {
         console.log("Sending to server")
         const data = JSON.parse(window.localStorage.getItem("current_dataset")).result
         console.log(data)
-        var ext = 'predict';
         const data_json = {
             "data": data,
             "label": ['Hateful', 'Offensive', 'Neither']
@@ -65,7 +63,7 @@ const PredictionMitigation = () => {
             body: JSON.stringify(data_json),
             method: "POST",
         }
-        fetch(server_address+ext, otherParam).then(
+        fetch(server_predict, otherParam).then(
             data => {
                 return data.json()}
         ).then(res => {
