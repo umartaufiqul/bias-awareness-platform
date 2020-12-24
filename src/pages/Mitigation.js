@@ -38,7 +38,10 @@ const Mitigation = (props) => {
             history.push('/dataset-mitigation')
         }
         else if (id === "classifier") { setClassifierSrc(classifier_fill) }
-        else { setPredictSrc(predict_fill) }
+        else { 
+            setPredictSrc(predict_fill)
+            history.push('/predict-mitigation')
+        }
     }
 
     // Display the current accuracy of the model

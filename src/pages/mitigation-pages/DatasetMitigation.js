@@ -8,16 +8,17 @@ const plus = require('../../icons/plus.svg')
 const minus = require('../../icons/minus.svg')
 
 const DatasetMitigation = () => {
-    const savedDataset = JSON.parse(window.localStorage.getItem("current_dataset")).result
+    const savedDataset = JSON.parse(window.localStorage.getItem("aae_dataset"))
     const [chosenGraph, setChosenGraph] = useState("Label")
     const [labelRatio, setLabelRatio] = useState(1)
     const [chosenLabel, setChosenLabel] = useState("None")   
     const [classRatio, setClassRatio] = useState(1)
     const [chosenClass, setChosenClass] = useState("None")
-    const [currentData, setCurrentData] = useState(savedDataset)
+    const [currentData, setCurrentData] = useState(null)
     const [update, setUpdate] = useState(true) //Just to prevent infinite re-render
     const [labelName, setLabelName] = useState([]) //Label name which may be different between datasets
     const [className, setClassName] = useState(["SAE", "AAE"])
+    const [displayLoading, setDisplayLoading] = useState(false) // Display loading to indicate predicting process
     const history = useHistory()
 
     // TODO: Make this pass-able instead of hard-coded
@@ -33,29 +34,35 @@ const DatasetMitigation = () => {
     // If use the pre-existing dataset, set this to processing the dataset and store into the variable
     useEffect(() => {
         window.scrollTo(0, 0)
-    //     const data_json = {
-    //         query: savedDataset
-    //     }
-
-    //     const otherParam = {
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(data_json),
-    //         method: "POST",
-    //     }
-    //     fetch('http://127.0.0.1:5000/aae-classify', otherParam).then(
-    //         data => {return data.json()}
-    //     ).then(res => {
-    //         console.log(res)
-    //         window.localStorage.setItem("current_dataset", JSON.stringify(res.result))
-    //     })
+        console.log(savedDataset)
+        if (savedDataset !== null) {
+            setCurrentData(savedDataset.result)
+        } else {
+            setDisplayLoading(true)
+            const data_json = {
+                query: JSON.parse(window.sessionStorage.getItem("current_dataset"))
+            }
+    
+            const otherParam = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data_json),
+                method: "POST",
+            }
+            fetch('http://127.0.0.1:5000/aae-classify', otherParam).then(
+                data => {return data.json()}
+            ).then(res => {
+                setDisplayLoading(false)
+                console.log(res)
+                window.localStorage.setItem("aae_dataset", JSON.stringify(res))
+                setCurrentData(res.result)
+            })
+        }
     }, [])
 
     // Testing purpose only; Delete when not needed
     useEffect(() => {
-        // console.log(labelRatio)
-        // console.log(chosenLabel)
         setUpdate(true)
         process_dataset()
         handle_ratio_change()
@@ -304,6 +311,13 @@ const DatasetMitigation = () => {
         window.sessionStorage.setItem("current_dataset", JSON.stringify(currentData))
         history.push('/bias-mitigation')
     }
+
+    function display_loading() {
+        return (<div style={{marginBottom: "5rem", marginTop: "2rem"}}>
+            <h3> Loading the dialect prediction.... </h3>
+            <h5> (It may takes 10-15 minutes for the first time loading) </h5>
+        </div>)
+    }
     
      return(
         <div className="page-box dataset-mitigation text-center">
@@ -316,7 +330,7 @@ const DatasetMitigation = () => {
                 })}
                 </Dropdown.Menu>
             </Dropdown>
-            {process_dataset()}
+            {displayLoading ? display_loading() : process_dataset()}
             <div style={{textAlign: "left"}}>
                 <h3 style={{margin: "1rem 0rem"}}> Mitigation Method </h3>
                 <h4 style={{margin: "1rem 0rem"}}> Action 1: Undersampling </h4>
