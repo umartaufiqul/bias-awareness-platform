@@ -107,13 +107,17 @@ const MyNavbar = () => {
     ]
     ]
 
-    const sectionList = ["1. Exploring datasets and model performance", "2. Checking bias", "3. Understanding details and implementing tasks"]
+    const sectionList = ["1. Exploring datasets and model performance", "2. Checking bias", "3. Understanding details and implementing tasks", "4. Bias Mitigation"]
     const section = useSelector(state => state.section)
     const dispatch = useDispatch()
     const [isTourOpen, setIsTourOpen] = useState(false)
 
+    // Edit here if any page is added
     useEffect(() => {
-        if (window.location.href.includes("mitigation")) {
+        if (window.location.href.includes("-mitigation")) {
+            dispatch(setSection(4))
+        }
+        else if (window.location.href.includes("mitigation")) {
             dispatch(setSection(3))
         }
         else if (window.location.href.includes("visualization")) {
@@ -121,9 +125,6 @@ const MyNavbar = () => {
         }
         else if (window.location.href.includes("bias-testing")) {
             dispatch(setSection(2))
-        }
-        else if (window.location.href.includes("fin")) {
-            dispatch(setSection(4))
         }
     })
 
@@ -135,6 +136,7 @@ const MyNavbar = () => {
         setIsTourOpen(true)
     }
 
+    // Edit here if any page is added
     function goToPage(page_index) {
         console.log(page_index)
         switch(page_index) {
@@ -152,6 +154,10 @@ const MyNavbar = () => {
                 window.location.href = "/bias-awareness-platform/#/mitigation"
                 dispatch(setSection(3))
                 // alert("This page is not available. For now")
+                break;
+            case 4:
+                window.location.href = "/bias-awareness-platform/#/bias-mitigation"
+                dispatch(setSection(4))
                 break;
             default:
                 alert("No such page!")
@@ -188,15 +194,15 @@ const MyNavbar = () => {
     }
 
     const usePrev = () => {
-        return section > 1 && section < 4
+        return section > 1 && section < sectionList.length + 1
     }
 
     const useNext = () => {
-        return section > 0 && section < 3
+        return section > 0 && section < sectionList.length
     }
 
     const useDropdown = () => {
-        return section > 0 && section < 4
+        return section > 0
     }
 
     return(
@@ -212,6 +218,7 @@ const MyNavbar = () => {
                         <NavDropdown.Item href="/bias-awareness-platform/#/visualization"> {sectionList[0]}</NavDropdown.Item>
                         <NavDropdown.Item href="/bias-awareness-platform/#/bias-testing"> {sectionList[1]} </NavDropdown.Item>
                         <NavDropdown.Item href="/bias-awareness-platform/#/mitigation"> {sectionList[2]} </NavDropdown.Item>
+                        <NavDropdown.Item href="/bias-awareness-platform/#/bias-mitigation"> {sectionList[3]} </NavDropdown.Item>
                     </NavDropdown>
                     : <div style={{height: "3.5rem"}}></div>
                     }

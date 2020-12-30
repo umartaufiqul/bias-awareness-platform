@@ -6,8 +6,9 @@ import VisualDataset from "../components/VisualDataset"
 import VisualModelNew from "../components/VisualModelNew"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropdownButton from "react-bootstrap/DropdownButton"
-import { activateLoader, deactivateLoader } from "../actions"
-import Form from "react-bootstrap/Form"
+import OverlayTrigger from "react-bootstrap/OverlayTrigger"
+import Tooltip from "react-bootstrap/Tooltip"
+import { activateLoader, deactivateLoader, updateResult } from "../actions"
 import Result from "../components/Result"
 import DataTable from "../components/DataTable"
 import Papa from 'papaparse'
@@ -29,19 +30,19 @@ const Visualization = (props) => {
                     class: "Hateful",
                     precision: 0.45,
                     recall: 0.59,
-                    f1_score: 0.51,
+                    "f1_score": 0.51,
                     support: 164
                 }, {
                     class: "Abusive",
                     precision: 0.96,
                     recall: 0.91,
-                    f1_score: 0.94,
+                    "f1_score": 0.94,
                     support: 1905
                 }, {
                     class: "Neither",
                     precision: 0.83,
                     recall: 0.94,
-                    f1_score: 0.88,
+                    "f1_score": 0.88,
                     support: 410
                 }],
             accuracy: 0.89,
@@ -49,12 +50,12 @@ const Visualization = (props) => {
             macro: {
                 precision: 0.75,
                 recall: 0.81,
-                f1_score: 0.77,
+                "f1-score": 0.78,
             },
             weighted: {
                 precision: 0.91,
                 recall: 0.89,
-                f1_score: 0.9,
+                "f1-score": 0.9,
             },
             labels: ['Hateful', 'Abusive', 'Neither'],
             matrix: [
@@ -83,15 +84,15 @@ const Visualization = (props) => {
             accuracy: 0.93,
             support: 2000,
             macro: {
-                precision: 0.93,
-                recall: 0.92,
-                f1_score: 0.93,
+                precision: 0.75,
+                recall: 0.81,
+                "f1-score": 0.78,
                 support: 2000
             },
             weighted: {
-                precision: 0.93,
-                recall: 0.93,
-                f1_score: 0.93,
+                precision: 0.91,
+                recall: 0.89,
+                "f1-score": 0.9,
                 support: 2000
             },
             labels: ['Normal', 'Hateful'],
@@ -110,11 +111,13 @@ const Visualization = (props) => {
     const [category, setCategory] = useState(categoryList[0])
     const [exploreActive, setExploreActive] = useState("data")
     const [resultAvailable, setResultAvailable] = useState(true)
-    const [labelActive, setLabelActive] = useState([])
+    const [dataAvailable, setDataAvailable] = useState(false) //Whether the custom data has been uploaded & processed correctly
+    const [customData, setCustomData] = useState("")
     const [resultStat, setResultStat] = useState([{}])
     const [accStat, setAccStat] = useState([{}])
 
     const resultData = useSelector(state => state.data)
+    const updateRes = useSelector(state => state.updateResult)
     const [currentDatasetIndex, setCurrentDatasetIndex] = useState(resultData)
 
     const loaderActive = useSelector(state => state.loaderActive)
@@ -124,7 +127,20 @@ const Visualization = (props) => {
     const [tweetDB, setTweetDB] = useState([[]])
 
     const dispatch = useDispatch()
-    
+
+    const server_data = 'http://127.0.0.1:5000/data' // Edit this in production version for model accuracy statistic
+
+    //Check if the chosen data is custom or not
+    useEffect(() => {
+        console.log(resultData)
+        if (resultData < 0) {
+            setDataAvailable(false)
+        }
+        else {
+            setDataAvailable(true)
+        }
+    }, [resultData])
+  
     function processCSV(datasetIndex, chunks, receivedLength, temp) {
         // Step 4: concatenate chunks into single Uint8Array
         let chunksAll = new Uint8Array(receivedLength); // (4.1)
@@ -156,8 +172,33 @@ const Visualization = (props) => {
                         label: results.data[i].class
                     });
                 }
+                setTweetListSample(tweetData);
+                // setTweetListReadFinished(true);
+            }
+        }) // object with { data, errors, meta }
+    }
 
-                temp[datasetIndex] = tweetData;
+    // Process retrieved CSV from local into JSON data
+    function processCSVLocal(datasetIndex) {
+        const csvNames = [require("../david_formatted.csv"), require("../hatespeech_formatted.csv")]
+        const csv = csvNames[datasetIndex]
+
+        const results = Papa.parse(csv, {
+            header: true,
+            download: true,
+            complete: function (results) {
+                var tweetData = [];
+                for (var i = 0; i < results.data.length; i++) {
+                    if (typeof results.data[i].tweet === "undefined") {
+                        continue;
+                    }
+                    tweetData.push({
+                        tweet: results.data[i].tweet,
+                        label: results.data[i].class
+                    });
+                }
+
+                // console.log(tweetData);
 
                 setTweetListSample(tweetData);
                 setTweetDB(temp);
@@ -217,67 +258,28 @@ const Visualization = (props) => {
 
     }
 
-    useEffect((data) => {
-    });
-
+    // CHECK here if the production version has been uncommented and local development is commented
     useEffect(() => {
-        fetchData(0);
+        //----Production version----
+        // fetchData(0);
+        //----Umar Local Development-----
+        processCSVLocal(0)
+        //-------------------------------
         setAccStat(accStatValues[0]);
     }, [tweetListReadFinished])
 
-
-    /*
-    const tweetListSample = [{
-      tweet: "Tweet sample but I nned to make it long so forgive me for the length okay",
-      label: "neither"
-    }, {
-        tweet: "Tweet sample but I need to make it long so forgive me for the length okay",
-        label: "Hateful"
-      }, {
-        tweet: "Tweet sample but I nned to make it long so forgive me for the length okay",
-        label: "Abusive"
-      }, {
-        tweet: "Tweet sample but I nned to make it long so forgive me for the length okay",
-        label: "neither"
-      }, {
-          tweet: "Tweet sample but I need to make it long so forgive me for the length okay",
-          label: "Hateful"
-        }, {
-          tweet: "Tweet sample but I nned to make it long so forgive me for the length okay",
-          label: "Abusive"
-        }]
-        */
-       /*
-    const resultStat = [{
-        class: "Racism",
-        pblack: 0.001,
-        pwhite: 0.003,
-        pblack_white: 0.005,
-    }, {
-        class: "Sexism",
-        pblack: 0.083,
-        pwhite: 0.048,
-        pblack_white: 1.724
-    }]
-
-    const accStat = [{
-        class: "Racism",
-        precision: 0.77,
-        recall: 0.86,
-        f1_score: 0.81,
-        support: 3756
-    }, {
-        class: "Sexism",
-        precision: 0.84,
-        recall: 0.75,
-        f1_score: 0.79,
-        support: 1344
-    }]
-    */
-
     function handleDatasetChange(datasetIndex) {
+        //Custom dataset
+        if (datasetIndex < 0) {
+            return
+        }
+        // CHECK here if the production version has been uncommented and local development is commented
         if(currentDatasetIndex != datasetIndex) {
-            fetchData(parseInt(datasetIndex));
+            //-------Production version-------
+            // fetchData(parseInt(datasetIndex));
+            //-------Umar's Local Dev-----------
+            processCSVLocal(datasetIndex)
+            //----------------------------------
             setCategoryList(categories[parseInt(datasetIndex)]);
             setCategory(categories[parseInt(datasetIndex)][0]);
             setCurrentDatasetIndex(datasetIndex);
@@ -286,6 +288,7 @@ const Visualization = (props) => {
         }
     }
 
+    // Change which tab (dataset or model) is active
     function changeActiveState(id) {
         if (id === "dataset-tab" && datasetActive === "") {
            setDatasetActive("active");
@@ -296,24 +299,52 @@ const Visualization = (props) => {
         }
     };
 
+    //Open dataset if found with the name
+    //NOTE: This only used for demonstration purpose
+    useEffect(() => {
+        if (customData === "") {
+            console.log("No file has been submitted")
+        }
+        else {
+            setTweetListSample(processDataToJSON())
+            setDataAvailable(true)
+        }
+    }, [customData])
+
+    function processDataToJSON() {
+        var data_array = [...customData.data]
+        var tweet_idx = customData.tweet
+        var label_idx = customData.label
+        data_array.shift()
+        const json_tweet = data_array.map((entry, i) => {
+            return {
+                tweet: entry.data[tweet_idx],
+                label: entry.data[label_idx]
+            }
+        })
+        return json_tweet
+    }
+
+    // Store the current dataset in session storage to be used by the dataset mitigation
+    useEffect(() => {
+        window.sessionStorage.setItem('current_dataset', JSON.stringify(tweetListSample))
+    }, [tweetListSample])
+
+    // Change the content of the active tab
     function changeContent() {
         if (datasetActive === "active") {
-            return <VisualDataset onChange={handleDatasetChange}/>
+            return <VisualDataset onChange={handleDatasetChange} passCustomData={setCustomData} testFlag={false}/>
         }
         else {
             return <VisualModelNew />
         }
     };
 
-    function handleExploreChange(tab) {
-        setExploreActive(tab)
-    }
-
     function handleInputChange(e) {
         setWordInput(e.target.value)
     };
 
-
+    // Handle the input for "associated word"
     function handleInputDown(e) {
         if (e.keyCode === 13) {
             e.preventDefault()
@@ -323,6 +354,7 @@ const Visualization = (props) => {
         }
     };
 
+    // Handle removing an associated word from the list
     function handleRemove(index) {
         return () => {
             setWordList(wordList.filter((item, i) => i !== index))
@@ -330,13 +362,9 @@ const Visualization = (props) => {
     };
 
     function handleModelChange() {
+        dispatch(updateResult("UPDATE_RESULT"))
+        sessionStorage.removeItem("updatedStat");
         dispatch(activateLoader())
-        setTimeout(function(){
-            dispatch(deactivateLoader())
-            setResultAvailable(true)
-            setExploreActive("result")
-            alert("The model has been built")
-        }, 5000)
     }
 
     function changeCategory(index) {
@@ -356,6 +384,22 @@ const Visualization = (props) => {
                 </Dropdown.Item>
             )
         )
+    }
+
+    //Return result if the custom data is already processed, and "no result" otherwise
+    function returnResult() {
+        console.log(dataAvailable)
+        console.log(resultData)
+        if (resultData < 0 && dataAvailable) {
+            return(
+            <div style={{margin: "3rem 2.5rem"}}>
+                <p style={{color: "#d3d3d3"}}> The accuracy result for the custom model is yet to be calculated. Please click "Update result" button in order to do so</p>
+            </div>
+            )
+        }
+        else {
+            return(<Result resultStat={resultStat} accStat={accStat} resultAvailable={resultAvailable} activeResult='report'/>)
+        }
     }
 
 
@@ -388,9 +432,75 @@ const Visualization = (props) => {
             
         }
         else {
-            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample} datasetIndex={currentDatasetIndex}/>)
+            return (<DataTable categoryList={categoryList} tweetListSample={tweetListSample} datasetIndex={currentDatasetIndex} dataAvailable={dataAvailable} customData={customData} wordList={wordList}/>)
         }
     }
+
+    // Detect the update result button push
+    useEffect(() => {
+        if (updateRes && dataAvailable && resultData < 0) {
+            console.log("Updating the result...")
+            // console.log(tweetListSample)
+            // Send the file to the server
+            // Include the label for result evaluation
+
+            const classificationLabels = [
+                ['Hateful', 'Offensive', 'Neither'],
+                ['Normal', 'Hateful'],
+                ['Positive', 'Negative'],
+            ]
+
+            const data_json = {
+                "data": tweetListSample,
+                "label": classificationLabels[0]
+            }
+
+            const otherParam = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data_json),
+                method: "POST",
+            }
+            fetch(server_data, otherParam).then(
+                data => {return data.json()}
+            ).then(res => {
+                console.log(res)
+                //Convert the report to the acceptable format in result.js
+                var stat = []
+                for (var key in Object.keys(res.report)) {
+                    //For class prediction, convert the number into string
+                    if (/^\d+$/.test(key) && typeof res.report[key] !== 'undefined') {
+                        //Statistic for a class
+                        var curr_stat = {
+                            //Note: The class is very hardcoded and not flexible when the dataset is custom
+                            class: classificationLabels[0][parseInt(key)],
+                            precision: res.report[key]["precision"].toFixed(2),
+                            recall: res.report[key]["recall"].toFixed(2),
+                            f1_score: res.report[key]["f1-score"].toFixed(2),
+                            support:  res.report[key]["support"]
+                        }
+                        console.log(curr_stat)
+                        stat.push(curr_stat)
+                    }
+                }
+                var final_stat = {
+                    stat,
+                    accuracy: res.report['accuracy'].toFixed(2),
+                    macro: res.report['macro avg'],
+                    weighted: res.report['weighted avg'],
+                }
+                console.log(final_stat)
+                sessionStorage.setItem("updatedStat", JSON.stringify(final_stat));
+                dispatch(updateResult("UPDATE_FINISH"))
+                dispatch(deactivateLoader())
+                // setUpdatedData(null)
+                dispatch(updateResult("UPDATE_RESULT")) // The variable is set again to true in order to trigger the result change in the Result.js
+            })
+            .catch(err => console.log(err))
+            // setUpdate(true)
+        }
+    }, [updateRes, dataAvailable])
 
     return(
         <div className='visualization-new'>
@@ -406,7 +516,7 @@ const Visualization = (props) => {
                         <div className={exploreActive === "result" ? 'explore-choice active' : 'explore-choice'} onClick={() => handleExploreChange("result")}> Result </div>
                     </div> */}
                     {selectExplore()}
-                    {/* <div className='associated-words'>
+                    <div className='associated-words'>
                         <form className='form-inline'>
                         <label> Associated words: </label>
                         <input className="form-control ml-4" type="text" value={wordInput} onChange={handleInputChange} onKeyDown={handleInputDown}></input>
@@ -434,7 +544,7 @@ const Visualization = (props) => {
                                 </li>
                             )}
                         </ul>
-                    </div> */}
+                    </div>
                     
                 </div>
                 <div className='interactive-right'>
@@ -467,11 +577,7 @@ const Visualization = (props) => {
                     </div>
                     <div id='visual-result'>
                         <h3> Result </h3>
-                        {/* <div>
-                            <span> Model: Model {resultModel+1} </span>
-                            <span style={{marginLeft: "1rem"}}> Dataset: Dataset {resultData+1} </span> 
-                        </div> */}
-                        <Result resultStat={resultStat} accStat={accStat} resultAvailable={resultAvailable} activeResult='report'/>
+                        {returnResult()}
                     </div>
                 </div>
             </div>
