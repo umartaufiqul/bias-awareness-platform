@@ -15,8 +15,8 @@ import Papa from 'papaparse'
 
 const Visualization = (props) => {
     const datasetURL = [
-        'http://3.35.21.90:3000/bias-awareness-platform/david_formatted.csv',
-        'http://3.35.21.90:3000/bias-awareness-platform/hatespeech_formatted.csv'
+        'http://3.34.183.118:3000/bias-awareness-platform/david_formatted.csv',
+        'http://3.34.183.118:3000/bias-awareness-platform/hatespeech_formatted.csv'
     ];
 
     const categories = [
@@ -34,7 +34,7 @@ const Visualization = (props) => {
                     support: 164
                 }, {
                     class: "Abusive",
-                    precision: 0.95,
+                    precision: 0.96,
                     recall: 0.91,
                     "f1_score": 0.94,
                     support: 1905
@@ -59,7 +59,7 @@ const Visualization = (props) => {
             },
             labels: ['Hateful', 'Abusive', 'Neither'],
             matrix: [
-                [0.59, 0.33, 0.09],
+                [0.59, 0.32, 0.09],
                 [0.06, 0.91, 0.03],
                 [0.03, 0.03, 0.94]
             ]
@@ -68,20 +68,20 @@ const Visualization = (props) => {
             stat: [
                 {
                     class: "Normal",
-                    precision: 0.84,
-                    recall: 0.75,
-                    f1_score: 0.79,
-                    support: 1013,
+                    precision: 0.94,
+                    recall: 0.96,
+                    f1_score: 0.95,
+                    support: 1274,
                 },
                 {
                     class: "Hateful",
-                    precision: 0.84,
-                    recall: 0.75,
-                    f1_score: 0.79,
-                    support: 987
+                    precision: 0.92,
+                    recall: 0.89,
+                    f1_score: 0.91,
+                    support: 726
                 }
             ],
-            accuracy: 0.72,
+            accuracy: 0.93,
             support: 2000,
             macro: {
                 precision: 0.75,
@@ -124,6 +124,8 @@ const Visualization = (props) => {
     const resultModel = useSelector(state => state.model)
     const [tweetListSample, setTweetListSample] = useState([{}])
     const [tweetListReadFinished, setTweetListReadFinished] = useState(false)
+    const [tweetDB, setTweetDB] = useState([[]])
+
     const dispatch = useDispatch()
 
     const server_data = 'http://127.0.0.1:5000/data' // Edit this in production version for model accuracy statistic
@@ -138,10 +140,8 @@ const Visualization = (props) => {
             setDataAvailable(true)
         }
     }, [resultData])
-    
-    // Process retrieved CSV into JSON data
-    function processCSV(chunks, receivedLength) {
-
+  
+    function processCSV(datasetIndex, chunks, receivedLength, temp) {
         // Step 4: concatenate chunks into single Uint8Array
         let chunksAll = new Uint8Array(receivedLength); // (4.1)
         let position = 0;
@@ -163,7 +163,6 @@ const Visualization = (props) => {
             complete: function (results) {
                 var tweetData = [];
 
-                console.log(results);
                 for (var i = 0; i < results.data.length; i++) {
                     // if (typeof results.data[i].tweet === "undefined") {
                     //     continue;
@@ -173,7 +172,6 @@ const Visualization = (props) => {
                         label: results.data[i].class
                     });
                 }
-
                 setTweetListSample(tweetData);
                 // setTweetListReadFinished(true);
             }
@@ -203,12 +201,27 @@ const Visualization = (props) => {
                 // console.log(tweetData);
 
                 setTweetListSample(tweetData);
-                // setTweetListReadFinished(true);
+                setTweetDB(temp);
             }
         }) // object with { data, errors, meta }
     }
 
     async function fetchData(datasetIndex) {
+        var temp = tweetDB;
+
+        if(temp == null) temp = [];
+
+        while (true) {
+            if (temp.length > datasetIndex) break;
+
+            temp.push([]);
+        }
+
+        if(temp[datasetIndex].length > 0){
+            setTweetListSample(tweetDB[datasetIndex]);
+            return;
+        } 
+
         const response = await fetch(datasetURL[datasetIndex])
         const reader = response.body.getReader()
 
@@ -226,14 +239,10 @@ const Visualization = (props) => {
                     // Tell the browser that we have finished sending data
                     controller.close();
                     
-                    processCSV(chunks, receivedLength);
+                    processCSV(datasetIndex, chunks, receivedLength, temp);
 
                     return;
                   }
-                  console.log(value);
-                  console.log(new TextDecoder("utf-8").decode(value))
-                  console.log(value.length);
-
                   chunks.push(value);
                   receivedLength += value.length;
         
@@ -281,7 +290,6 @@ const Visualization = (props) => {
 
     // Change which tab (dataset or model) is active
     function changeActiveState(id) {
-        console.log(id)
         if (id === "dataset-tab" && datasetActive === "") {
            setDatasetActive("active");
            setModelActive("");

@@ -543,7 +543,7 @@ c.LocalAuthenticator.create_system_users=True
 
 c.JupyterHub.tornado_settings = {
    'headers': {
-       'Content-Security-Policy': "frame-ancestors * self 3.35.21.90:3000 ",
+       'Content-Security-Policy': "frame-ancestors * self 3.34.183.118:3000 ",
     },
    'slow_spawn_timeout': 60
 }
@@ -1044,7 +1044,7 @@ c.JupyterHub.tornado_settings = {
 #c.Authenticator.username_pattern = ''
 
 ## Deprecated, use `Authenticator.allowed_users`
-c.Authenticator.whitelist = {'mal', 'zoe'}
+# c.Authenticator.whitelist = {}
 
 #------------------------------------------------------------------------------
 # CryptKeeper(SingletonConfigurable) configuration

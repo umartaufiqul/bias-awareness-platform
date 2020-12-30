@@ -16,14 +16,12 @@ import Papa from 'papaparse'
 
 const BiasTesting = (props) => {
     const datasetURL = [
-        'http://3.35.21.90:3000/bias-awareness-platform/testTweet_withPrediction_david.csv',
-        'http://3.35.21.90:3000/bias-awareness-platform/testTweet_withPrediction_hatespeech.csv',
+        'http://3.34.183.118:3000/bias-awareness-platform/testTweet_withPrediction_david.csv',
+        'http://3.34.183.118:3000/bias-awareness-platform/testTweet_withPrediction_hatespeech.csv',
     ]
 
     const datasetIndex = useSelector(state => state.data);
     const [graphIndex, setGraphIndex] = useState(0)
-
-    console.log(datasetIndex);
 
     const categories = [
         [
@@ -87,14 +85,14 @@ const BiasTesting = (props) => {
 
     const resultStatValues = [[{
         class: "Hateful",
-        pblack: 0.704,
-        pwhite: 0.003,
-        pblack_white: 0.005,
+        pblack: 0.075,
+        pwhite: 0.008,
+        pblack_white: 9.38,
     }, {
-        class: "Abusive",
-        pblack: 0.083,
-        pwhite: 0.048,
-        pblack_white: 1.724
+        class: "Offensive",
+        pblack: 0.217,
+        pwhite: 0.030,
+        pblack_white: 7.23
     },  
    ],
 
@@ -114,7 +112,7 @@ const BiasTesting = (props) => {
         f1_score: 0.51,
     }, {
         class: "Abusive",
-        precision: 0.95,
+        precision: 0.96,
         recall: 0.91,
         f1_score: 0.94,
     },
@@ -155,7 +153,7 @@ const BiasTesting = (props) => {
                     'code': 'david',
                     'condition': 'total_label',
                     'label': ['Hateful', 'Abusive', 'Neither'],
-                    'data': [88, 248, 1664]
+                    'data': [83, 247, 1670]
                 },
             ],
             [
@@ -163,7 +161,7 @@ const BiasTesting = (props) => {
                     'code': 'david',
                     'condition': 'AAE_label',
                     'label': ['Hateful', 'Abusive', 'Neither'],
-                    'data': [78, 218, 704]
+                    'data': [75, 217, 708]
                 },
             ],
             [
@@ -171,7 +169,7 @@ const BiasTesting = (props) => {
                     'code': 'david',
                     'condition': 'SAE_label',
                     'label': ['Hateful', 'Abusive', 'Neither'],
-                    'data': [10, 30, 960]
+                    'data': [8, 30, 962]
                 }
             ],
         ],
@@ -189,7 +187,7 @@ const BiasTesting = (props) => {
                     'code': 'hatespeech',
                     'condition': 'total_label',
                     'label': ['Normal', 'Hateful'],
-                    'data': [1644, 356]
+                    'data': [1651, 349]
                 },
             ],
             [
@@ -197,7 +195,7 @@ const BiasTesting = (props) => {
                     'code': 'david',
                     'condition': 'AAE_label',
                     'label': ['Normal', 'Hateful'],
-                    'data': [704, 296]
+                    'data': [708, 292]
                 },
             ],
             [
@@ -205,7 +203,7 @@ const BiasTesting = (props) => {
                     'code': 'david',
                     'condition': 'SAE_label',
                     'label': ['Normal', 'Hateful'],
-                    'data': [940, 60]
+                    'data': [943, 57]
                 }
             ],
         ]
@@ -223,21 +221,26 @@ const BiasTesting = (props) => {
     const [tweetListReadFinished, setTweetListReadFinished] = useState(false)
     const dispatch = useDispatch()
 
+    const [tweetDB, setTweetDB] = useState([[]]);
 
     //For the dataset name
     const datasetUsed = useSelector(state => state.data)
     //Change the dataset name here freely
     const datasetList = ["Dataset 1", "Dataset 2"]
-    
-    // Fetch the data based on the chosen dataset name
-    async function fetchData(datasetIndex) {
 
-        const response = await fetch(datasetURL[datasetIndex])
-        const reader = response.body.getReader()
-        const result = await reader.read() // raw array
+    function processCSV(datasetIndex, chunks, receivedLength, temp) {
+        // Step 4: concatenate chunks into single Uint8Array
+        let chunksAll = new Uint8Array(receivedLength); // (4.1)
+        let position = 0;
+        for (let chunk of chunks) {
+            chunksAll.set(chunk, position); // (4.2)
+            position += chunk.length;
+        }
 
-        const decoder = new TextDecoder('utf-8')
-        const csv = decoder.decode(result.value) // the csv text
+        // Step 5: decode into a string
+        let merged = new TextDecoder("utf-8").decode(chunksAll);
+
+        const csv = merged // the csv text
         //The commented area is for umar's local development
         // const csv = require("../testTweet_withPrediction_david.csv")
         
@@ -258,13 +261,65 @@ const BiasTesting = (props) => {
                     });
                 }
 
+                temp[datasetIndex] = tweetData;
+
                 setTweetListSample(tweetData);
-                // setTweetListReadFinished(true);
+                setTweetDB(temp);
             }
         }) // object with { data, errors, meta }
-
     }
 
+    async function fetchData(datasetIndex) {
+        var temp = tweetDB;
+
+        if(temp == null) temp = [];
+
+        while (true) {
+            if (temp.length > datasetIndex) break;
+
+            temp.push([]);
+        }
+
+        if(temp[datasetIndex].length > 0){
+            setTweetListSample(tweetDB[datasetIndex]);
+            return;
+        } 
+
+        const response = await fetch(datasetURL[datasetIndex])
+        const reader = response.body.getReader()
+
+        var chunks = [];
+        var receivedLength = 0;
+
+        const stream = new ReadableStream({
+            start(controller) {
+              // The following function handles each data chunk
+              function push() {
+                // "done" is a Boolean and value a "Uint8Array"
+                reader.read().then(({ done, value }) => {
+                  // Is there no more data to read?
+                  if (done) {
+                    // Tell the browser that we have finished sending data
+                    controller.close();
+                    
+                    processCSV(datasetIndex, chunks, receivedLength, temp);
+
+                    return;
+                  }
+                  chunks.push(value);
+                  receivedLength += value.length;
+        
+                  // Get the data and send it to the browser via the controller
+                  controller.enqueue(value);
+                  push();
+                });
+              };
+              
+              push();
+            }
+        });
+
+    }
     // CHECK here if the production version has been uncommented and local development is commented
     useEffect(() => {
         //----Production version-----
@@ -274,7 +329,6 @@ const BiasTesting = (props) => {
         //-------------------------------
         console.log("DATASET CHANGED");
         console.log(datasetIndex);
-
         setResultStat(resultStatValues[datasetIndex]);
     }, [datasetIndex])
 
