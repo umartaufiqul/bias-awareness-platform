@@ -539,11 +539,13 @@ c.LocalAuthenticator.create_system_users=True
 #c.JupyterHub.template_vars = {}
 
 ## Extra settings overrides to pass to the tornado application.
-# c.Spawner.args = ["'--NotebookApp.tornado_settings={ 'headers': { 'Content-Security-Policy': 'frame-ancestors * self 3.35.21.90:3000'},'slow_spawn_timeout': 60}'"]
+# c.Spawner.args = ["'--NotebookApp.tornado_settings={ 'headers': { 'Content-Security-Policy': 'frame-ancestors * self 172.10.6.40:3000'},'slow_spawn_timeout': 60}'"]
+
+# c.Spawner.args = ['--NotebookApp.allow_origin=*']
 
 c.JupyterHub.tornado_settings = {
    'headers': {
-       'Content-Security-Policy': "frame-ancestors * self 3.34.183.118:3000 ",
+       'Content-Security-Policy': "frame-ancestors * self 172.10.6.40:3000 ",
     },
    'slow_spawn_timeout': 60
 }
