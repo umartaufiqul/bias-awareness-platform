@@ -16,8 +16,8 @@ import Papa from 'papaparse'
 
 const BiasTesting = (props) => {
     const datasetURL = [
-        'http://3.34.183.118:3000/bias-awareness-platform/testTweet_withPrediction_david.csv',
-        'http://3.34.183.118:3000/bias-awareness-platform/testTweet_withPrediction_hatespeech.csv',
+        'http://172.10.6.40:3000/bias-awareness-platform/testTweet_withPrediction_david.csv',
+        'http://172.10.6.40:3000/bias-awareness-platform/testTweet_withPrediction_hatespeech.csv',
     ]
 
     const datasetIndex = useSelector(state => state.data);

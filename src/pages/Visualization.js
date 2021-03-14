@@ -14,8 +14,8 @@ import Papa from 'papaparse'
 
 const Visualization = (props) => {
     const datasetURL = [
-        'http://3.34.183.118:3000/bias-awareness-platform/david_formatted.csv',
-        'http://3.34.183.118:3000/bias-awareness-platform/hatespeech_formatted.csv'
+        'http://172.10.6.40:3000/bias-awareness-platform/david_formatted.csv',
+        'http://172.10.6.40:3000/bias-awareness-platform/hatespeech_formatted.csv'
     ];
 
     const categories = [
