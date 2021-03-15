@@ -32,7 +32,7 @@ const Visualization = (props) => {
                     f1_score: 0.51,
                     support: 164
                 }, {
-                    class: "Abusive",
+                    class: "Offensive",
                     precision: 0.96,
                     recall: 0.91,
                     f1_score: 0.94,
@@ -56,7 +56,7 @@ const Visualization = (props) => {
                 recall: 0.89,
                 f1_score: 0.9,
             },
-            labels: ['Hateful', 'Abusive', 'Neither'],
+            labels: ['Hateful', 'Offensive', 'Neither'],
             matrix: [
                 [0.59, 0.32, 0.09],
                 [0.06, 0.91, 0.03],

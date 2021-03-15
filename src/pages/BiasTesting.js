@@ -87,12 +87,12 @@ const BiasTesting = (props) => {
         class: "Hateful",
         pblack: 0.075,
         pwhite: 0.008,
-        pblack_white: 9.38,
+        pblack_white: 0.067,
     }, {
         class: "Offensive",
         pblack: 0.217,
         pwhite: 0.030,
-        pblack_white: 7.23
+        pblack_white: 0.187
     },  
    ],
 
@@ -100,7 +100,7 @@ const BiasTesting = (props) => {
         class: "Hateful",
         pblack: 0.296,
         pwhite: 0.060,
-        pblack_white: 4.933
+        pblack_white: 0.236
     }, ]
 
     ]

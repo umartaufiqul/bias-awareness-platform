@@ -128,7 +128,7 @@ const Result = (props) => {
                     </div>
                     </th>
                 <th scope="col" className='align-middle'>
-                    P<sub>AAE</sub> / P<sub>SAE</sub>
+                    P<sub>AAE</sub> - P<sub>SAE</sub>
                 </th>
             </tr>
         </thead>

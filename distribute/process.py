@@ -27,26 +27,31 @@ def dataFormatting(df, dataCode) :
     retValue = ''
     
     if "david" in dataCode['filename'] :
-        retValue = df[['class', 'tweet']]
+        df = df.rename(columns={"class": "label"})
+
+        retValue = df[['label', 'tweet']]
+
     elif "hatespeech" in dataCode['filename']  :
         df[['class']] = df[['class']].replace(to_replace='hateful', value='1')
         df[['class']] = df[['class']].replace(to_replace='normal', value='0')
 
+        df = df.rename(columns={"class": "label"})
+
         retValue = df
     else :
         df[['target']] = df[['target']].replace(to_replace='4', value='1')
-        df = df.rename(columns={"target": "class", "text": "tweet"})
+        df = df.rename(columns={"target": "label", "text": "tweet"})
 
-        retValue = df[['class', 'tweet']]
+        retValue = df[['label', 'tweet']]
 
     return retValue
 
 def preprocess(text_string):
     """
     Accepts a text string and replaces:
-    1) urls with URLHERE
+    1) urls with ''
     2) lots of whitespace with one instance
-    3) mentions with MENTIONHERE
+    3) mentions with ''
 
     This allows us to get standardized counts of urls and mentions
     Without caring about specific people mentioned
@@ -220,7 +225,7 @@ def dataPreprocessing(df) :
         'other_features_names': other_features_names,
         'df': df,
         'M': M,
-        'y': df['class'].astype(int),
+        'y': df['label'].astype(int),
         'vectorizer': (vectorizer, pos_vectorizer),
     };
 
@@ -281,8 +286,7 @@ def buildModel(p) :
 
     grid_search = GridSearchCV(pipe, 
                            param_grid,
-                           cv=StratifiedKFold(n_splits=5, 
-                                              random_state=42).split(X_train, y_train), 
+                           cv=StratifiedKFold(n_splits=5).split(X_train, y_train), 
                            verbose=1)
 
     model = grid_search.fit(X_train, y_train)
