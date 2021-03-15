@@ -58,7 +58,7 @@ function Introduction() {
             </div>
         </Navbar>
             <div className="introduction-page">
-                <h1 className="text-center"> <b>Assignment 1. Bias in Abusive Language Detection</b><br />  (Due: Sep 29. 11:59PM)</h1>
+                <h1 className="text-center"> <b>Assignment 1. Bias in Abusive Language Detection</b><br />  (Due: Mar 30. 11:59PM)</h1>
                 {/* <p> In this activity, a member of high school board would like to have a feedback about their school facility and faculty. However, following the school policy, the board doesn't want to include feedbacks that include toxic or abusive words. On the other hand, the school board is concerned that some of the underrepresented group of student can be unnecessarily filtered out</p>
                 <Row className='text-center'>
                     <Col md={{span: 3, offset: 2}}> 
@@ -72,15 +72,21 @@ function Introduction() {
                 </Row>
                 <p> Your task is to create a model that can automatically detect and remove such feedback, while taking the school board concern into consideration</p>
                  */}
-                <p> Abusive language detection is commonly used in social media context such as facebook and twitter, in order to filter out post that are deemed abusive. However, many papers pointed out that hate speech detection technology, such as perspective API, are biased toward flagging more tweets that use AAE (African-American English) dialect than that use SAE (Standard American English). </p>
-                <p> In this assignment, students are asked to explore the datasets, implement how to measure a bias, and mitigate the bias. We provide three datasets, each of which consists of 20000+ tweets. We are going to train a machine learning model called Logistic Regression to classify whether a tweet is abusive such as hateful, abusive, or not (i.e. normal tweet). With the trained model, we are going to check whether the model gives a biased prediction with respect to the dialects (AAE and SAE) using a whole different tweet dataset, which has not been used in the training phase. <br></br></p>
-                <p> This platform supports two interactive activities: (1) exploring the scenario by visually going through datasets, prediction results, and bias and (2) inspecting and implementing codes via Jupyter Notebook. Students are asked to first explore the scneario, go to the codes to understand details of computations, and implement taks given. You can click '?' icon on the top right for more information. Don't worry too much about coding. We provide all the codes throughout the machine learning pipeline, except for your tasks in this assignment. <br /> </p>
-                <p> Students need to have an account to use Jupyter Notebook. We already created an account for each student. The default ID/PW is your student ID. Please change your password via linux terminal on Jupyter Notebook. <br /> </p>
-                <p> Students need to submit two things: (1) The codes and (2) discussion. Students do not need to explicitly submit the codes as the server keeps track of your codes. The discussion needs to be submitted on KLMS. We highly encourage you to put resources on the Jupyter Notebook such as codes, figures, and statistical results on the discussion so that your discussion can be supported with a reasonable evidence. The discussion items are posted <a href='https://docs.google.com/document/d/1IhUJRv2LegBiq5IIzZVQ0s2CEwaSBzldtLYrBh3aqJk/' style={{color: 'blue'}}>here</a>. <br /> </p>
-                <p> Please note that the objective of this assignment is not to optimize for reducing bias, but to explore possible ways of measuring and mitigating bias. Therefore, students do not need to worry too much about figuring out "better ways of measuring/mitigating bias". The objective of this assignment is to explore possible ways of measuring/mitigating such bias, think about its pros and cons, and discuss its social impact. <br /> </p>
-                <p> You are the user of this platform, which means you are always right! Please let us know if you have any question or suggestion about the platform. We are going to iterate this platform so that we keep improving students' learning experience. Hope you enjoy this assignment!<br /> </p>
-                
-                
+	<h3> Learning Objectives </h3>
+
+		<p>Measuring and mitigating bias caused by AI is a central topic in Human-AI Interaction. The objective of this assignment is for you to explore possible ways of measuring and mitigating such bias through real-life datasets and examples, think about various design decisions made along the way, and discuss the social impact of AI bias. </p>
+
+	<h3> Background </h3>
+
+	<p> Abusive language detection is commonly used for content moderation in social media (e.g., Facebook and Twitter) and online communities (e.g., Reddit) to automatically identify and filter out content that is deemed abusive. However, many papers pointed out that technology for detecting toxic language, such as <a href='https://www.perspectiveapi.com/'>Google’s Perspective API</a>, presents biased results toward flagging more content written in AAE (African-American English) dialect than content in SAE (Standard American English). </p>
+
+	<h3> What should I do?</h3>
+
+	<p> In this assignment, you are asked to (1) explore the datasets, (2) implement how to measure a bias, and (3) attempt to mitigate the bias. We provide three datasets, each of which consists of 20,000+ tweets. You are going to train a simple machine learning model called <a href='https://en.wikipedia.org/wiki/Logistic_regression#:~:text=Logistic%20regression%20is%20a%20statistical,a%20form%20of%20binary%20regression).'>Logistic Regression</a> to classify whether a tweet contains hateful language, abusive language, or no toxic language. With the trained model, you will check whether the model gives a biased prediction with respect to the two dialects (AAE and SAE) using a different tweet dataset, which has not been used in the training phase. </p>
+
+	<p> We built a custom web-based platform to provide two interactive activities: (1) exploring the scenario above by visually inspecting the datasets, prediction results, and bias and (2) inspecting and implementing code for detecting and mitigating the bias via a hosted version of the Jupyter Notebook. You are asked to first explore the scenario, go to the provided code snippets to understand the details of machine learning components, and implement bias detection and mitigation methods by extending the skeleton code. You can click the '?' icon on the top right for more information. Don't worry too much about coding. We provide various code skeletons throughout the machine learning pipeline, except for your tasks in this assignment. </p> 
+	<p> You need to have an account to use our hosted version of the Jupyter Notebook. We already created an account for each student registered in our <a href='https://human-ai.kixlab.org'>Human-AI Interaction course</a>. The default ID/PW is u&#123;<i>your student ID</i>&#125;. Please change your password via the linux terminal on the Jupyter Notebook immediately after you log in.
+	 </p>
 
                 <div className="text-center">
                     <button className='btn btn-green start-btn'> <a href='/bias-awareness-platform/#/visualization'>Start Activity </a></button>

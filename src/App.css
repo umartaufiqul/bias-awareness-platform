@@ -11,6 +11,11 @@
   text-decoration: none;
   color: white;
 }
+.introduction-page p a {
+  font-style: normal;
+  text-decoration: none;
+  color: blue;
+}
 
 .App {
 }
