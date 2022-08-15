@@ -201,7 +201,7 @@ const Visualization = (props) => {
                 // console.log(tweetData);
 
                 setTweetListSample(tweetData);
-                setTweetDB(temp);
+                // setTweetDB(temp);
             }
         }) // object with { data, errors, meta }
     }
